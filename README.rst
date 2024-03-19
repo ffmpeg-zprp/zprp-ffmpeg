@@ -1,9 +1,13 @@
-# Design proposal
+===============
+Design proposal
+===============
 Biblioteka ma za zadanie zastąpić i rozszerzyć istniejącą bibliotekę [ffmpeg-python](https://github.com/kkroening/ffmpeg-python).
 
 Minimalną funkcjonalność, którą chcemy zaimplementować, to ta oferowana przez powyższą bibliotekę, czyli korzystanie z grafów filtrów poprzez prosty interfejs. Poza tym, zależy nam na lepszej integracji z IDE (opisy filtrów w docstringach, typy argumentów), żeby ograniczyć potrzebę krążenia po dokumentacji FFmpeg. 
 
-## Stack technologiczny
+====================
+Stack technologiczny
+====================
 * szablon cookiecutter, prawdopodobnie: https://github.com/woltapp/wolt-python-package-cookiecutter
 * dokumentacja mkdocs
 * linter ruff
@@ -11,8 +15,9 @@ Minimalną funkcjonalność, którą chcemy zaimplementować, to ta oferowana pr
 * tox do automatycznych testów
 * CI/CD przy użyciu github actions (uruchomienie testów, budowanie paczki, automatyczny release do PyPI)
 
-
-## Planowany rozkład jazdy
+=======================
+Planowany rozkład jazdy
+=======================
 1.    18.03-24.03
   * Struktura projektu (cookiecutter)
 	* Chcemy mieć możliwość uruchomienia testów, zbudowania dokumentacji (narazie pustej), zbudowania paczki.
