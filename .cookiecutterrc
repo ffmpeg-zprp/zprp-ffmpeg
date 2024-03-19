@@ -1,0 +1,61 @@
+# This file exists so you can easily regenerate your project.
+#
+# `cookiepatcher` is a convenient shim around `cookiecutter`
+# for regenerating projects (it will generate a .cookiecutterrc
+# automatically for any template). To use it:
+#
+#    pip install cookiepatcher
+#    cookiepatcher gh:ionelmc/cookiecutter-pylibrary zprp-ffmpeg
+#
+# See:
+#    https://pypi.org/project/cookiepatcher
+#
+# Alternatively, you can run:
+#
+#    cookiecutter --overwrite-if-exists --config-file=zprp-ffmpeg/.cookiecutterrc gh:ionelmc/cookiecutter-pylibrary
+
+default_context:
+    allow_tests_inside_package: "no"
+    c_extension_function: "longest"
+    c_extension_module: "_zprp_ffmpeg"
+    c_extension_optional: "no"
+    c_extension_support: "yes"
+    codacy: "no"
+    codacy_projectid: "[Get ID from https://app.codacy.com/gh/Madghostek/zprp-ffmpeg/settings]"
+    codeclimate: "no"
+    codecov: "yes"
+    command_line_interface: "plain"
+    command_line_interface_bin_name: "zprp-ffmpeg"
+    coveralls: "no"
+    distribution_name: "zprp-ffmpeg"
+    email: ""
+    formatter_quote_style: "double"
+    full_name: ""
+    github_actions: "yes"
+    github_actions_osx: "yes"
+    github_actions_windows: "yes"
+    license: "MIT license"
+    package_name: "zprp_ffmpeg"
+    pre_commit: "yes"
+    project_name: "zprp-ffmpeg"
+    project_short_description: "Implementation of the successor to the ffmpeg-python library"
+    pypi_badge: "yes"
+    pypi_disable_upload: "no"
+    release_date: "today"
+    repo_hosting: "github.com"
+    repo_hosting_domain: "github.com"
+    repo_main_branch: "main"
+    repo_name: "zprp-ffmpeg"
+    repo_username: "Madghostek"
+    scrutinizer: "no"
+    setup_py_uses_setuptools_scm: "no"
+    sphinx_docs: "yes"
+    sphinx_docs_hosting: "https://zprp-ffmpeg.readthedocs.io/"
+    sphinx_doctest: "no"
+    sphinx_theme: "sphinx-rtd-theme"
+    test_matrix_separate_coverage: "no"
+    version: "0.0.0"
+    version_manager: "bump2version"
+    website: ""
+    year_from: "2024"
+    year_to: "2024"
