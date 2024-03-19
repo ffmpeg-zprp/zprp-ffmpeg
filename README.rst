@@ -1,7 +1,21 @@
-Dokumentacja pisana wraz z kodem jako docstringi
+# Design proposal
+Biblioteka ma za zadanie zastąpić i rozszerzyć istniejącą bibliotekę [ffmpeg-python](https://github.com/kkroening/ffmpeg-python).
 
+Minimalną funkcjonalność, którą chcemy zaimplementować, to ta oferowana przez powyższą bibliotekę, czyli korzystanie z grafów filtrów poprzez prosty interfejs. Poza tym, zależy nam na lepszej integracji z IDE (opisy filtrów w docstringach, typy argumentów), żeby ograniczyć potrzebę krążenia po dokumentacji FFmpeg. 
+
+## Stack technologiczny
+* szablon cookiecutter, prawdopodobnie: https://github.com/woltapp/wolt-python-package-cookiecutter
+* dokumentacja mkdocs
+* linter ruff
+* Poetry do budowania paczki
+* tox do automatycznych testów
+* CI/CD przy użyciu github actions (uruchomienie testów, budowanie paczki, automatyczny release do PyPI)
+
+
+## Planowany rozkład jazdy
 1.    18.03-24.03
   * Struktura projektu (cookiecutter)
+	* Chcemy mieć możliwość uruchomienia testów, zbudowania dokumentacji (narazie pustej), zbudowania paczki.
 2.    25.03-31.03
   * Podstawowa interakcja z procesem FFmpeg jako subproces
   * metody `input`, `output`
@@ -18,12 +32,11 @@ Dokumentacja pisana wraz z kodem jako docstringi
 7.    29.04-05.05
   * dodanie osobnych metod na popularne filtry np. `hfilp`.
   * ? automatyczna generacja metod z kodu źródłowego ffmpeg
-8.    06.05-12.05
-9.    13.05-19.05
-10.    20.05-26.05
-11.    27.05-02.06
-12.    03.06-09.06
-13.    10.06-16.06 
+
+Tygodnie 8-13 przewidziane na potencjalne przesunięcia w planie.
+
+Dokumentacja będzie pisana regularnie wraz z kodem jako docstringi
+
 
 ========
 Overview
