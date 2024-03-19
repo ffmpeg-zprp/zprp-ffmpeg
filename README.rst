@@ -1,3 +1,30 @@
+Dokumentacja pisana wraz z kodem jako docstringi
+
+1.    18.03-24.03
+  * Struktura projektu (cookiecutter)
+2.    25.03-31.03
+  * Podstawowa interakcja z procesem FFmpeg jako subproces
+  * metody `input`, `output`
+  * testy potwierdzające działanie
+3.    01.04-07.04
+  * metoda `filter`, `run`, `compile`
+4.    08.04-14.04
+  * implementacja części logiki grafu filtrów
+    * jakiś podzbiór funkcjonalności np. `concat` tylko
+5.    15.04-21.04
+  * dalsza część logiki grafów
+6.    22.04-28.04
+  * poboczne metody: `probe`, `view`, `run_async`
+7.    29.04-05.05
+  * dodanie osobnych metod na popularne filtry np. `hfilp`.
+  * ? automatyczna generacja metod z kodu źródłowego ffmpeg
+8.    06.05-12.05
+9.    13.05-19.05
+10.    20.05-26.05
+11.    27.05-02.06
+12.    03.06-09.06
+13.    10.06-16.06 
+
 ========
 Overview
 ========
