@@ -1,14 +1,14 @@
 ===============
 Design proposal
 ===============
-Biblioteka ma za zadanie zastąpić i rozszerzyć istniejącą bibliotekę [ffmpeg-python](https://github.com/kkroening/ffmpeg-python)
+Biblioteka ma za zadanie zastąpić i rozszerzyć istniejącą bibliotekę (https://github.com/kkroening/ffmpeg-python)
 
 Minimalną funkcjonalność, którą chcemy zaimplementować, to ta oferowana przez powyższą bibliotekę, czyli korzystanie z grafów filtrów poprzez prosty interfejs. Poza tym, zależy nam na lepszej integracji z IDE (opisy filtrów w docstringach, typy argumentów), żeby ograniczyć potrzebę krążenia po dokumentacji FFmpeg. 
 
 ====================
 Stack technologiczny
 ====================
-* szablon cookiecutter, prawdopodobnie: https://github.com/woltapp/wolt-python-package-cookiecutter
+* szablon cookiecutter: https://github.com/ionelmc/cookiecutter-pylibrary
 * dokumentacja mkdocs
 * linter ruff
 * Poetry do budowania paczki
