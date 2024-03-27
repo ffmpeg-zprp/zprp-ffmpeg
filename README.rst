@@ -62,13 +62,13 @@ Overview
     :target: https://readthedocs.org/projects/zprp-ffmpeg/
     :alt: Documentation Status
 
-.. |github-actions| image:: https://github.com/Madghostek/zprp-ffmpeg/actions/workflows/github-actions.yml/badge.svg
+.. |github-actions| image:: https://github.com/ffmpeg-zprp/zprp-ffmpeg/actions/workflows/github-actions.yml/badge.svg
     :alt: GitHub Actions Build Status
-    :target: https://github.com/Madghostek/zprp-ffmpeg/actions
+    :target: https://github.com/ffmpeg-zprp/zprp-ffmpeg/actions
 
-.. |codecov| image:: https://codecov.io/gh/Madghostek/zprp-ffmpeg/branch/main/graphs/badge.svg?branch=main
+.. |codecov| image:: https://codecov.io/gh/ffmpeg-zprp/zprp-ffmpeg/branch/main/graphs/badge.svg?branch=main
     :alt: Coverage Status
-    :target: https://app.codecov.io/github/Madghostek/zprp-ffmpeg
+    :target: https://app.codecov.io/gh/ffmpeg-zprp/zprp-ffmpeg
 
 .. |version| image:: https://img.shields.io/pypi/v/zprp-ffmpeg.svg
     :alt: PyPI Package latest release
@@ -86,9 +86,9 @@ Overview
     :alt: Supported implementations
     :target: https://pypi.org/project/zprp-ffmpeg
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/Madghostek/zprp-ffmpeg/v0.0.0.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/ffmpeg-zprp/zprp-ffmpeg/v0.0.0.svg
     :alt: Commits since latest release
-    :target: https://github.com/Madghostek/zprp-ffmpeg/compare/v0.0.0...main
+    :target: https://github.com/ffpmeg-zprp/zprp-ffmpeg/compare/v0.0.0...main
 
 
 
@@ -107,7 +107,7 @@ Installation
 
 You can also install the in-development version with::
 
-    pip install https://github.com/Madghostek/zprp-ffmpeg/archive/main.zip
+    pip install https://github.com/ffpmeg-zprp/zprp-ffmpeg/archive/main.zip
 
 
 Documentation
