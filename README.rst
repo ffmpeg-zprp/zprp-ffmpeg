@@ -88,7 +88,7 @@ Overview
 
 .. |commits-since| image:: https://img.shields.io/github/commits-since/ffmpeg-zprp/zprp-ffmpeg/v0.0.0.svg
     :alt: Commits since latest release
-    :target: https://github.com/ffpmeg-zprp/zprp-ffmpeg/compare/v0.0.0...main
+    :target: https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v0.0.0...main
 
 
 
