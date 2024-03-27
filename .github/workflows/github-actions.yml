@@ -254,11 +254,14 @@ jobs:
         !matrix.cibw_build
       run: >
         tox -e ${{ matrix.tox_env }} -v
-    - uses: codecov/codecov-action@v3
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
       if: matrix.cover
       with:
         verbose: true
         flags: ${{ matrix.tox_env }}
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: ffmpeg-zprp/zprp-ffmpeg
     - name: check wheel
       if: matrix.cibw_build
       run: twine check wheelhouse/*.whl
