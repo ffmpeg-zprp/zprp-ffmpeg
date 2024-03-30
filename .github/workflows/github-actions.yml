@@ -249,8 +249,10 @@ jobs:
           cd /d {project} &&
           tox --skip-pkg-install --direct-yolo -e ${{ matrix.tox_env }} -v
     - name: install ffmpeg
-      if: matrix.os=='ubuntu-latest'
-      run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      uses: FedericoCarboni/setup-ffmpeg@v3
+      with:
+        ffmpeg-version: release
+
     - name: regular build and test
       env:
         TOXPYTHON: '${{ matrix.toxpython }}'
