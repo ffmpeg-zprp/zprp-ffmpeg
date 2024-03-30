@@ -7,8 +7,9 @@ from .FilterGraph import FilterGraph
 
 class ProcessConnector(BaseConnector):
 
-    # @TODO: configure this for multiplatform (must be absolute path for safety)
-    ffmpeg_executable = "/usr/bin/ffmpeg"
+    # @TODO: this isn't ideal because attacker can sideload malicious executable...
+    # Maybe warn user to set this in config for safety?
+    ffmpeg_executable = "ffmpeg"
 
     @staticmethod
     def compile(graph: FilterGraph) -> str:

@@ -248,6 +248,9 @@ jobs:
         CIBW_TEST_COMMAND_WINDOWS: >
           cd /d {project} &&
           tox --skip-pkg-install --direct-yolo -e ${{ matrix.tox_env }} -v
+    - name: install ffmpeg
+      if: matrix.name=="ubuntu-latest"
+      run: sudo apt-get install -y ffmpeg
     - name: regular build and test
       env:
         TOXPYTHON: '${{ matrix.toxpython }}'
