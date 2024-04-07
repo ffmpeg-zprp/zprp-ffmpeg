@@ -2,7 +2,7 @@ import shlex
 import subprocess
 
 from .BaseConnector import BaseConnector
-from .FilterGraph import FilterGraph
+from .FilterGraph import Stream
 
 
 class ProcessConnector(BaseConnector):
@@ -12,7 +12,7 @@ class ProcessConnector(BaseConnector):
     ffmpeg_executable = "ffmpeg"
 
     @staticmethod
-    def compile(graph: FilterGraph) -> str:
+    def compile(graph: Stream) -> str:
         """
         Builds a command for ffmpeg from FilterGraph
 
@@ -23,7 +23,7 @@ class ProcessConnector(BaseConnector):
         return "-i input.mp4 --hflip -y --out output.mpt"
 
     @staticmethod
-    def run(graph: FilterGraph) -> subprocess.Popen:
+    def run(graph: Stream) -> subprocess.Popen:
         """
         Builds a command from FilterGraph, starts ffmpeg process, and passes the command.
 
@@ -31,4 +31,4 @@ class ProcessConnector(BaseConnector):
         """
 
         command = ProcessConnector.compile(graph)
-        return subprocess.run([ProcessConnector.ffmpeg_executable, *shlex.split(command)])  # noqa: S603
+        return subprocess.Popen([ProcessConnector.ffmpeg_executable, *shlex.split(command)])  # noqa: S603

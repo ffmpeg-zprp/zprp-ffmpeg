@@ -2,7 +2,7 @@ from abc import ABC
 from abc import abstractmethod
 
 from .BaseCommunicator import BaseCommunicator
-from .FilterGraph import FilterGraph
+from .FilterGraph import Stream
 
 
 class BaseConnector(ABC):
@@ -13,7 +13,7 @@ class BaseConnector(ABC):
     """
 
     @abstractmethod
-    def run(graph: FilterGraph) -> BaseCommunicator:
+    def run(graph: Stream) -> BaseCommunicator:
         """Executes given fliter graph
         :param graph: filter graph describing user operations.
 
