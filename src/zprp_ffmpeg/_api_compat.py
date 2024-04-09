@@ -2,6 +2,7 @@
    @TODO: better docstrings"""
 
 import subprocess
+from typing import Tuple
 
 from .FilterGraph import SinkFilter
 from .FilterGraph import SourceFilter
@@ -22,7 +23,7 @@ def output(stream: Stream, filename: str):
 
 
 # this api always uses process
-def run(stream: Stream) -> tuple[str, str]:
+def run(stream: Stream) -> Tuple[str, str]:
     """Returns (stdout,stderr) tuple"""
     return ProcessConnector.run(stream).communicate()
 
