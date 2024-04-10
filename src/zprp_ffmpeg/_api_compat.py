@@ -1,7 +1,7 @@
 """compatibility layer to match the kkroening library.
    @TODO: better docstrings"""
 
-import subprocess
+from zprp_ffmpeg.BaseConnector import BaseConnector
 
 from .FilterGraph import SinkFilter
 from .FilterGraph import SourceFilter
@@ -28,6 +28,6 @@ def run(stream: Stream) -> tuple[str, str]:
 
 
 # this api always uses process
-def run_async(stream: Stream) -> subprocess.Popen:
+def run_async(stream: Stream) -> BaseConnector:
     """Returns handle to a process. Can raise an exception if script tries to terminate before ffmpeg is done."""
     return ProcessConnector.run(stream)
