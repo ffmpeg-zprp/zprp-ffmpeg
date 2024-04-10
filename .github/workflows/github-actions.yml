@@ -1,5 +1,9 @@
 name: build
-on: [push, pull_request]
+on:
+  workflow_run:
+    workflows: [lint]
+    types:
+      - completed
 jobs:
   test:
     name: ${{ matrix.name }}
