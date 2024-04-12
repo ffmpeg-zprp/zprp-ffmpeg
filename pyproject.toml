@@ -52,3 +52,6 @@ force-single-line = true
 [tool.black]
 line-length = 140
 target-version = ["py38"]
+
+[tool.mypy]
+disable_error_code = import-untyped # temporary
