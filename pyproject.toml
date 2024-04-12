@@ -54,4 +54,4 @@ line-length = 140
 target-version = ["py38"]
 
 [tool.mypy]
-disable_error_code = import-untyped # temporary
+disable_error_code = ["import-untyped"] # temporarytem
