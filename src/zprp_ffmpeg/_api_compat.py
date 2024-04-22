@@ -1,6 +1,8 @@
 """compatibility layer to match the kkroening library.
    @TODO: better docstrings"""
 
+from typing import Tuple
+
 from zprp_ffmpeg.BaseConnector import BaseConnector
 
 from .FilterGraph import SinkFilter
