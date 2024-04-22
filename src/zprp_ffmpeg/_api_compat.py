@@ -1,6 +1,8 @@
 """compatibility layer to match the kkroening library.
    @TODO: better docstrings"""
 
+from typing import Tuple
+
 from zprp_ffmpeg.BaseConnector import BaseConnector
 
 from .FilterGraph import SinkFilter
@@ -22,7 +24,7 @@ def output(stream: Stream, filename: str):
 
 
 # this api always uses process
-def run(stream: Stream) -> tuple[str, str]:
+def run(stream: Stream) -> Tuple[str, str]:
     """Returns (stdout,stderr) tuple"""
     return ProcessConnector.run(stream).communicate()
 
