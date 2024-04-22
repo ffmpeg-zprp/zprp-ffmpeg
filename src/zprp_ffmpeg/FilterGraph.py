@@ -51,7 +51,9 @@ class SinkFilter:
 
 
 # in python 3.12 there is 'type' keyword, but we are targetting 3.8
-AnyNode = Union[Filter | SourceFilter | SinkFilter]
+# https://stackoverflow.com/questions/76712720/typeerror-unsupported-operand-types-for-type-and-nonetype
+# python >3.9 uses , instead of | idk if it works with python 3.12
+AnyNode = Union[Filter, SourceFilter, SinkFilter]
 
 
 class Stream:
