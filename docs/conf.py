@@ -22,8 +22,8 @@ version = release = "0.0.0"
 pygments_style = "trac"
 templates_path = ["."]
 extlinks = {
-    "issue": ("https://github.com/Madghostek/zprp-ffmpeg/issues/%s", "#"),
-    "pr": ("https://github.com/Madghostek/zprp-ffmpeg/pull/%s", "PR #"),
+    "issue": ("https://github.com/ffmpeg-zprp/zprp-ffmpeg/issues/%s", "#"),
+    "pr": ("https://github.com/ffmpeg-zprp/zprp-ffmpeg/pull/%s", "PR #"),
 }
 # on_rtd is whether we are on readthedocs.org
 on_rtd = os.environ.get("READTHEDOCS", None) == "True"
