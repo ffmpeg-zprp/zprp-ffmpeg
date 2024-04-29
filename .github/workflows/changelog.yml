@@ -21,4 +21,10 @@ jobs:
       - name: Generate changelog
         run: npx auto-changelog --output CHANGELOG.rst
 
+      - name: Install pandoc
+        run: sudo apt-get install -y pandoc
+
+      - name: Convert MD to RST
+        run: pandoc -f markdown -t rst -o CHANGELOG.rst CHANGELOG.rst
+
       - uses: stefanzweifel/git-auto-commit-action@v5
