@@ -8,10 +8,14 @@ on:
 jobs:
   update-changelog:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Install auto-changelog
         run: npm install -g auto-changelog
@@ -19,10 +23,4 @@ jobs:
       - name: Generate changelog
         run: auto-changelog --output CHANGELOG.rst
 
-      - name: Commit and push changes
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add CHANGELOG.rst
-          git commit -m "Update changelog"
-          git push
+      - uses: stefanzweifel/git-auto-commit-action@v5
