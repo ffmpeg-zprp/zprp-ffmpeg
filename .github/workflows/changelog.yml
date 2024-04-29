@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
 
       - name: Generate changelog
-        run: npx auto-changelog --output CHANGELOG.rst
+        run: npx auto-changelog --output CHANGELOG.rst --hide-credit
 
       - name: Install pandoc
         run: sudo apt-get install -y pandoc
