@@ -36,7 +36,7 @@ def read(*names, **kwargs):
 
 setup(
     name="zprp-ffmpeg",
-    version="0.0.0",
+    version="0.1.0",
     license="MIT",
     description="Implementation of the successor to the ffmpeg-python library",
     long_description="{}\n{}".format(
