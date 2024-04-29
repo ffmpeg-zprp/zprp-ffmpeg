@@ -17,10 +17,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Install auto-changelog
-        run: npm install -g auto-changelog
-
       - name: Generate changelog
-        run: auto-changelog --output CHANGELOG.rst
+        run: npx auto-changelog --output CHANGELOG.rst
 
       - uses: stefanzweifel/git-auto-commit-action@v5
