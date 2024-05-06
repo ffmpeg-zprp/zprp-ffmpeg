@@ -9,6 +9,8 @@ readme = "README.rst"
 [tool.poetry.dependencies]
 python = "^3.8"
 pytest = "^8.1.1"
+pycparser = "^2.22"
+tqdm = "^4.66.4"
 
 
 [build-system]
@@ -21,6 +23,7 @@ line-length = 140
 src = ["src", "tests"]
 target-version = "py38"
 
+
 [tool.ruff.lint.per-file-ignores]
 "ci/*" = ["S"]
 
@@ -30,6 +33,7 @@ ignore = [
     "S101", # flake8-bandit assert
     "S308", # flake8-bandit suspicious-mark-safe-usage
     "E501", # pycodestyle line-too-long
+    "E741", # "I,O,l" variable names (generated ffmpeg filters have that...)
 ]
 select = [
     "B", # flake8-bugbear

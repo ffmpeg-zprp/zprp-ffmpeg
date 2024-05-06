@@ -1,5 +1,5 @@
 """compatibility layer to match the kkroening library.
-   @TODO: better docstrings"""
+@TODO: better docstrings"""
 
 from typing import Tuple
 

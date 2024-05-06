@@ -1,0 +1,11 @@
+typedef int VADisplay;
+typedef int VASurfaceAttrib;
+typedef int VASurfaceID;
+typedef int VAConfigID;
+typedef int VAContextID;
+typedef int VARectangle;
+typedef int VABufferID;
+int VAProcFilterCount=1;
+typedef int VAProcPipelineParameterBuffer;
+typedef int VAHdrMetaDataHDR10;
+typedef int VAProcFilterCapDeinterlacing;

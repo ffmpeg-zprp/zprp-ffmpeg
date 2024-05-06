@@ -6,7 +6,6 @@ from .FilterGraph import Stream
 
 
 class ProcessConnector(BaseConnector):
-
     # @TODO: this isn't ideal because attacker can sideload malicious executable...
     # Maybe warn user to set this in config for safety?
     ffmpeg_executable_path = "ffmpeg"
