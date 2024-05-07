@@ -12,6 +12,10 @@ pytest = "^8.1.1"
 pycparser = "^2.22"
 tqdm = "^4.66.4"
 
+[tool.poetry.group.typecheck.dependencies]
+types-tqdm = "^4.66.0.20240417"
+mypy = "^1.10.0"
+
 
 [build-system]
 requires = ["poetry-core"]
@@ -70,4 +74,5 @@ line-length = 140
 target-version = ["py38"]
 
 [tool.mypy]
-disable_error_code = ["import-not-found"] # temporarytem
+implicit_reexport = true
+exclude = ["src/filters_autogen/FFmpeg/*","src/filters_autogen/pycparser/*"]

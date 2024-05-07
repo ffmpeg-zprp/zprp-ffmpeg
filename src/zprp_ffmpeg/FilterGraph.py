@@ -1,14 +1,22 @@
 """There is no general 'Node' class, because it doesn't work well with object relations, source and sink filters are kind of orthogonal.
 It slightly violates DRY, but the parameter types are different. It is what it is"""
 
+from dataclasses import dataclass
+from typing import Any
 from typing import Optional
 from typing import Union
+
+
+@dataclass
+class FilterOption:
+    name: str
+    value: Any
 
 
 class Filter:
     """Filters can have many inputs and many outputs, holds the filter name and potential params"""
 
-    def __init__(self, command: str, params: Optional[str] = None, filter_prefix="-vf"):
+    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_prefix="-vf"):
         self._out: list[AnyNode] = []
         self._in: list[AnyNode] = []
         self.command = command

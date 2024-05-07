@@ -5,14 +5,13 @@ import subprocess
 from pathlib import Path
 from typing import ClassVar
 
-import pycparser
-import pycparser.c_ast
+import pycparser.c_ast  # type: ignore
+from filter_classes import Filter
+from filter_classes import FilterOption
 from pycparser import c_ast
-from pycparser.c_parser import ParseError
+from pycparser import parse_file  # type: ignore # ????? mypy freaking out
+from pycparser.c_parser import ParseError  # type: ignore
 from tqdm import tqdm
-
-from zprp_ffmpeg.filter_classes import Filter
-from zprp_ffmpeg.filter_classes import FilterOption
 
 
 class TypeDeclVisitor(c_ast.NodeVisitor):
@@ -98,7 +97,7 @@ def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
 
     logger.info("Running parser")
     # TODO: clone pycparser repo here for fake includes
-    AST = pycparser.parse_file(
+    AST = parse_file(
         all_filters,
         use_cpp=True,
         cpp_args=["-I", ".", "-I", "../pycparser/utils/fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],
@@ -120,7 +119,7 @@ def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
                     continue  # quick skip over files without filters
             logger.debug(f"Parsing {file}")
             try:
-                AST = pycparser.parse_file(
+                AST = parse_file(
                     "libavfilter/" + file,
                     use_cpp=True,
                     cpp_args=[

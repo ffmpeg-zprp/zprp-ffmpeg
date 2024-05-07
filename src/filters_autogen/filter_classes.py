@@ -1,11 +1,12 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
 class FilterOption:
     name: str
-    type: str
-    description: str
+    type: str  # the C type from ffmpeg as string
+    description: Optional[str] = ""
 
 
 @dataclass

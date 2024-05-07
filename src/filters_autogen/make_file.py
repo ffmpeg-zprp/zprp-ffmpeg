@@ -3,7 +3,7 @@ import pickle
 from pathlib import Path
 from string import Template
 
-from zprp_ffmpeg.filter_classes import Filter
+from filter_classes import Filter
 
 # @TODO: add custom types for where it makes sense
 ffmpeg_type_to_python = {
@@ -33,10 +33,9 @@ filter_template = Template(
     """
 def $function_name(graph: Stream, $options):
     \"\"\"$description\"\"\"
-    filter=Filter(command="$function_name",params=$params)
-    graph.append(filter)
+    graph.append(Filter(command="$function_name",params=$params))
     return graph
-    """
+"""
 )
 
 
@@ -57,11 +56,11 @@ def fill_template(filter_template, filter: Filter):
     filter_params = []  # for Filter initialisation
     for option in filter.options:
         sanitized = sanitize(option.name)
-        option.type = ffmpeg_type_to_python[option.type].__qualname__
-        options.append(f"{sanitized}: {option.type}")
-        filter_params.append(f'FilterOption(name="{option.name}",type={option.type})')
+        python_type = ffmpeg_type_to_python[option.type].__qualname__
+        options.append(f"{sanitized}: {python_type}")
+        filter_params.append(f'FilterOption(name="{option.name}",value={sanitized})')
         if option.description:
-            filter.description += f"\n\t:param {option.type} {option.name}: {option.description}"
+            filter.description += f"\n\t:param {python_type} {option.name}: {option.description}"
     options_str = ", ".join(options)
     filter_params_str = ", ".join(filter_params)
 
@@ -79,11 +78,15 @@ def construct_file(filters: list[Filter]) -> str:
 
 
 if __name__ == "__main__":
-    with Path("FFmpeg/all_filters.pickle").open("rb") as f:
+    imports = b"""from zprp_ffmpeg.FilterGraph import Filter
+from zprp_ffmpeg.FilterGraph import FilterOption
+from zprp_ffmpeg.FilterGraph import Stream\n\n"""
+
+    with (Path(__file__).parent / "FFmpeg" / "all_filters.pickle").open("rb") as f:
         filters = pickle.load(f)  # noqa: S301
 
-    file_str = construct_file(filters)
+    file_bytes = str.encode(construct_file(filters))
 
-    with Path("out.py").open("w+") as f:
-        f.write("from filter_classes import Filter,FilterOption\n")
-        f.write(file_str)
+    with (Path(__file__).parent / "out.py").open("wb+") as f:
+        f.write(imports)
+        f.write(file_bytes)
