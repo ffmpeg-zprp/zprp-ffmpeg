@@ -8,17 +8,21 @@ from typing import Union
 class Filter:
     """Filters can have many inputs and many outputs, holds the filter name and potential params"""
 
-    def __init__(self, command: str, params: Optional[str] = None):
+    def __init__(self, command: str, params: Optional[str] = None, filter_prefix="-vf"):
         self._out: list[AnyNode] = []
         self._in: list[AnyNode] = []
         self.command = command
         self.params = params
+        self.filter_prefix = filter_prefix
 
     def add_output(self, parent: "Filter | SinkFilter"):
         self._out.append(parent)
 
     def add_input(self, child: "Filter | SourceFilter"):
         self._in.append(child)
+
+    def get_command(self):
+        return self.filter_prefix + " " + self.command
 
 
 # names as per ffmpeg documentation
@@ -35,6 +39,9 @@ class SourceFilter:
     def add_input(self, child: "Filter"):
         raise NotImplementedError("This node can't have inputs")
 
+    def get_command(self):
+        return "-i " + self.in_path
+
 
 class SinkFilter:
     """Similarly to SourceFilter, it doesn't make sense to output anything further, this is the end of graph."""
@@ -48,6 +55,9 @@ class SinkFilter:
 
     def add_output(self, parent: "Filter"):
         raise NotImplementedError("This node can't have outputs")
+
+    def get_command(self):
+        return self.out_path
 
 
 # in python 3.12 there is 'type' keyword, but we are targetting 3.8

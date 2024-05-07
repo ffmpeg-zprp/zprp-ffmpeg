@@ -8,6 +8,11 @@ file_str = construct_file(filters)
 
 outpath = Path(__file__).parent.parent / "zprp_ffmpeg" / "generated_filters.py"
 
+imports = """from zprp_ffmpeg.FilterGraph import Filter
+from zprp_ffmpeg.filter_classes import FilterOption
+from zprp_ffmpeg.FilterGraph import Stream\n\n"""
+
+
 with outpath.open("w+") as f:
-    f.write("from filter_classes import Filter,FilterOption\n")
+    f.write(imports)
     f.write(file_str)

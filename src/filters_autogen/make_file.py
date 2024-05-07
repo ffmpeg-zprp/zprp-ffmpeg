@@ -31,10 +31,12 @@ ffmpeg_type_to_python = {
 
 filter_template = Template(
     """
-def $function_name($options):
+def $function_name(graph: Stream, $options):
     \"\"\"$description\"\"\"
-    return Filter(command="$function_name",params=$params)
-"""
+    filter=Filter(command="$function_name",params=$params)
+    graph.append(filter)
+    return graph
+    """
 )
 
 

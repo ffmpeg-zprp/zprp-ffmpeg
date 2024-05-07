@@ -22,18 +22,21 @@ class ProcessConnector(BaseConnector):
         :param graph: the graph to compile
         :return: a string to pass as an argument to ffmpeg
         """
-        # @TODO: implement this once FilterGraph is done
-        return "-i input.mp4 -vf hflip -y output.mpt"
+
+        command = [node.get_command() for node in graph._nodes]
+
+        return " ".join(command)
 
     @classmethod
-    def run(cls, graph: Stream) -> "BaseConnector":
+    def run(cls, graph: Stream, extra_options: str = "") -> "BaseConnector":
         """
         Builds a command from FilterGraph, starts ffmpeg process, and passes the command.
 
         :return: subprocess.Popen instance
         """
 
-        command = ProcessConnector.compile(graph)
+        command = ProcessConnector.compile(graph) + extra_options
+        print("Command:", command)
         ffmpeg_process = subprocess.Popen([ProcessConnector.ffmpeg_executable_path, *shlex.split(command)])  # noqa: S603
         return cls(ffmpeg_process)
 
