@@ -9,7 +9,7 @@ from typing import Union
 
 
 class FilterType(Enum):
-    VIDEO = ("AVMEDIA_TYPE_VIDEO",)
+    VIDEO = "AVMEDIA_TYPE_VIDEO"
     AUDIO = "AVMEDIA_TYPE_AUDIO"
 
 
@@ -26,7 +26,7 @@ class Filter:
         self._out: list[AnyNode] = []
         self._in: list[AnyNode] = []
         self.command = command
-        self.params = params
+        self.params = params if params else []
         self.filter_type = filter_type
 
     def add_output(self, parent: "Filter | SinkFilter"):
@@ -36,11 +36,14 @@ class Filter:
         self._in.append(child)
 
     def get_command(self):
+        joined_params = ":".join(p.name + "=" + p.value for p in self.params if p.value)
+        if joined_params:  # if there was no option, leave empty string
+            joined_params = "=" + joined_params
         if self.filter_type == "AVMEDIA_TYPE_VIDEO":
-            return "-vf " + self.command
+            return "-vf " + self.command + joined_params
 
         elif self.filter_type == "AVMEDIA_TYPE_AUDIO":
-            return "-af " + self.command
+            return "-af " + self.command + joined_params
 
 
 # names as per ffmpeg documentation
