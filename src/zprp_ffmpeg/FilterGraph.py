@@ -2,9 +2,15 @@
 It slightly violates DRY, but the parameter types are different. It is what it is"""
 
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any
 from typing import Optional
 from typing import Union
+
+
+class FilterType(Enum):
+    VIDEO = ("AVMEDIA_TYPE_VIDEO",)
+    AUDIO = "AVMEDIA_TYPE_AUDIO"
 
 
 @dataclass
@@ -16,12 +22,12 @@ class FilterOption:
 class Filter:
     """Filters can have many inputs and many outputs, holds the filter name and potential params"""
 
-    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_prefix="-vf"):
+    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_type: FilterType = FilterType.VIDEO):
         self._out: list[AnyNode] = []
         self._in: list[AnyNode] = []
         self.command = command
         self.params = params
-        self.filter_prefix = filter_prefix
+        self.filter_type = filter_type
 
     def add_output(self, parent: "Filter | SinkFilter"):
         self._out.append(parent)
@@ -30,7 +36,11 @@ class Filter:
         self._in.append(child)
 
     def get_command(self):
-        return self.filter_prefix + " " + self.command
+        if self.filter_type == "AVMEDIA_TYPE_VIDEO":
+            return "-vf " + self.command
+
+        elif self.filter_type == "AVMEDIA_TYPE_AUDIO":
+            return "-af " + self.command
 
 
 # names as per ffmpeg documentation

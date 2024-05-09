@@ -22,6 +22,26 @@ class TypeDeclVisitor(c_ast.NodeVisitor):
             TypeDeclVisitor.collected_filters.append(node.declname)
 
 
+class StructFinder(c_ast.NodeVisitor):
+    def __init__(self, struct_name: str) -> None:
+        super().__init__()
+        self.struct_name: str = struct_name
+
+    def visit_Decl(self, node):
+        if isinstance(node.type, pycparser.c_ast.ArrayDecl):
+            if hasattr(node.type.type.type, "names") and node.type.type.type.names[0] == "AVFilterPad":
+                if node.name == self.struct_name:
+                    if node.type.type.declname == "ff_video_default_filterpad":
+                        StructFinder.type = "AVMEDIA_TYPE_VIDEO"
+                    elif node.type.type.declname == "ff_audio_default_filterpad":
+                        StructFinder.type = "AVMEDIA_TYPE_AUDIO"
+                    else:
+                        for field in node.init.exprs[0]:
+                            if field.name[0].name == "type":
+                                StructFinder.type = field.expr.name
+                                break
+
+
 class OptionsVisitor(c_ast.NodeVisitor):
     def __init__(self, filter_name: str) -> None:
         super().__init__()
@@ -32,7 +52,7 @@ class OptionsVisitor(c_ast.NodeVisitor):
 
     def visit_Decl(self, node):
         if isinstance(node.type, pycparser.c_ast.ArrayDecl):
-            if node.name == self.options_name and node.type.type.type.names[0] == "AVOption":  # sanity check
+            if node.name == self.options_name and node.type.type.type.names[0] == "AVOption":
                 offsets = set()
                 logger = logging.getLogger(__name__)
                 for option in node.init.exprs:
@@ -64,17 +84,30 @@ class OptionsVisitor(c_ast.NodeVisitor):
 class AVFilterFinder(c_ast.NodeVisitor):
     def __init__(self) -> None:
         super().__init__()
-        self.found_filters: list[Filter] = []  # this holds found filter names
+        self.found_filters: list[tuple[Filter, str, str]] = []  # this holds found filters and their input struct name to be found later
 
     def visit_Decl(self, node):
         if isinstance(node.type, c_ast.TypeDecl) and hasattr(node.type.type, "names") and "AVFilter" in node.type.type.names:
             if hasattr(node, "init") and node.init:
+                filter_input_struct = None  # sometimes this is dynamic
+                filter_output_struct = None  # here i have no idea how it's possible
                 for expr in node.init.exprs:
                     if expr.name[0].name == "name":
                         filter_name = expr.expr.value[1:-1]
                     if expr.name[0].name == "description":
                         filter_desc = expr.expr.value[1:-1]
-                self.found_filters.append(Filter(filter_name, filter_desc, []))
+                    if expr.name[0].name == "inputs":
+                        if isinstance(expr.expr, c_ast.Constant):
+                            filter_input_struct = None
+                        else:
+                            filter_input_struct = expr.expr.name
+                    if expr.name[0].name == "outputs":
+                        if isinstance(expr.expr, c_ast.Constant):
+                            filter_output_struct = None
+                        else:
+                            filter_output_struct = expr.expr.name
+
+                self.found_filters.append((Filter(filter_name, filter_desc, None, []), filter_input_struct, filter_output_struct))
 
 
 def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
@@ -113,7 +146,7 @@ def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
     parse_errors = []
 
     for file in tqdm(os.listdir("libavfilter")):
-        if file[-2:] == ".c":
+        if file[-2:] == ".c" and file == "vf_scale.c":
             with Path("libavfilter/" + file).open() as f:
                 if "AVFilter " not in f.read():
                     continue  # quick skip over files without filters
@@ -144,10 +177,26 @@ def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
                 if len(visitor.found_filters) == 0:
                     logger.warning(f"Empty filter file: {file}")
                     continue
-                for filter in visitor.found_filters:  # one file can have multiple filters
-                    visitor2 = OptionsVisitor(filter.name)
-                    visitor2.visit(AST)
-                    parsed_filters.append(Filter(name=filter.name, description=filter.description, options=visitor2.options))
+                for filter, input_struct, output_struct in visitor.found_filters:  # one file can have multiple filters
+                    option_visitor = OptionsVisitor(filter.name)
+                    option_visitor.visit(AST)
+
+                    input_visitor = StructFinder(input_struct)
+                    input_visitor.visit(AST)
+
+                    input_type = input_visitor.type
+
+                    output_visitor = StructFinder(output_struct)
+                    output_visitor.visit(AST)
+
+                    if input_visitor.type is None and output_visitor.type == "AVMEDIA_TYPE_VIDEO":
+                        filter_type = "VIDEO_SOURCE"
+                    else:
+                        filter_type = input_type
+
+                    parsed_filters.append(
+                        Filter(name=filter.name, description=filter.description, type=filter_type, options=option_visitor.options)
+                    )
             except subprocess.CalledProcessError:
                 parse_errors.append(file)
             except ParseError as e:

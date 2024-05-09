@@ -33,7 +33,7 @@ filter_template = Template(
     """
 def $function_name(graph: Stream, $options):
     \"\"\"$description\"\"\"
-    graph.append(Filter(command="$function_name",params=$params))
+    graph.append(Filter(command="$function_name",filter_type="$filter_type",params=$params))
     return graph
 """
 )
@@ -57,7 +57,7 @@ def fill_template(filter_template, filter: Filter):
     for option in filter.options:
         sanitized = sanitize(option.name)
         python_type = ffmpeg_type_to_python[option.type].__qualname__
-        options.append(f"{sanitized}: {python_type}")
+        options.append(f"{sanitized}: Optional[{python_type}] = None")
         filter_params.append(f'FilterOption(name="{option.name}",value={sanitized})')
         if option.description:
             filter.description += f"\n\t:param {python_type} {option.name}: {option.description}"
@@ -65,7 +65,11 @@ def fill_template(filter_template, filter: Filter):
     filter_params_str = ", ".join(filter_params)
 
     return filter_template.safe_substitute(
-        function_name=filter.name, options=options_str, description=filter.description, params=f"[{filter_params_str}]"
+        function_name=filter.name,
+        filter_type=filter.type,
+        options=options_str,
+        description=filter.description,
+        params=f"[{filter_params_str}]",
     )
 
 
