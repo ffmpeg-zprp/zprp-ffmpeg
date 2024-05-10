@@ -20,8 +20,10 @@ jobs:
       - name: Install typing packages
         run: poetry install --with=typecheck
       - name: Run mypy
-        uses: sasanquaneuf/mypy-github-action@releases/v1
-        with:
-          checkName: 'mypy'   # NOTE: this needs to be the same as the job name
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: poetry run mypy src
+        # no idea why there was whole action for one command
+        # uses: sasanquaneuf/mypy-github-action@releases/v1
+        # with:
+        #   checkName: 'mypy'   # NOTE: this needs to be the same as the job name
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
