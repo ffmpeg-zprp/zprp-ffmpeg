@@ -1,5 +1,5 @@
 """compatibility layer to match the kkroening library.
-   @TODO: better docstrings"""
+@TODO: better docstrings"""
 
 from typing import Tuple
 
@@ -24,9 +24,9 @@ def output(stream: Stream, filename: str):
 
 
 # this api always uses process
-def run(stream: Stream) -> Tuple[str, str]:
+def run(stream: Stream, extra_options: str) -> Tuple[str, str]:
     """Returns (stdout,stderr) tuple"""
-    return ProcessConnector.run(stream).communicate()
+    return ProcessConnector.run(stream, extra_options).communicate()
 
 
 # this api always uses process

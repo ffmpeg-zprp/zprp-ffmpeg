@@ -12,8 +12,8 @@ class BaseConnector(ABC):
     """
 
     # this is basically a named constructor
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def run(cls, graph: Stream) -> "BaseConnector":
         """Executes given fliter graph
         :param graph: filter graph describing user operations.
