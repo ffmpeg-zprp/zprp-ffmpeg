@@ -22,7 +22,7 @@ class FilterOption:
 class Filter:
     """Filters can have many inputs and many outputs, holds the filter name and potential params"""
 
-    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_type: FilterType = FilterType.VIDEO):
+    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_type: str = FilterType.VIDEO.value):
         self._out: list[AnyNode] = []
         self._in: list[AnyNode] = []
         self.command = command
