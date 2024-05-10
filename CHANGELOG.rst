@@ -4,6 +4,20 @@ Changelog
 All notable changes to this project will be documented in this file.
 Dates are displayed in UTC.
 
+`v1.0.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v0.1.0...v1.0.0>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   10 May 2024
+
+-  feature: extract filter type (video, audio) from source code. Make
+   all filter options optional
+   ```c77af88`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/c77af8807ed7dc650d80781682ad98249bab3faa>`__
+-  refactor: code is more readable, split into files, changed prints to
+   logger with debug level
+   ```2e42ae8`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/2e42ae8a3a6d5785adfe3aef596ada3d5e584074>`__
+-  fix: take care of typing in autogen code
+   ```fef9dab`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/fef9dabb56efacf058fbd08744bc412f765a95d9>`__
+
 `v0.1.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v0.0.0...v0.1.0>`__
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
