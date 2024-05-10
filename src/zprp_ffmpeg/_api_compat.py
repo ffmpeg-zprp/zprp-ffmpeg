@@ -24,7 +24,7 @@ def output(stream: Stream, filename: str):
 
 
 # this api always uses process
-def run(stream: Stream, extra_options: str) -> Tuple[str, str]:
+def run(stream: Stream, extra_options: str = "") -> Tuple[str, str]:
     """Returns (stdout,stderr) tuple"""
     return ProcessConnector.run(stream, extra_options).communicate()
 

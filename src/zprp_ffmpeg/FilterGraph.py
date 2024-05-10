@@ -45,6 +45,8 @@ class Filter:
         elif self.filter_type == "AVMEDIA_TYPE_AUDIO":
             return "-af " + self.command + joined_params
 
+        return ""  # in case no match
+
 
 # names as per ffmpeg documentation
 class SourceFilter:
