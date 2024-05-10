@@ -1,4 +1,4 @@
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 # from . import longest
 from ._api_compat import input
 from ._api_compat import output
