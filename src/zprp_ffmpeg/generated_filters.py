@@ -5,6 +5,12 @@ from zprp_ffmpeg.FilterGraph import FilterOption
 from zprp_ffmpeg.FilterGraph import Stream
 
 
+def extension_method(func):
+    setattr(Stream, func.__name__, func)
+    return func
+
+
+@extension_method
 def scale(
     graph: Stream,
     w: Optional[str] = None,
@@ -74,6 +80,7 @@ def scale(
     return graph
 
 
+@extension_method
 def scale2ref(
     graph: Stream,
 ):
