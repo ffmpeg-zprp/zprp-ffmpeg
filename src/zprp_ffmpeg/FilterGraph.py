@@ -1,6 +1,7 @@
 """There is no general 'Node' class, because it doesn't work well with object relations, source and sink filters are kind of orthogonal.
 It slightly violates DRY, but the parameter types are different. It is what it is"""
 
+import typing
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
@@ -22,9 +23,9 @@ class FilterOption:
 class Filter:
     """Filters can have many inputs and many outputs, holds the filter name and potential params"""
 
-    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_type: str = FilterType.VIDEO.value):
-        self._out: list[AnyNode] = []
-        self._in: list[AnyNode] = []
+    def __init__(self, command: str, params: Optional[typing.List[FilterOption]] = None, filter_type: str = FilterType.VIDEO.value):
+        self._out: typing.List[AnyNode] = []
+        self._in: typing.List[AnyNode] = []
         self.command = command
         self.params = params if params else []
         self.filter_type = filter_type
@@ -54,7 +55,7 @@ class SourceFilter:
 
     def __init__(self, in_path: str):
         self.in_path: str = in_path
-        self._out: list[AnyNode] = []
+        self._out: typing.List[AnyNode] = []
 
     def add_output(self, parent: "Filter | SinkFilter"):
         self._out.append(parent)
@@ -71,7 +72,7 @@ class SinkFilter:
 
     def __init__(self, out_path: str):
         self.out_path: str = out_path
-        self._in: list[AnyNode] = []
+        self._in: typing.List[AnyNode] = []
 
     def add_input(self, parent: "Filter | SourceFilter"):
         self._in.append(parent)
@@ -94,7 +95,7 @@ class Stream:
     Streams can be concatenated and split with certain filters."""
 
     def __init__(self) -> None:
-        self._nodes: list[AnyNode] = []
+        self._nodes: typing.List[AnyNode] = []
 
     def append(self, node: AnyNode) -> "Stream":
         if len(self._nodes) > 0:
