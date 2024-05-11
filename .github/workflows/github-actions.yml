@@ -222,6 +222,8 @@ jobs:
       with:
         fetch-depth: 0
     - uses: actions/setup-python@v5
+      env:
+        PIP_DISABLE_PIP_VERSION_CHECK: 1
       with:
         python-version: ${{ matrix.python }}
         architecture: ${{ matrix.python_arch }}
