@@ -22,7 +22,7 @@ class FilterOption:
 class Filter:
     """Filters can have many inputs and many outputs, holds the filter name and potential params"""
 
-    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_type: FilterType = FilterType.VIDEO):
+    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_type: str = FilterType.VIDEO.value):
         self._out: list[AnyNode] = []
         self._in: list[AnyNode] = []
         self.command = command
@@ -36,7 +36,7 @@ class Filter:
         self._in.append(child)
 
     def get_command(self):
-        joined_params = ":".join(p.name + "=" + p.value for p in self.params if p.value)
+        joined_params = ":".join(p.name + "=" + str(p.value) for p in self.params if p.value)
         if joined_params:  # if there was no option, leave empty string
             joined_params = "=" + joined_params
         if self.filter_type == "AVMEDIA_TYPE_VIDEO":

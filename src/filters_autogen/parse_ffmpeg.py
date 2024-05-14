@@ -50,6 +50,13 @@ class OptionsVisitor(c_ast.NodeVisitor):
         logger.debug(f"looking for {self.options_name}")
         self.options: list[FilterOption] = []
 
+    def append_to_unit(self, unit: str, constant: str, value: int):
+        """Finds filter option with given unit name and gives it new constant option"""
+        for option in self.options:
+            if option.unit == unit:
+                option.available_values[constant] = value
+                option.type = "AV_OPT_TYPE_STRING"
+
     def visit_Decl(self, node):
         if isinstance(node.type, pycparser.c_ast.ArrayDecl):
             if node.name == self.options_name and node.type.type.type.names[0] == "AVOption":
@@ -61,6 +68,7 @@ class OptionsVisitor(c_ast.NodeVisitor):
                     try:
                         option_name = option.exprs[0].value[1:-1]  # those are strings with quotes
                         option_desc = option.exprs[1].value[1:-1]
+                        option_type = option.exprs[3].name
                         if isinstance(option.exprs[2], pycparser.c_ast.Constant):
                             offset = option.exprs[2].value
                         elif isinstance(option.exprs[2], pycparser.c_ast.FuncCall):
@@ -68,14 +76,23 @@ class OptionsVisitor(c_ast.NodeVisitor):
                         else:
                             offset = 0
                             logger.error("invalid offset")
-                        if offset in offsets:
-                            continue  # ignore aliases
+                        if offset in offsets and option_type != "AV_OPT_TYPE_CONST":
+                            continue  # ignore aliases, but CONST named params don't count
                         offsets.add(offset)
-                        option_type = option.exprs[3].name
+                        for expr in option.exprs:
+                            if isinstance(expr, pycparser.c_ast.NamedInitializer) and expr.name[0].name == "unit":
+                                unit = expr.expr.value
+                                break
+                        else:
+                            unit = ""  # sometimes there is no unit given
                         if option_type == "AV_OPT_TYPE_CONST":
-                            # flags shouldn't be separate arguments. Could add them to docstring though.
-                            continue
-                        self.options.append(FilterOption(option_name, option_type, option_desc))
+                            # append this to the parent field, and change parent field to string
+                            # default_value = option.exprs[4].value  # @TODO: this could be stored for docstrings
+                            self.append_to_unit(unit, option_name, 0)
+                            continue  # this is not a new option
+                        self.options.append(
+                            FilterOption(name=option_name, type=option_type, unit=unit, description=option_desc, available_values={})
+                        )
 
                     except AttributeError:
                         logger.error("Unsupported filter option (probably name is not constant)")
@@ -89,8 +106,8 @@ class AVFilterFinder(c_ast.NodeVisitor):
     def visit_Decl(self, node):
         if isinstance(node.type, c_ast.TypeDecl) and hasattr(node.type.type, "names") and "AVFilter" in node.type.type.names:
             if hasattr(node, "init") and node.init:
-                filter_input_struct = None  # sometimes this is dynamic
-                filter_output_struct = None  # here i have no idea how it's possible
+                filter_input_struct = ""  # sometimes this is dynamic
+                filter_output_struct = ""  # here i have no idea how it's possible
                 for expr in node.init.exprs:
                     if expr.name[0].name == "name":
                         filter_name = expr.expr.value[1:-1]
@@ -98,16 +115,16 @@ class AVFilterFinder(c_ast.NodeVisitor):
                         filter_desc = expr.expr.value[1:-1]
                     if expr.name[0].name == "inputs":
                         if isinstance(expr.expr, c_ast.Constant):
-                            filter_input_struct = None
+                            filter_input_struct = ""
                         else:
                             filter_input_struct = expr.expr.name
                     if expr.name[0].name == "outputs":
                         if isinstance(expr.expr, c_ast.Constant):
-                            filter_output_struct = None
+                            filter_output_struct = ""
                         else:
                             filter_output_struct = expr.expr.name
 
-                self.found_filters.append((Filter(filter_name, filter_desc, None, []), filter_input_struct, filter_output_struct))
+                self.found_filters.append((Filter(filter_name, filter_desc, "", []), filter_input_struct, filter_output_struct))
 
 
 def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
@@ -133,7 +150,7 @@ def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
     AST = parse_file(
         all_filters,
         use_cpp=True,
-        cpp_args=["-I", ".", "-I", "../pycparser/utils/fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],
+        cpp_args=["-I", ".", "-I", "../pycparser/utils/fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],  # type: ignore
     )
 
     visitor = TypeDeclVisitor()
@@ -146,7 +163,7 @@ def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
     parse_errors = []
 
     for file in tqdm(os.listdir("libavfilter")):
-        if file[-2:] == ".c" and file == "vf_scale.c":
+        if file[-2:] == ".c":
             with Path("libavfilter/" + file).open() as f:
                 if "AVFilter " not in f.read():
                     continue  # quick skip over files without filters
@@ -170,7 +187,7 @@ def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
                         "-D__inline=",
                         "-D__extension__=",
                         "-D__asm__(...)=",
-                    ],
+                    ],  # type: ignore # false positive
                 )
                 visitor = AVFilterFinder()
                 visitor.visit(AST)

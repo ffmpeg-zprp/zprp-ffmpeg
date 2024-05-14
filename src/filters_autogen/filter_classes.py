@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from zprp_ffmpeg.FilterGraph import FilterType
-
 
 @dataclass
 class FilterOption:
     name: str
     type: str  # the C type from ffmpeg as string
+    unit: str  # "family" of parameters, used with named constants
+    available_values: dict[str, int]
     description: Optional[str] = ""
 
 
@@ -15,5 +15,5 @@ class FilterOption:
 class Filter:
     name: str
     description: str
-    type: FilterType
+    type: str
     options: list[FilterOption]
