@@ -1,5 +1,6 @@
 from abc import ABC
 from abc import abstractmethod
+from typing import Tuple
 
 from .FilterGraph import Stream
 
@@ -21,5 +22,5 @@ class BaseConnector(ABC):
         :return: a handle to read output from ffmpeg, for example stdout from process."""
 
     @abstractmethod
-    def communicate(self):
-        pass
+    def communicate(self) -> Tuple[str, str]:
+        """Reads stdout and stderr from process"""
