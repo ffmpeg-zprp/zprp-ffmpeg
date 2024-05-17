@@ -2,16 +2,22 @@ import logging
 import os
 import pickle
 import subprocess
+import typing
 from pathlib import Path
 from typing import ClassVar
 
 import pycparser.c_ast  # type: ignore
-from filter_classes import Filter
-from filter_classes import FilterOption
 from pycparser import c_ast
 from pycparser import parse_file  # type: ignore # ????? mypy freaking out
 from pycparser.c_parser import ParseError  # type: ignore
 from tqdm import tqdm
+
+from filters_autogen import filter_classes as fc
+
+patches_path = Path(__file__).parent / "ffmpeg_patches"
+fake_libc_path = Path(__file__).parent / "pycparser" / "utils" / "fake_libc_include"
+FFmpeg_source = Path(__file__).parent / "FFmpeg"
+print(str(fake_libc_path))
 
 
 class TypeDeclVisitor(c_ast.NodeVisitor):
@@ -48,7 +54,7 @@ class OptionsVisitor(c_ast.NodeVisitor):
         self.options_name: str = filter_name + "_options"  # this is how ffmpeg source code does it through `AVFILTER_DEFINE_CLASS`
         logger = logging.getLogger(__name__)
         logger.debug(f"looking for {self.options_name}")
-        self.options: list[FilterOption] = []
+        self.options: list[fc.FilterOption] = []
 
     def append_to_unit(self, unit: str, constant: str, value: int):
         """Finds filter option with given unit name and gives it new constant option"""
@@ -91,7 +97,7 @@ class OptionsVisitor(c_ast.NodeVisitor):
                             self.append_to_unit(unit, option_name, 0)
                             continue  # this is not a new option
                         self.options.append(
-                            FilterOption(name=option_name, type=option_type, unit=unit, description=option_desc, available_values={})
+                            fc.FilterOption(name=option_name, type=option_type, unit=unit, description=option_desc, available_values={})
                         )
 
                     except AttributeError:
@@ -101,7 +107,7 @@ class OptionsVisitor(c_ast.NodeVisitor):
 class AVFilterFinder(c_ast.NodeVisitor):
     def __init__(self) -> None:
         super().__init__()
-        self.found_filters: list[tuple[Filter, str, str]] = []  # this holds found filters and their input struct name to be found later
+        self.found_filters: list[tuple[fc.Filter, str, str]] = []  # this holds found filters and their input struct name to be found later
 
     def visit_Decl(self, node):
         if isinstance(node.type, c_ast.TypeDecl) and hasattr(node.type.type, "names") and "AVFilter" in node.type.type.names:
@@ -124,10 +130,64 @@ class AVFilterFinder(c_ast.NodeVisitor):
                         else:
                             filter_output_struct = expr.expr.name
 
-                self.found_filters.append((Filter(filter_name, filter_desc, "", []), filter_input_struct, filter_output_struct))
+                self.found_filters.append((fc.Filter(filter_name, filter_desc, "", []), filter_input_struct, filter_output_struct))
 
 
-def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
+def parse_one_file(file_path: str) -> typing.List[fc.Filter]:
+    """Parses contents of a single .c file and returns any filters it found
+    :param file_path: path to file
+
+    :return: List of filters (one file can have multiple)"""
+    logger = logging.getLogger(__name__)
+    filters: typing.List[fc.Filter] = []
+    with Path(file_path).open() as f:
+        if "AVFilter " not in f.read():
+            return []  # quick skip over files without filters
+        logger.debug(f"Parsing {file_path}")
+        AST = parse_file(
+            file_path,
+            use_cpp=True,
+            cpp_args=[
+                "-I",
+                str(patches_path),
+                "-I",
+                str(fake_libc_path),
+                "-I",
+                str(FFmpeg_source / "libavfilter"),  # for teests
+                "-I",
+                str(FFmpeg_source),
+                "-I",
+                ".",
+                "-D__attribute__(x)=",
+                "-D__THROW=",
+                "-D__END_DECLS=",
+                "-D__inline=",
+                "-D__extension__=",
+                "-D__asm__(...)=",
+            ],  # type: ignore # false positive
+        )
+        visitor = AVFilterFinder()
+        visitor.visit(AST)
+        if len(visitor.found_filters) == 0:
+            logger.warning(f"Empty filter file: {file_path}")
+            return []
+        for filter, input_struct, output_struct in visitor.found_filters:  # one file can have multiple filters
+            option_visitor = OptionsVisitor(filter.name)
+            option_visitor.visit(AST)
+            input_visitor = StructFinder(input_struct)
+            input_visitor.visit(AST)
+            input_type = input_visitor.type
+            output_visitor = StructFinder(output_struct)
+            output_visitor.visit(AST)
+            if input_visitor.type is None and output_visitor.type == "AVMEDIA_TYPE_VIDEO":
+                filter_type = "VIDEO_SOURCE"
+            else:
+                filter_type = input_type
+            filters.append(fc.Filter(name=filter.name, description=filter.description, type=filter_type, options=option_visitor.options))
+    return filters
+
+
+def parse_source_code(save_pickle=False, debug=False) -> list[fc.Filter]:
     logger = logging.getLogger(__name__)
     if debug:
         logging.basicConfig(level=logging.DEBUG)
@@ -164,62 +224,13 @@ def parse_source_code(save_pickle=False, debug=False) -> list[Filter]:
 
     for file in tqdm(os.listdir("libavfilter")):
         if file[-2:] == ".c":
-            with Path("libavfilter/" + file).open() as f:
-                if "AVFilter " not in f.read():
-                    continue  # quick skip over files without filters
-            logger.debug(f"Parsing {file}")
             try:
-                AST = parse_file(
-                    "libavfilter/" + file,
-                    use_cpp=True,
-                    cpp_args=[
-                        "-I",
-                        "../ffmpeg_patches",
-                        "-I",
-                        "../pycparser/utils/fake_libc_include",
-                        "-I",
-                        ".",
-                        "-include",
-                        "libavfilter/avfilter.h",
-                        "-D__attribute__(x)=",
-                        "-D__THROW=",
-                        "-D__END_DECLS=",
-                        "-D__inline=",
-                        "-D__extension__=",
-                        "-D__asm__(...)=",
-                    ],  # type: ignore # false positive
-                )
-                visitor = AVFilterFinder()
-                visitor.visit(AST)
-                if len(visitor.found_filters) == 0:
-                    logger.warning(f"Empty filter file: {file}")
-                    continue
-                for filter, input_struct, output_struct in visitor.found_filters:  # one file can have multiple filters
-                    option_visitor = OptionsVisitor(filter.name)
-                    option_visitor.visit(AST)
-
-                    input_visitor = StructFinder(input_struct)
-                    input_visitor.visit(AST)
-
-                    input_type = input_visitor.type
-
-                    output_visitor = StructFinder(output_struct)
-                    output_visitor.visit(AST)
-
-                    if input_visitor.type is None and output_visitor.type == "AVMEDIA_TYPE_VIDEO":
-                        filter_type = "VIDEO_SOURCE"
-                    else:
-                        filter_type = input_type
-
-                    parsed_filters.append(
-                        Filter(name=filter.name, description=filter.description, type=filter_type, options=option_visitor.options)
-                    )
+                parsed_filters.extend(parse_one_file("libavfilter/" + file))
             except subprocess.CalledProcessError:
                 parse_errors.append(file)
             except ParseError as e:
                 print("Parse error: ", e)
                 parse_errors.append(file)
-                # exit()
 
     for i, filter in enumerate(parsed_filters):
         print(i, filter)

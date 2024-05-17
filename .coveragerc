@@ -7,8 +7,11 @@ source =
 branch = true
 source =
     zprp_ffmpeg
+    filters_autogen
     tests
 parallel = true
+omit =
+    src/zprp_ffmpeg/generated_filters.py
 
 [report]
 show_missing = true
