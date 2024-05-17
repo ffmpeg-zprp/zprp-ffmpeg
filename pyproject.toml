@@ -72,7 +72,7 @@ force-single-line = true
 [tool.black]
 line-length = 140
 target-version = ["py38"]
-
+force-exclude = "tests.*"
 [tool.mypy]
 implicit_reexport = true
-exclude = ["src/filters_autogen/FFmpeg/*","src/filters_autogen/pycparser/*"]
+exclude = ["src/filters_autogen/FFmpeg/*","src/filters_autogen/pycparser/*", "tests/assets/"]

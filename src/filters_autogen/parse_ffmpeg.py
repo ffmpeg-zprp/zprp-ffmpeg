@@ -133,19 +133,19 @@ class AVFilterFinder(c_ast.NodeVisitor):
                 self.found_filters.append((fc.Filter(filter_name, filter_desc, "", []), filter_input_struct, filter_output_struct))
 
 
-def parse_one_file(file_path: str) -> typing.List[fc.Filter]:
+def parse_one_file(file_path: Path) -> typing.List[fc.Filter]:
     """Parses contents of a single .c file and returns any filters it found
     :param file_path: path to file
 
     :return: List of filters (one file can have multiple)"""
     logger = logging.getLogger(__name__)
     filters: typing.List[fc.Filter] = []
-    with Path(file_path).open() as f:
+    with file_path.open() as f:
         if "AVFilter " not in f.read():
             return []  # quick skip over files without filters
         logger.debug(f"Parsing {file_path}")
         AST = parse_file(
-            file_path,
+            str(file_path),
             use_cpp=True,
             cpp_args=[
                 "-I",
@@ -153,7 +153,9 @@ def parse_one_file(file_path: str) -> typing.List[fc.Filter]:
                 "-I",
                 str(fake_libc_path),
                 "-I",
-                str(FFmpeg_source / "libavfilter"),  # for teests
+                str(file_path.parent),  # for tests, libavfilter dir
+                "-I",
+                str(file_path.parent.parent),  # and the fake FFmpeg fir
                 "-I",
                 str(FFmpeg_source),
                 "-I",
@@ -225,7 +227,7 @@ def parse_source_code(save_pickle=False, debug=False) -> list[fc.Filter]:
     for file in tqdm(os.listdir("libavfilter")):
         if file[-2:] == ".c":
             try:
-                parsed_filters.extend(parse_one_file("libavfilter/" + file))
+                parsed_filters.extend(parse_one_file(Path("libavfilter") / file))
             except subprocess.CalledProcessError:
                 parse_errors.append(file)
             except ParseError as e:

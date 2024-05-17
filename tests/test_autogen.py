@@ -8,13 +8,13 @@ assets_dir = Path(__file__).parent / "assets"
 def test_parse_empty(tmp_path: Path):
     filter_source = tmp_path / "vf_something.c"
     filter_source.write_text("")
-    assert parse_ffmpeg.parse_one_file(str(filter_source)) == []
+    assert parse_ffmpeg.parse_one_file(filter_source) == []
 
 
 def test_parse_simple():
     """video filter with no options"""
-    target = assets_dir / "vf_simple.c"
-    filters_list = parse_ffmpeg.parse_one_file(str(target))
+    target = assets_dir / "libavfilter" / "vf_simple.c"
+    filters_list = parse_ffmpeg.parse_one_file(target)
     assert len(filters_list) == 1
     assert filters_list[0].name == "simple123"
     assert filters_list[0].description == "simple filter"
@@ -24,8 +24,8 @@ def test_parse_simple():
 
 def test_parse_one_option():
     """video filter with one string option"""
-    target = assets_dir / "vf_oneoption.c"
-    filters_list = parse_ffmpeg.parse_one_file(str(target))
+    target = assets_dir / "libavfilter" / "vf_oneoption.c"
+    filters_list = parse_ffmpeg.parse_one_file(target)
     assert len(filters_list) == 1
     assert filters_list[0].name == "oneoption"
     assert filters_list[0].description == "I have one option"
