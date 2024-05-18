@@ -1,16 +1,18 @@
 from pathlib import Path
 
+import pytest
+
 from filters_autogen import parse_ffmpeg
 
 assets_dir = Path(__file__).parent / "assets"
 
-
+@pytest.mark.requires_gcc
 def test_parse_empty(tmp_path: Path):
     filter_source = tmp_path / "vf_something.c"
     filter_source.write_text("")
     assert parse_ffmpeg.parse_one_file(filter_source) == []
 
-
+@pytest.mark.requires_gcc
 def test_parse_simple():
     """video filter with no options"""
     target = assets_dir / "libavfilter" / "vf_simple.c"
@@ -21,7 +23,7 @@ def test_parse_simple():
     assert filters_list[0].type == "AVMEDIA_TYPE_VIDEO"  # at this stage, type is string of identifier
     assert filters_list[0].options == []
 
-
+@pytest.mark.requires_gcc
 def test_parse_one_option():
     """video filter with one string option"""
     target = assets_dir / "libavfilter" / "vf_oneoption.c"
