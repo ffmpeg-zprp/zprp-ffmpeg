@@ -158,8 +158,7 @@ def parse_one_file(file_path: Path) -> List[fc.Filter]:
                 str(file_path.parent.parent),  # and the fake FFmpeg fir
                 "-I",
                 str(FFmpeg_source),
-                "-I",
-                ".",
+                "-I.",  # don't split this, it fails on OSX with clang :))
                 "-D__attribute__(x)=",
                 "-D__THROW=",
                 "-D__END_DECLS=",
@@ -212,7 +211,7 @@ def parse_source_code(save_pickle=False, debug=False) -> List[fc.Filter]:
     AST = parse_file(
         all_filters,
         use_cpp=True,
-        cpp_args=["-I", ".", "-I", "../fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],  # type: ignore
+        cpp_args=["-I.", "-I", "../fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],  # type: ignore
     )
 
     visitor = TypeDeclVisitor()
