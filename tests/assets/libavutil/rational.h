@@ -56,8 +56,8 @@
  * Rational number (pair of numerator and denominator).
  */
 typedef struct AVRational{
-    int num; ///< Numerator
-    int den; ///< Denominator
+    int num;
+    int den;
 } AVRational;
 
 /**
