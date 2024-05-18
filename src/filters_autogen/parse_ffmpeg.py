@@ -15,7 +15,7 @@ from tqdm import tqdm
 from filters_autogen import filter_classes as fc
 
 patches_path = Path(__file__).parent / "ffmpeg_patches"
-fake_libc_path = Path(__file__).parent / "pycparser" / "utils" / "fake_libc_include"
+fake_libc_path = Path(__file__).parent / "fake_libc_include"
 FFmpeg_source = Path(__file__).parent / "FFmpeg"
 print(str(fake_libc_path))
 
@@ -212,7 +212,7 @@ def parse_source_code(save_pickle=False, debug=False) -> List[fc.Filter]:
     AST = parse_file(
         all_filters,
         use_cpp=True,
-        cpp_args=["-I", ".", "-I", "../pycparser/utils/fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],  # type: ignore
+        cpp_args=["-I", ".", "-I", "../fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],  # type: ignore
     )
 
     visitor = TypeDeclVisitor()
