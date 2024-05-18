@@ -22,39 +22,9 @@
 #ifndef AVFILTER_AVFILTER_H
 #define AVFILTER_AVFILTER_H
 
-/**
- * @file
- * @ingroup lavfi
- * Main libavfilter public API header
- */
-
-/**
- * @defgroup lavfi libavfilter
- * Graph-based frame editing library.
- *
- * @{
- */
-
-#include <stddef.h>
-
-#include "libavutil/attributes.h"
-#include "libavutil/avutil.h"
-#include "libavutil/buffer.h"
-#include "libavutil/dict.h"
-#include "libavutil/frame.h"
-#include "libavutil/log.h"
-#include "libavutil/samplefmt.h"
-#include "libavutil/pixfmt.h"
 #include "libavutil/rational.h"
-
-#include "libavfilter/version_major.h"
-#ifndef HAVE_AV_CONFIG_H
-/* When included as part of the ffmpeg build, only include the major version
- * to avoid unnecessary rebuilds. When included externally, keep including
- * the full version information. */
-#include "libavfilter/version.h"
-#endif
-
+#include "libavutil/frame.h"
+#include <stdint.h>
 /**
  * Return the LIBAVFILTER_VERSION_INT constant.
  */
@@ -75,6 +45,18 @@ typedef struct AVFilterLink    AVFilterLink;
 typedef struct AVFilterPad     AVFilterPad;
 typedef struct AVFilterFormats AVFilterFormats;
 typedef struct AVFilterChannelLayouts AVFilterChannelLayouts;
+
+// to avoid including whole ffmpeg and system libraries...
+typedef struct AVClass AVClass;
+enum AVPixelFormat {_};
+enum AVSampleFormat {_};
+enum AVColorSpace {_};
+enum AVColorRange {_};
+enum AVMediaType {_};
+typedef void* AVBufferRef;
+typedef int AVDictionary;
+typedef int AVChannelLayout;
+
 
 /**
  * Get the name of an AVFilterPad.

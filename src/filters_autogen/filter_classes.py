@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from typing import Dict
+from typing import List
 from typing import Optional
 
 
@@ -7,7 +9,7 @@ class FilterOption:
     name: str
     type: str  # the C type from ffmpeg as string
     unit: str  # "family" of parameters, used with named constants
-    available_values: dict[str, int]
+    available_values: Dict[str, int]
     description: Optional[str] = ""
 
 
@@ -16,4 +18,4 @@ class Filter:
     name: str
     description: str
     type: str
-    options: list[FilterOption]
+    options: List[FilterOption]

@@ -2,9 +2,9 @@ import logging
 import os
 import pickle
 import subprocess
-import typing
 from pathlib import Path
 from typing import ClassVar
+from typing import List
 
 import pycparser.c_ast  # type: ignore
 from pycparser import c_ast
@@ -133,13 +133,13 @@ class AVFilterFinder(c_ast.NodeVisitor):
                 self.found_filters.append((fc.Filter(filter_name, filter_desc, "", []), filter_input_struct, filter_output_struct))
 
 
-def parse_one_file(file_path: Path) -> typing.List[fc.Filter]:
+def parse_one_file(file_path: Path) -> List[fc.Filter]:
     """Parses contents of a single .c file and returns any filters it found
     :param file_path: path to file
 
     :return: List of filters (one file can have multiple)"""
     logger = logging.getLogger(__name__)
-    filters: typing.List[fc.Filter] = []
+    filters: List[fc.Filter] = []
     with file_path.open() as f:
         if "AVFilter " not in f.read():
             return []  # quick skip over files without filters
@@ -189,7 +189,7 @@ def parse_one_file(file_path: Path) -> typing.List[fc.Filter]:
     return filters
 
 
-def parse_source_code(save_pickle=False, debug=False) -> list[fc.Filter]:
+def parse_source_code(save_pickle=False, debug=False) -> List[fc.Filter]:
     logger = logging.getLogger(__name__)
     if debug:
         logging.basicConfig(level=logging.DEBUG)
