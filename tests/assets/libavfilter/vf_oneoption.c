@@ -1,4 +1,3 @@
-//imports are ommited
 #include "avfilter.h"
 #include "libavutil/opt.h"
 #include "internal.h"
