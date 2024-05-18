@@ -3,7 +3,7 @@ import pickle
 from pathlib import Path
 from string import Template
 
-from filter_classes import Filter
+from .filter_classes import Filter
 
 # @TODO: add custom types for where it makes sense
 ffmpeg_type_to_python = {

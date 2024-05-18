@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from make_file import construct_file
-from parse_ffmpeg import parse_source_code
+from .make_file import construct_file
+from .parse_ffmpeg import parse_source_code
 
 filters = parse_source_code(save_pickle=True, debug=True)
 file_str = construct_file(filters)
