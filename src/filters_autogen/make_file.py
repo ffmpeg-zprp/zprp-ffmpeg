@@ -2,6 +2,7 @@ import keyword
 import pickle
 from pathlib import Path
 from string import Template
+from typing import List
 
 from filters_autogen.filter_classes import Filter
 
@@ -76,7 +77,7 @@ def fill_template(filter_template, filter: Filter):
     )
 
 
-def construct_file(filters: list[Filter]) -> str:
+def construct_file(filters: List[Filter]) -> str:
     out = ""
 
     for filter in filters:
