@@ -183,15 +183,14 @@ def parse_one_file(file_path: Path) -> List[fc.Filter]:
     return filters
 
 
-def parse_source_code(save_pickle=False, debug=False) -> List[fc.Filter]:
+def parse_source_code(ffmpeg_source_path: Path, save_pickle=False, debug=False) -> List[fc.Filter]:
     logger = logging.getLogger(__name__)
     if debug:
         logging.basicConfig(level=logging.DEBUG)
 
     # TODO: clone ffmpeg --depth 1 here maybe
 
-    script_dir = Path(__file__).parent
-    os.chdir(str(script_dir) + "/FFmpeg")
+    os.chdir(str(ffmpeg_source_path))
     logger.debug(f"cwd: {Path.cwd()}")
 
     all_filters = "libavfilter/allfilters.c"
@@ -241,4 +240,4 @@ def parse_source_code(save_pickle=False, debug=False) -> List[fc.Filter]:
 
 if __name__ == "__main__":
     # easy to run from shell
-    parse_source_code(save_pickle=True)
+    parse_source_code(Path(__file__).parent / "filters_autogen" / "FFmpeg", save_pickle=True)
