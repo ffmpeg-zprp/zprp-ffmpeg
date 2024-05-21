@@ -16,7 +16,7 @@ def test_writing_any_file(monkeypatch, tmp_path: Path):
     ffmpeg_dir.mkdir()
     config_script = ffmpeg_dir / "configure"
     config_script.touch(0o777) # empty config script
-    config_script.write_text("#!/usr/bin/sh")
+    config_script.write_text("#!/usr/bin/env bash")
 
     (ffmpeg_dir / "libavfilter").mkdir()
     (ffmpeg_dir / "libavfilter" / "allfilters.c").touch()
