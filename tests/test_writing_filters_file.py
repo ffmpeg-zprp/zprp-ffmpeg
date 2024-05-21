@@ -14,10 +14,8 @@ def test_writing_any_file(monkeypatch, tmp_path: Path):
     # create fake ffmpeg repo structure
     ffmpeg_dir = tmp_path / "FFmpeg"
     ffmpeg_dir.mkdir()
-    config_script = ffmpeg_dir / "configure"
-    config_script.touch(0o777) # empty config script
-    config_script.write_text("#!/usr/bin/env bash")
-
+    (ffmpeg_dir / "libavutil").mkdir()
+    (ffmpeg_dir / "libavutil" / "avconfig.h").touch()
     (ffmpeg_dir / "libavfilter").mkdir()
     (ffmpeg_dir / "libavfilter" / "allfilters.c").touch()
 
