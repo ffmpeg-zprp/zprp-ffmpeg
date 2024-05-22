@@ -738,7 +738,7 @@ def sinc(
     graph.append(
         Filter(
             command="sinc",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[
                 FilterOption(name="sample_rate", value=sample_rate),
                 FilterOption(name="nb_samples", value=nb_samples),
@@ -1080,7 +1080,7 @@ def afirsrc(
     graph.append(
         Filter(
             command="afirsrc",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[
                 FilterOption(name="taps", value=taps),
                 FilterOption(name="frequency", value=frequency),
@@ -1175,27 +1175,6 @@ def acopy(
 ):
     """Copy the input audio unchanged to the output."""
     graph.append(Filter(command="acopy", filter_type="AVMEDIA_TYPE_AUDIO", params=[]))
-    return graph
-
-
-def concat(graph: Stream, n: Optional[int] = None, v: Optional[int] = None, a: Optional[int] = None, unsafe: Optional[bool] = None):
-    """Concatenate audio and video streams.
-    :param int n: specify the number of segments
-    :param int v: specify the number of video streams
-    :param int a: specify the number of audio streams
-    :param bool unsafe: enable unsafe mode"""
-    graph.append(
-        Filter(
-            command="concat",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[
-                FilterOption(name="n", value=n),
-                FilterOption(name="v", value=v),
-                FilterOption(name="a", value=a),
-                FilterOption(name="unsafe", value=unsafe),
-            ],
-        )
-    )
     return graph
 
 
@@ -1323,20 +1302,6 @@ def unpremultiply(
     return graph
 
 
-def channelsplit(graph: Stream, channel_layout: Optional[str] = None, channels: Optional[str] = None):
-    """Split audio into per-channel streams.
-    :param str channel_layout: Input channel layout.
-    :param str channels: Channels to extract."""
-    graph.append(
-        Filter(
-            command="channelsplit",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[FilterOption(name="channel_layout", value=channel_layout), FilterOption(name="channels", value=channels)],
-        )
-    )
-    return graph
-
-
 def graphmonitor(
     graph: Stream,
     size: Optional[int] = None,
@@ -1373,7 +1338,7 @@ def agraphmonitor(
     graph: Stream,
 ):
     """Show various filtergraph stats."""
-    graph.append(Filter(command="agraphmonitor", filter_type="AVMEDIA_TYPE_AUDIO", params=[]))
+    graph.append(Filter(command="agraphmonitor", filter_type="AVMEDIA_TYPE_VIDEO", params=[]))
     return graph
 
 
@@ -2134,7 +2099,7 @@ def signature(
     graph.append(
         Filter(
             command="signature",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="detectmode", value=detectmode),
                 FilterOption(name="nb_inputs", value=nb_inputs),
@@ -2702,76 +2667,6 @@ def dctdnoiz(
     return graph
 
 
-def ebur128(
-    graph: Stream,
-    video: Optional[bool] = None,
-    size: Optional[int] = None,
-    meter: Optional[int] = None,
-    framelog: Optional[str] = None,
-    metadata: Optional[bool] = None,
-    peak: Optional[str] = None,
-    dualmono: Optional[bool] = None,
-    panlaw: Optional[float] = None,
-    target: Optional[int] = None,
-    gauge: Optional[str] = None,
-    scale: Optional[str] = None,
-    integrated: Optional[float] = None,
-    range: Optional[float] = None,
-    lra_low: Optional[float] = None,
-    lra_high: Optional[float] = None,
-    sample_peak: Optional[float] = None,
-    true_peak: Optional[float] = None,
-):
-    """EBU R128 scanner.
-    :param bool video: set video output
-    :param int size: set video size
-    :param int meter: set scale meter (+9 to +18)
-    :param str framelog: force frame logging level
-            possible values: quiet, info, verbose
-    :param bool metadata: inject metadata in the filtergraph
-    :param str peak: set peak mode
-            possible values: none, sample, true
-    :param bool dualmono: treat mono input files as dual-mono
-    :param float panlaw: set a specific pan law for dual-mono files
-    :param int target: set a specific target level in LUFS (-23 to 0)
-    :param str gauge: set gauge display type
-            possible values: momentary, m, shortterm, s
-    :param str scale: sets display method for the stats
-            possible values: absolute, LUFS, relative, LU
-    :param float integrated: integrated loudness (LUFS)
-    :param float range: loudness range (LU)
-    :param float lra_low: LRA low (LUFS)
-    :param float lra_high: LRA high (LUFS)
-    :param float sample_peak: sample peak (dBFS)
-    :param float true_peak: true peak (dBFS)"""
-    graph.append(
-        Filter(
-            command="ebur128",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[
-                FilterOption(name="video", value=video),
-                FilterOption(name="size", value=size),
-                FilterOption(name="meter", value=meter),
-                FilterOption(name="framelog", value=framelog),
-                FilterOption(name="metadata", value=metadata),
-                FilterOption(name="peak", value=peak),
-                FilterOption(name="dualmono", value=dualmono),
-                FilterOption(name="panlaw", value=panlaw),
-                FilterOption(name="target", value=target),
-                FilterOption(name="gauge", value=gauge),
-                FilterOption(name="scale", value=scale),
-                FilterOption(name="integrated", value=integrated),
-                FilterOption(name="range", value=range),
-                FilterOption(name="lra_low", value=lra_low),
-                FilterOption(name="lra_high", value=lra_high),
-                FilterOption(name="sample_peak", value=sample_peak),
-                FilterOption(name="true_peak", value=true_peak),
-            ],
-        )
-    )
-    return graph
-
-
 def chromanr(
     graph: Stream,
     thres: Optional[float] = None,
@@ -2917,7 +2812,7 @@ def showfreqs(
     graph.append(
         Filter(
             command="showfreqs",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="rate", value=rate),
@@ -3008,14 +2903,6 @@ def atrim(
             ],
         )
     )
-    return graph
-
-
-def anullsink(
-    graph: Stream,
-):
-    """Do absolutely nothing with the input audio."""
-    graph.append(Filter(command="anullsink", filter_type="AVMEDIA_TYPE_AUDIO", params=[]))
     return graph
 
 
@@ -3160,54 +3047,6 @@ def ciescope(
                 FilterOption(name="showwhite", value=showwhite),
                 FilterOption(name="gamma", value=gamma),
                 FilterOption(name="fill", value=fill),
-            ],
-        )
-    )
-    return graph
-
-
-def aphasemeter(
-    graph: Stream,
-    rate: Optional[str] = None,
-    size: Optional[int] = None,
-    rc: Optional[int] = None,
-    gc: Optional[int] = None,
-    bc: Optional[int] = None,
-    mpc: Optional[str] = None,
-    video: Optional[bool] = None,
-    phasing: Optional[bool] = None,
-    tolerance: Optional[float] = None,
-    angle: Optional[float] = None,
-    duration: Optional[int] = None,
-):
-    """Convert input audio to phase meter video output.
-    :param str rate: set video rate
-    :param int size: set video size
-    :param int rc: set red contrast
-    :param int gc: set green contrast
-    :param int bc: set blue contrast
-    :param str mpc: set median phase color
-    :param bool video: set video output
-    :param bool phasing: set mono and out-of-phase detection output
-    :param float tolerance: set phase tolerance for mono detection
-    :param float angle: set angle threshold for out-of-phase detection
-    :param int duration: set minimum mono or out-of-phase duration in seconds"""
-    graph.append(
-        Filter(
-            command="aphasemeter",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[
-                FilterOption(name="rate", value=rate),
-                FilterOption(name="size", value=size),
-                FilterOption(name="rc", value=rc),
-                FilterOption(name="gc", value=gc),
-                FilterOption(name="bc", value=bc),
-                FilterOption(name="mpc", value=mpc),
-                FilterOption(name="video", value=video),
-                FilterOption(name="phasing", value=phasing),
-                FilterOption(name="tolerance", value=tolerance),
-                FilterOption(name="angle", value=angle),
-                FilterOption(name="duration", value=duration),
             ],
         )
     )
@@ -3533,22 +3372,6 @@ def thistogram(
     return graph
 
 
-def extractplanes(graph: Stream, planes: Optional[str] = None):
-    """Extract planes as grayscale frames.
-    :param str planes: set planes
-            possible values: y, u, v, r, g, b, a"""
-    graph.append(Filter(command="extractplanes", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="planes", value=planes)]))
-    return graph
-
-
-def alphaextract(
-    graph: Stream,
-):
-    """Extract an alpha channel as a grayscale image component."""
-    graph.append(Filter(command="alphaextract", filter_type="AVMEDIA_TYPE_VIDEO", params=[]))
-    return graph
-
-
 def hqx(graph: Stream, n: Optional[int] = None):
     """Scale the input by 2, 3 or 4 using the hq*x magnification algorithm.
     :param int n: set scale factor"""
@@ -3752,7 +3575,7 @@ def ahistogram(
     graph.append(
         Filter(
             command="ahistogram",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="dmode", value=dmode),
                 FilterOption(name="rate", value=rate),
@@ -4290,7 +4113,7 @@ def afir(
     graph.append(
         Filter(
             command="afir",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[
                 FilterOption(name="dry", value=dry),
                 FilterOption(name="wet", value=wet),
@@ -4632,7 +4455,7 @@ def showvolume(
     graph.append(
         Filter(
             command="showvolume",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="rate", value=rate),
                 FilterOption(name="b", value=b),
@@ -4748,7 +4571,7 @@ def adrawgraph(
     graph: Stream,
 ):
     """Draw a graph using input audio metadata."""
-    graph.append(Filter(command="adrawgraph", filter_type="AVMEDIA_TYPE_AUDIO", params=[]))
+    graph.append(Filter(command="adrawgraph", filter_type="AVMEDIA_TYPE_VIDEO", params=[]))
     return graph
 
 
@@ -4913,52 +4736,6 @@ def shear(
                 FilterOption(name="shy", value=shy),
                 FilterOption(name="fillcolor", value=fillcolor),
                 FilterOption(name="interp", value=interp),
-            ],
-        )
-    )
-    return graph
-
-
-def buffersink(graph: Stream, pix_fmts: Optional[str] = None, color_spaces: Optional[str] = None, color_ranges: Optional[str] = None):
-    """Buffer video frames, and make them available to the end of the filter graph.
-    :param str pix_fmts: set the supported pixel formats
-    :param str color_spaces: set the supported color spaces
-    :param str color_ranges: set the supported color ranges"""
-    graph.append(
-        Filter(
-            command="buffersink",
-            filter_type="AVMEDIA_TYPE_VIDEO",
-            params=[
-                FilterOption(name="pix_fmts", value=pix_fmts),
-                FilterOption(name="color_spaces", value=color_spaces),
-                FilterOption(name="color_ranges", value=color_ranges),
-            ],
-        )
-    )
-    return graph
-
-
-def abuffersink(
-    graph: Stream,
-    sample_fmts: Optional[str] = None,
-    sample_rates: Optional[str] = None,
-    ch_layouts: Optional[str] = None,
-    all_channel_counts: Optional[bool] = None,
-):
-    """Buffer audio frames, and make them available to the end of the filter graph.
-    :param str sample_fmts: set the supported sample formats
-    :param str sample_rates: set the supported sample rates
-    :param str ch_layouts: set a '|'-separated list of supported channel layouts
-    :param bool all_channel_counts: accept all channel counts"""
-    graph.append(
-        Filter(
-            command="abuffersink",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[
-                FilterOption(name="sample_fmts", value=sample_fmts),
-                FilterOption(name="sample_rates", value=sample_rates),
-                FilterOption(name="ch_layouts", value=ch_layouts),
-                FilterOption(name="all_channel_counts", value=all_channel_counts),
             ],
         )
     )
@@ -5998,39 +5775,6 @@ def hwupload_cuda(
     return graph
 
 
-def anequalizer(
-    graph: Stream,
-    params: Optional[str] = None,
-    curves: Optional[bool] = None,
-    size: Optional[int] = None,
-    mgain: Optional[float] = None,
-    fscale: Optional[str] = None,
-    colors: Optional[str] = None,
-):
-    """Apply high-order audio parametric multi band equalizer.
-    :param bool curves: draw frequency response curves
-    :param int size: set video size
-    :param float mgain: set max gain
-    :param str fscale: set frequency scale
-            possible values: lin, log
-    :param str colors: set channels curves colors"""
-    graph.append(
-        Filter(
-            command="anequalizer",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[
-                FilterOption(name="params", value=params),
-                FilterOption(name="curves", value=curves),
-                FilterOption(name="size", value=size),
-                FilterOption(name="mgain", value=mgain),
-                FilterOption(name="fscale", value=fscale),
-                FilterOption(name="colors", value=colors),
-            ],
-        )
-    )
-    return graph
-
-
 def telecine(graph: Stream, first_field: Optional[str] = None, pattern: Optional[str] = None):
     """Apply a telecine pattern.
     :param str first_field: select first field
@@ -6390,7 +6134,7 @@ def headphone(
     graph.append(
         Filter(
             command="headphone",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[
                 FilterOption(name="map", value=map),
                 FilterOption(name="gain", value=gain),
@@ -7253,94 +6997,6 @@ def rgbashift(
     return graph
 
 
-def segment(graph: Stream, timestamps: Optional[str] = None, frames: Optional[str] = None):
-    """Segment video stream.
-    :param str timestamps: timestamps of input at which to split input
-    :param str frames: frames at which to split input"""
-    graph.append(
-        Filter(
-            command="segment",
-            filter_type="AVMEDIA_TYPE_VIDEO",
-            params=[FilterOption(name="timestamps", value=timestamps), FilterOption(name="frames", value=frames)],
-        )
-    )
-    return graph
-
-
-def asegment(graph: Stream, timestamps: Optional[str] = None, samples: Optional[str] = None):
-    """Segment audio stream.
-    :param str timestamps: timestamps of input at which to split input
-    :param str samples: samples at which to split input"""
-    graph.append(
-        Filter(
-            command="asegment",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[FilterOption(name="timestamps", value=timestamps), FilterOption(name="samples", value=samples)],
-        )
-    )
-    return graph
-
-
-def aiir(
-    graph: Stream,
-    zeros: Optional[str] = None,
-    poles: Optional[str] = None,
-    gains: Optional[str] = None,
-    dry: Optional[float] = None,
-    wet: Optional[float] = None,
-    format: Optional[str] = None,
-    process: Optional[str] = None,
-    precision: Optional[str] = None,
-    normalize: Optional[bool] = None,
-    mix: Optional[float] = None,
-    response: Optional[bool] = None,
-    channel: Optional[int] = None,
-    size: Optional[int] = None,
-    rate: Optional[str] = None,
-):
-    """Apply Infinite Impulse Response filter with supplied coefficients.
-    :param str zeros: set B/numerator/zeros/reflection coefficients
-    :param str poles: set A/denominator/poles/ladder coefficients
-    :param str gains: set channels gains
-    :param float dry: set dry gain
-    :param float wet: set wet gain
-    :param str format: set coefficients format
-            possible values: ll, sf, tf, zp, pr, pd, sp
-    :param str process: set kind of processing
-            possible values: d, s, p
-    :param str precision: set filtering precision
-            possible values: dbl, flt, i32, i16
-    :param bool normalize: normalize coefficients
-    :param float mix: set mix
-    :param bool response: show IR frequency response
-    :param int channel: set IR channel to display frequency response
-    :param int size: set video size
-    :param str rate: set video rate"""
-    graph.append(
-        Filter(
-            command="aiir",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[
-                FilterOption(name="zeros", value=zeros),
-                FilterOption(name="poles", value=poles),
-                FilterOption(name="gains", value=gains),
-                FilterOption(name="dry", value=dry),
-                FilterOption(name="wet", value=wet),
-                FilterOption(name="format", value=format),
-                FilterOption(name="process", value=process),
-                FilterOption(name="precision", value=precision),
-                FilterOption(name="normalize", value=normalize),
-                FilterOption(name="mix", value=mix),
-                FilterOption(name="response", value=response),
-                FilterOption(name="channel", value=channel),
-                FilterOption(name="size", value=size),
-                FilterOption(name="rate", value=rate),
-            ],
-        )
-    )
-    return graph
-
-
 def showspatial(
     graph: Stream, size: Optional[int] = None, win_size: Optional[int] = None, win_func: Optional[str] = None, rate: Optional[str] = None
 ):
@@ -7353,7 +7009,7 @@ def showspatial(
     graph.append(
         Filter(
             command="showspatial",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="win_size", value=win_size),
@@ -7537,7 +7193,7 @@ def anoisesrc(
     graph.append(
         Filter(
             command="anoisesrc",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[
                 FilterOption(name="sample_rate", value=sample_rate),
                 FilterOption(name="amplitude", value=amplitude),
@@ -8118,7 +7774,7 @@ def spectrumsynth(
     graph.append(
         Filter(
             command="spectrumsynth",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[
                 FilterOption(name="sample_rate", value=sample_rate),
                 FilterOption(name="channels", value=channels),
@@ -8388,7 +8044,7 @@ def cellauto(
     graph.append(
         Filter(
             command="cellauto",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="filename", value=filename),
                 FilterOption(name="pattern", value=pattern),
@@ -8450,7 +8106,7 @@ def showcwt(
     graph.append(
         Filter(
             command="showcwt",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="rate", value=rate),
@@ -8503,7 +8159,7 @@ def color_vulkan(
     graph.append(
         Filter(
             command="color_vulkan",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="color", value=color),
                 FilterOption(name="size", value=size),
@@ -8608,7 +8264,7 @@ def a3dscope(
     graph.append(
         Filter(
             command="a3dscope",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="rate", value=rate),
                 FilterOption(name="size", value=size),
@@ -8760,7 +8416,7 @@ def showwaves(
     graph.append(
         Filter(
             command="showwaves",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="mode", value=mode),
@@ -8798,7 +8454,7 @@ def showwavespic(
     graph.append(
         Filter(
             command="showwavespic",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="split_channels", value=split_channels),
@@ -8959,55 +8615,6 @@ def bwdif(graph: Stream, mode: Optional[str] = None, parity: Optional[str] = Non
     return graph
 
 
-def movie(
-    graph: Stream,
-    filename: Optional[str] = None,
-    format_name: Optional[str] = None,
-    stream_index: Optional[int] = None,
-    seek_point: Optional[float] = None,
-    streams: Optional[str] = None,
-    loop: Optional[int] = None,
-    discontinuity: Optional[int] = None,
-    dec_threads: Optional[int] = None,
-    format_opts: Optional[str] = None,
-):
-    """Read from a movie source.
-    :param str format_name: set format name
-    :param int stream_index: set stream index
-    :param float seek_point: set seekpoint (seconds)
-    :param str streams: set streams
-    :param int loop: set loop count
-    :param int discontinuity: set discontinuity threshold
-    :param int dec_threads: set the number of threads for decoding
-    :param str format_opts: set format options for the opened file"""
-    graph.append(
-        Filter(
-            command="movie",
-            filter_type="AVMEDIA_TYPE_VIDEO",
-            params=[
-                FilterOption(name="filename", value=filename),
-                FilterOption(name="format_name", value=format_name),
-                FilterOption(name="stream_index", value=stream_index),
-                FilterOption(name="seek_point", value=seek_point),
-                FilterOption(name="streams", value=streams),
-                FilterOption(name="loop", value=loop),
-                FilterOption(name="discontinuity", value=discontinuity),
-                FilterOption(name="dec_threads", value=dec_threads),
-                FilterOption(name="format_opts", value=format_opts),
-            ],
-        )
-    )
-    return graph
-
-
-def amovie(
-    graph: Stream,
-):
-    """Read audio from a movie source."""
-    graph.append(Filter(command="amovie", filter_type="AVMEDIA_TYPE_VIDEO", params=[]))
-    return graph
-
-
 def avsynctest(
     graph: Stream,
     size: Optional[int] = None,
@@ -9037,7 +8644,7 @@ def avsynctest(
     graph.append(
         Filter(
             command="avsynctest",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="framerate", value=framerate),
@@ -9414,7 +9021,7 @@ def compand(
     attacks: Optional[str] = None,
     decays: Optional[str] = None,
     points: Optional[str] = None,
-    softknee: Optional[float] = None,
+    soft_knee: Optional[float] = None,
     gain: Optional[float] = None,
     volume: Optional[float] = None,
     delay: Optional[float] = None,
@@ -9435,7 +9042,7 @@ def compand(
                 FilterOption(name="attacks", value=attacks),
                 FilterOption(name="decays", value=decays),
                 FilterOption(name="points", value=points),
-                FilterOption(name="soft-knee", value=softknee),
+                FilterOption(name="soft-knee", value=soft_knee),
                 FilterOption(name="gain", value=gain),
                 FilterOption(name="volume", value=volume),
                 FilterOption(name="delay", value=delay),
@@ -9474,7 +9081,7 @@ def life(
     graph.append(
         Filter(
             command="life",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="filename", value=filename),
                 FilterOption(name="size", value=size),
@@ -9553,7 +9160,7 @@ def xmedian(graph: Stream, inputs: Optional[int] = None, planes: Optional[int] =
     graph.append(
         Filter(
             command="xmedian",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="inputs", value=inputs),
                 FilterOption(name="planes", value=planes),
@@ -9668,22 +9275,6 @@ def shuffleplanes(
     return graph
 
 
-def split(
-    graph: Stream,
-):
-    """Pass on the input to N video outputs."""
-    graph.append(Filter(command="split", filter_type="AVMEDIA_TYPE_VIDEO", params=[]))
-    return graph
-
-
-def asplit(
-    graph: Stream,
-):
-    """Pass on the audio input to N audio outputs."""
-    graph.append(Filter(command="asplit", filter_type="AVMEDIA_TYPE_AUDIO", params=[]))
-    return graph
-
-
 def mptestsrc(
     graph: Stream, rate: Optional[str] = None, duration: Optional[int] = None, test: Optional[str] = None, max_frames: Optional[int] = None
 ):
@@ -9696,7 +9287,7 @@ def mptestsrc(
     graph.append(
         Filter(
             command="mptestsrc",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="rate", value=rate),
                 FilterOption(name="duration", value=duration),
@@ -9727,7 +9318,7 @@ def hstack(
     graph: Stream,
 ):
     """Stack video inputs horizontally."""
-    graph.append(Filter(command="hstack", filter_type="AVMEDIA_TYPE_AUDIO", params=[]))
+    graph.append(Filter(command="hstack", filter_type="AVMEDIA_TYPE_VIDEO", params=[]))
     return graph
 
 
@@ -9937,7 +9528,7 @@ def showcqt(
     graph.append(
         Filter(
             command="showcqt",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="fps", value=fps),
@@ -10589,7 +10180,7 @@ def bm3d(
     graph.append(
         Filter(
             command="bm3d",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="sigma", value=sigma),
                 FilterOption(name="block", value=block),
@@ -10802,7 +10393,7 @@ def interleave(graph: Stream, nb_inputs: Optional[int] = None, duration: Optiona
     graph.append(
         Filter(
             command="interleave",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[FilterOption(name="nb_inputs", value=nb_inputs), FilterOption(name="duration", value=duration)],
         )
     )
@@ -10817,7 +10408,7 @@ def ainterleave(graph: Stream, nb_inputs: Optional[int] = None, duration: Option
     graph.append(
         Filter(
             command="ainterleave",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[FilterOption(name="nb_inputs", value=nb_inputs), FilterOption(name="duration", value=duration)],
         )
     )
@@ -10837,28 +10428,6 @@ def transpose_opencl(graph: Stream, dir: Optional[str] = None, passthrough: Opti
             params=[FilterOption(name="dir", value=dir), FilterOption(name="passthrough", value=passthrough)],
         )
     )
-    return graph
-
-
-def streamselect(graph: Stream, inputs: Optional[int] = None, map: Optional[str] = None):
-    """Select video streams
-    :param int inputs: number of input streams
-    :param str map: input indexes to remap to outputs"""
-    graph.append(
-        Filter(
-            command="streamselect",
-            filter_type="AVMEDIA_TYPE_VIDEO",
-            params=[FilterOption(name="inputs", value=inputs), FilterOption(name="map", value=map)],
-        )
-    )
-    return graph
-
-
-def astreamselect(
-    graph: Stream,
-):
-    """Select audio streams"""
-    graph.append(Filter(command="astreamselect", filter_type="AVMEDIA_TYPE_VIDEO", params=[]))
     return graph
 
 
@@ -11051,7 +10620,7 @@ def abuffer(
     graph.append(
         Filter(
             command="abuffer",
-            filter_type="AVMEDIA_TYPE_VIDEO",
+            filter_type="AVMEDIA_TYPE_AUDIO",
             params=[
                 FilterOption(name="time_base", value=time_base),
                 FilterOption(name="sample_rate", value=sample_rate),
@@ -11233,7 +10802,7 @@ def avectorscope(
     graph.append(
         Filter(
             command="avectorscope",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="mode", value=mode),
                 FilterOption(name="rate", value=rate),
@@ -11351,7 +10920,7 @@ def showspectrum(
     graph.append(
         Filter(
             command="showspectrum",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="slide", value=slide),
@@ -11424,7 +10993,7 @@ def showspectrumpic(
     graph.append(
         Filter(
             command="showspectrumpic",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="size", value=size),
                 FilterOption(name="mode", value=mode),
@@ -11966,14 +11535,6 @@ def perms(
     return graph
 
 
-def nullsink(
-    graph: Stream,
-):
-    """Do absolutely nothing with the input video."""
-    graph.append(Filter(command="nullsink", filter_type="AVMEDIA_TYPE_VIDEO", params=[]))
-    return graph
-
-
 def setparams(
     graph: Stream,
     field_mode: Optional[str] = None,
@@ -12247,34 +11808,6 @@ def deesser(graph: Stream, i: Optional[float] = None, m: Optional[float] = None,
     return graph
 
 
-def aselect(graph: Stream, expr: Optional[str] = None, outputs: Optional[int] = None):
-    """Select audio frames to pass in output.
-    :param str expr: set an expression to use for selecting frames
-    :param int outputs: set the number of outputs"""
-    graph.append(
-        Filter(
-            command="aselect",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[FilterOption(name="expr", value=expr), FilterOption(name="outputs", value=outputs)],
-        )
-    )
-    return graph
-
-
-def select(graph: Stream, expr: Optional[str] = None, outputs: Optional[int] = None):
-    """Select video frames to pass in output.
-    :param str expr: set an expression to use for selecting frames
-    :param int outputs: set the number of outputs"""
-    graph.append(
-        Filter(
-            command="select",
-            filter_type="AVMEDIA_TYPE_VIDEO",
-            params=[FilterOption(name="expr", value=expr), FilterOption(name="outputs", value=outputs)],
-        )
-    )
-    return graph
-
-
 def nlmeans(
     graph: Stream,
     s: Optional[float] = None,
@@ -12402,38 +11935,6 @@ def sierpinski(
     return graph
 
 
-def acrossover(
-    graph: Stream,
-    split: Optional[str] = None,
-    order: Optional[str] = None,
-    level: Optional[float] = None,
-    gain: Optional[str] = None,
-    precision: Optional[str] = None,
-):
-    """Split audio into per-bands streams.
-    :param str split: set split frequencies
-    :param str order: set filter order
-            possible values: 2nd, 4th, 6th, 8th, 10th, 12th, 14th, 16th, 18th, 20th
-    :param float level: set input gain
-    :param str gain: set output bands gain
-    :param str precision: set processing precision
-            possible values: auto, float, double"""
-    graph.append(
-        Filter(
-            command="acrossover",
-            filter_type="AVMEDIA_TYPE_AUDIO",
-            params=[
-                FilterOption(name="split", value=split),
-                FilterOption(name="order", value=order),
-                FilterOption(name="level", value=level),
-                FilterOption(name="gain", value=gain),
-                FilterOption(name="precision", value=precision),
-            ],
-        )
-    )
-    return graph
-
-
 def swaprect(
     graph: Stream,
     w: Optional[str] = None,
@@ -12479,7 +11980,7 @@ def abitscope(
     graph.append(
         Filter(
             command="abitscope",
-            filter_type="AVMEDIA_TYPE_AUDIO",
+            filter_type="AVMEDIA_TYPE_VIDEO",
             params=[
                 FilterOption(name="rate", value=rate),
                 FilterOption(name="size", value=size),
