@@ -13,9 +13,10 @@ from ._api_compat import run_async
 from .FilterGraph import Stream
 from .filters import hflip
 from .generated_filters import *  # noqa: F403 this is impossible to avoid
+from .probe import probe
 
 # This is for `from xyz import *`, but also to make linter shut up
-__all__ = ["input", "output", "run", "run_async", "hflip"]
+__all__ = ["input", "output", "run", "run_async", "hflip", "probe"]
 
 stream_modules = [generated_filters, _api_compat]
 
