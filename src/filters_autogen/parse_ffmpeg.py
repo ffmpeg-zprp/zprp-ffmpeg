@@ -5,6 +5,7 @@ import subprocess
 from pathlib import Path
 from typing import ClassVar
 from typing import List
+from typing import Optional
 
 import pycparser.c_ast  # type: ignore
 from pycparser import c_ast
@@ -14,12 +15,15 @@ from tqdm import tqdm
 
 from filters_autogen import filter_classes as fc
 
+# --- default paths
 patches_path = Path(__file__).parent / "ffmpeg_patches"
 fake_libc_path = Path(__file__).parent / "fake_libc_include"
 FFmpeg_source = Path(__file__).parent / "FFmpeg"
 print(str(fake_libc_path))
+# ---
 
 
+# this is for allfilters.c
 class TypeDeclVisitor(c_ast.NodeVisitor):
     collected_filters: ClassVar = []
 
@@ -29,23 +33,21 @@ class TypeDeclVisitor(c_ast.NodeVisitor):
 
 
 class StructFinder(c_ast.NodeVisitor):
+    type: Optional[str]
+
     def __init__(self, struct_name: str) -> None:
         super().__init__()
         self.struct_name: str = struct_name
+        StructFinder.type = None
 
     def visit_Decl(self, node):
         if isinstance(node.type, pycparser.c_ast.ArrayDecl):
             if hasattr(node.type.type.type, "names") and node.type.type.type.names[0] == "AVFilterPad":
                 if node.name == self.struct_name:
-                    if node.type.type.declname == "ff_video_default_filterpad":
-                        StructFinder.type = "AVMEDIA_TYPE_VIDEO"
-                    elif node.type.type.declname == "ff_audio_default_filterpad":
-                        StructFinder.type = "AVMEDIA_TYPE_AUDIO"
-                    else:
-                        for field in node.init.exprs[0]:
-                            if field.name[0].name == "type":
-                                StructFinder.type = field.expr.name
-                                break
+                    for field in node.init.exprs[0]:
+                        if field.name[0].name == "type":
+                            StructFinder.type = field.expr.name
+                            break
 
 
 class OptionsVisitor(c_ast.NodeVisitor):
@@ -84,7 +86,7 @@ class OptionsVisitor(c_ast.NodeVisitor):
                             logger.error("invalid offset")
                         if offset in offsets and option_type != "AV_OPT_TYPE_CONST":
                             continue  # ignore aliases, but CONST named params don't count
-                        offsets.add(offset)
+                        offsets.add(offset)  # should type const offsets be stored?
                         for expr in option.exprs:
                             if isinstance(expr, pycparser.c_ast.NamedInitializer) and expr.name[0].name == "unit":
                                 unit = expr.expr.value
@@ -93,8 +95,14 @@ class OptionsVisitor(c_ast.NodeVisitor):
                             unit = ""  # sometimes there is no unit given
                         if option_type == "AV_OPT_TYPE_CONST":
                             # append this to the parent field, and change parent field to string
-                            # default_value = option.exprs[4].value  # @TODO: this could be stored for docstrings
-                            self.append_to_unit(unit, option_name, 0)
+                            if isinstance(option.exprs[4].exprs[0].expr, pycparser.c_ast.Constant):
+                                try:
+                                    value = int(option.exprs[4].exprs[0].expr.value, 0)  # epic trick, guess the radix
+                                except ValueError:
+                                    value = 0
+                            else:
+                                value = 0  # @TODO: hunt in the AST for identifiers
+                            self.append_to_unit(unit, option_name, value)
                             continue  # this is not a new option
                         self.options.append(
                             fc.FilterOption(name=option_name, type=option_type, unit=unit, description=option_desc, available_values={})
@@ -133,6 +141,9 @@ class AVFilterFinder(c_ast.NodeVisitor):
                 self.found_filters.append((fc.Filter(filter_name, filter_desc, "", []), filter_input_struct, filter_output_struct))
 
 
+default_filter_struct_names = {"ff_video_default_filterpad": "AVMEDIA_TYPE_VIDEO", "ff_audio_default_filterpad": "AVMEDIA_TYPE_AUDIO"}
+
+
 def parse_one_file(file_path: Path) -> List[fc.Filter]:
     """Parses contents of a single .c file and returns any filters it found
     :param file_path: path to file
@@ -167,34 +178,59 @@ def parse_one_file(file_path: Path) -> List[fc.Filter]:
         if len(visitor.found_filters) == 0:
             logger.warning(f"Empty filter file: {file_path}")
             return []
-        for filter, input_struct, output_struct in visitor.found_filters:  # one file can have multiple filters
+        for filter, _, output_struct in visitor.found_filters:  # one file can have multiple filters
+            # filter, input_struct, output_struct
+
+            # find options
             option_visitor = OptionsVisitor(filter.name)
             option_visitor.visit(AST)
-            input_visitor = StructFinder(input_struct)
-            input_visitor.visit(AST)
-            input_type = input_visitor.type
-            output_visitor = StructFinder(output_struct)
-            output_visitor.visit(AST)
-            if input_visitor.type is None and output_visitor.type == "AVMEDIA_TYPE_VIDEO":
-                filter_type = "VIDEO_SOURCE"
+
+            # find out filter input and output types
+
+            # not needed right now
+            # if input_struct in default_filter_struct_names:
+            #     input_type=default_filter_struct_names[input_struct]
+            # else:
+            #     input_visitor = StructFinder(input_struct)
+            #     input_visitor.visit(AST)
+            #     input_type = input_visitor.type
+
+            if output_struct in default_filter_struct_names:
+                output_type = default_filter_struct_names[output_struct]
             else:
-                filter_type = input_type
+                output_visitor = StructFinder(output_struct)
+                output_visitor.visit(AST)
+                if not output_visitor.type:
+                    raise ParseError("Output type for filter not found!")
+                output_type = output_visitor.type
+
+            filter_type = output_type  # filters are generally defined by the output type, not counting certain sink filters
             filters.append(fc.Filter(name=filter.name, description=filter.description, type=filter_type, options=option_visitor.options))
     return filters
 
 
-def parse_source_code(save_pickle=False, debug=False) -> List[fc.Filter]:
+def parse_allfilters(all_filters: Path):
+    """Parse allfilters.c file
+
+    This file is generated by ffmpeg, contains all known filter names, can be used for counting."""
+    AST = parse_file(
+        str(all_filters),
+        use_cpp=True,
+        cpp_args=["-I.", "-I../fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],  # type: ignore
+    )
+
+    visitor = TypeDeclVisitor()
+    visitor.visit(AST)
+    return TypeDeclVisitor.collected_filters
+
+
+def parse_source_code(ffmpeg_source_path: Path, save_pickle=False, debug=False) -> List[fc.Filter]:
     logger = logging.getLogger(__name__)
     if debug:
         logging.basicConfig(level=logging.DEBUG)
 
-    # TODO: clone ffmpeg --depth 1 here maybe
-
-    script_dir = Path(__file__).parent
-    os.chdir(str(script_dir) + "/FFmpeg")
+    os.chdir(str(ffmpeg_source_path))
     logger.debug(f"cwd: {Path.cwd()}")
-
-    all_filters = "libavfilter/allfilters.c"
 
     logger.info("Configuring ffmpeg...")
     if not Path("libavutil/avconfig.h").exists():
@@ -202,16 +238,8 @@ def parse_source_code(save_pickle=False, debug=False) -> List[fc.Filter]:
         handle.wait()
 
     logger.info("Running parser")
-    # TODO: clone pycparser repo here for fake includes
-    AST = parse_file(
-        all_filters,
-        use_cpp=True,
-        cpp_args=["-I.", "-I../fake_libc_include", "-D__attribute__(x)=", "-D__restrict="],  # type: ignore
-    )
-
-    visitor = TypeDeclVisitor()
-    visitor.visit(AST)
-    print(len(TypeDeclVisitor.collected_filters))
+    all_filters = parse_allfilters(Path("libavfilter") / "allfilters.c")
+    logger.info(f"Known filters count: {len(all_filters)}")
 
     # parse all files in `libavfilter` and look for matching names
     parsed_filters = []
@@ -241,4 +269,4 @@ def parse_source_code(save_pickle=False, debug=False) -> List[fc.Filter]:
 
 if __name__ == "__main__":
     # easy to run from shell
-    parse_source_code(save_pickle=True)
+    parse_source_code(Path(__file__).parent / "filters_autogen" / "FFmpeg", save_pickle=True)

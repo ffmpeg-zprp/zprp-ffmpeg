@@ -2,8 +2,9 @@ import keyword
 import pickle
 from pathlib import Path
 from string import Template
+from typing import List
 
-from .filter_classes import Filter
+from filters_autogen.filter_classes import Filter
 
 # @TODO: add custom types for where it makes sense
 ffmpeg_type_to_python = {
@@ -46,7 +47,7 @@ def sanitize(name: str):
     if name in keyword.kwlist or name[0].isdigit():
         name = "_" + name
     if "-" in name:
-        name = name.replace("-", "")
+        name = name.replace("-", "_")
     return name
 
 
@@ -76,7 +77,7 @@ def fill_template(filter_template, filter: Filter):
     )
 
 
-def construct_file(filters: list[Filter]) -> str:
+def construct_file(filters: List[Filter]) -> str:
     out = ""
 
     for filter in filters:

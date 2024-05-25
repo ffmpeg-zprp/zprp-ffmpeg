@@ -4,6 +4,21 @@ Changelog
 All notable changes to this project will be documented in this file.
 Dates are displayed in UTC.
 
+`v1.1.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v1.0.0...v1.1.0>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   25 May 2024
+
+-  feat: Add ffprobe function
+   ```#4`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/pull/4>`__
+-  add ffmpeg headers for tests
+   ```881d6ea`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/881d6ea0bdcfccdaed53ef87b019ce1982911cf6>`__
+-  fix: properly parse flag-type options
+   ```c9384d0`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/c9384d061f5c2f60c89798fb0700c81f61f38185>`__
+-  fix: move ``generate_filters.py`` out of package, so that it works
+   both with mypy and normal run
+   ```74cb5f6`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/74cb5f6590214bfe7d13447ea9c489e16cfd8c55>`__
+
 `v1.0.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v0.1.0...v1.0.0>`__
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
