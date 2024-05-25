@@ -86,9 +86,9 @@ Overview
     :alt: Supported implementations
     :target: https://pypi.org/project/zprp-ffmpeg
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/ffmpeg-zprp/zprp-ffmpeg/v1.1.0.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/ffmpeg-zprp/zprp-ffmpeg/v1.2.0.svg
     :alt: Commits since latest release
-    :target: https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v1.1.0...main
+    :target: https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v1.2.0...main
 
 
 
