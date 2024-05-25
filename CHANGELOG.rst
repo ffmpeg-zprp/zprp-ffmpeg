@@ -4,6 +4,20 @@ Changelog
 All notable changes to this project will be documented in this file.
 Dates are displayed in UTC.
 
+`v1.2.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v1.1.0...v1.2.0>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   25 May 2024
+
+-  feat: Add graph for basic filters
+   ```#5`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/pull/5>`__
+-  Fix: update lock file
+   ```aec6f02`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/aec6f02946c46581b61a56670b90e0ca0b0eea1e>`__
+-  Apply automatic changes
+   ```6da9cc6`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/6da9cc698d5bbcbac78b812b49412aa411d2c43d>`__
+-  Next time commit tags after new version
+   ```2f8fe73`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/2f8fe7333820b165efe5095a0389eb11f8ec5120>`__
+
 `v1.1.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v1.0.0...v1.1.0>`__
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
