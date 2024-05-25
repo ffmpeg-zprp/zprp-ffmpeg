@@ -4,6 +4,7 @@ It slightly violates DRY, but the parameter types are different. It is what it i
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
+from typing import List
 from typing import Optional
 from typing import Union
 
@@ -22,9 +23,9 @@ class FilterOption:
 class Filter:
     """Filters can have many inputs and many outputs, holds the filter name and potential params"""
 
-    def __init__(self, command: str, params: Optional[list[FilterOption]] = None, filter_type: FilterType = FilterType.VIDEO):
-        self._out: list[AnyNode] = []
-        self._in: list[AnyNode] = []
+    def __init__(self, command: str, params: Optional[List[FilterOption]] = None, filter_type: str = FilterType.VIDEO.value):
+        self._out: List[AnyNode] = []
+        self._in: List[AnyNode] = []
         self.command = command
         self.params = params if params else []
         self.filter_type = filter_type
@@ -36,7 +37,7 @@ class Filter:
         self._in.append(child)
 
     def get_command(self):
-        joined_params = ":".join(p.name + "=" + p.value for p in self.params if p.value)
+        joined_params = ":".join(p.name + "=" + str(p.value) for p in self.params if p.value)
         if joined_params:  # if there was no option, leave empty string
             joined_params = "=" + joined_params
         if self.filter_type == "AVMEDIA_TYPE_VIDEO":
@@ -45,6 +46,8 @@ class Filter:
         elif self.filter_type == "AVMEDIA_TYPE_AUDIO":
             return "-af " + self.command + joined_params
 
+        return ""  # in case no match
+
 
 # names as per ffmpeg documentation
 class SourceFilter:
@@ -52,7 +55,7 @@ class SourceFilter:
 
     def __init__(self, in_path: str):
         self.in_path: str = in_path
-        self._out: list[AnyNode] = []
+        self._out: List[AnyNode] = []
 
     def add_output(self, parent: "Filter | SinkFilter"):
         self._out.append(parent)
@@ -69,7 +72,7 @@ class SinkFilter:
 
     def __init__(self, out_path: str):
         self.out_path: str = out_path
-        self._in: list[AnyNode] = []
+        self._in: List[AnyNode] = []
 
     def add_input(self, parent: "Filter | SourceFilter"):
         self._in.append(parent)
@@ -92,7 +95,7 @@ class Stream:
     Streams can be concatenated and split with certain filters."""
 
     def __init__(self) -> None:
-        self._nodes: list[AnyNode] = []
+        self._nodes: List[AnyNode] = []
 
     def append(self, node: AnyNode) -> "Stream":
         if len(self._nodes) > 0:
