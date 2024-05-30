@@ -109,7 +109,7 @@ class Stream:
 
 
 class FilterParser:
-    multi_input: ClassVar[List[str]] = ["concat"]
+    multi_input: ClassVar[List[str]] = ["concat", "overlay"]
     inputs_counter = 0
     outputs_counter = 0
     filter_counter = 0
