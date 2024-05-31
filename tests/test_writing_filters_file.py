@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from make_file import sanitize
+from filters_autogen.make_file import sanitize
 
 from generate_filters import default_imports
 from generate_filters import generate_filters
