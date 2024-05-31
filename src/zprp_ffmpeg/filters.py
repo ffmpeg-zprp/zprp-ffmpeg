@@ -8,6 +8,7 @@ from .FilterGraph import Stream
 
 def concat(graphs: Iterable[Stream], n: Optional[int] = None, v: Optional[int] = None, a: Optional[int] = None) -> Stream:
     """Concatenate audio and video streams, joining them together one after the other.
+
     :param int n: set the number of segments. Default is 2.
     :param int v: set the number of output video streams, that is also the number of video streams in each segment. Default is 1.
     :param int a: set the number of output audio streams, that is also the number of audio streams in each segment. Default is 0.
@@ -38,6 +39,7 @@ def overlay(
     alpha: Optional[str] = None,
 ) -> Stream:
     """Overlay a video source on top of the input.
+
     :param str x: set the x expression
     :param str y: set the y expression
     :param str eof_action: Action to take when encountering EOF from secondary input
@@ -49,7 +51,8 @@ def overlay(
             possible values: yuv420, yuv420p10, yuv422, yuv422p10, yuv444, yuv444p10, rgb, gbrp, auto
     :param bool repeatlast: repeat overlay of the last overlay frame
     :param str alpha: alpha format
-            possible values: straight, premultiplied"""
+            possible values: straight, premultiplied
+    """
     filter_ = Filter(
         command="overlay",
         filter_type="AVMEDIA_TYPE_VIDEO",

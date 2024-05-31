@@ -17,7 +17,7 @@ filters
     :special-members: __init__, __len__
 
 
-complex filters
+complex_filters
 =================
 
 .. automodule:: zprp_ffmpeg.filters
