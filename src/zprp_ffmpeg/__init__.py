@@ -7,6 +7,7 @@ from zprp_ffmpeg import _api_compat
 from zprp_ffmpeg import generated_filters
 
 from ._api_compat import input
+from ._api_compat import filter
 from ._api_compat import output
 from ._api_compat import run
 from ._api_compat import run_async
@@ -17,7 +18,7 @@ from .probe import probe
 from .view import view
 
 # This is for `from xyz import *`, but also to make linter shut up
-__all__ = ["input", "output", "run", "run_async", "hflip", "probe", "view"]
+__all__ = ["input", "filter", "output", "run", "run_async", "hflip", "probe", "view"]
 
 stream_modules = [generated_filters, _api_compat]
 
