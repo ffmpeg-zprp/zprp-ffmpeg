@@ -7424,49 +7424,48 @@ def showspatial(
     return graph
 
 
-def overlay(
-    graph: Stream,
-    x: Optional[str] = None,
-    y: Optional[str] = None,
-    eof_action: Optional[str] = None,
-    eval: Optional[str] = None,
-    shortest: Optional[bool] = None,
-    format: Optional[str] = None,
-    repeatlast: Optional[bool] = None,
-    alpha: Optional[str] = None,
-):
-    """Overlay a video source on top of the input.
+# def overlay(
+#     graph: Stream,
+#     x: Optional[str] = None,
+#     y: Optional[str] = None,
+#     eof_action: Optional[str] = None,
+#     eval: Optional[str] = None,
+#     shortest: Optional[bool] = None,
+#     format: Optional[str] = None,
+#     repeatlast: Optional[bool] = None,
+#     alpha: Optional[str] = None,
+# ):
+#     """Overlay a video source on top of the input.
+#     :param str x: set the x expression
+#     :param str y: set the y expression
+#     :param str eof_action: Action to take when encountering EOF from secondary input
+#             possible values: repeat, endall, pass
+#     :param str eval: specify when to evaluate expressions
+#             possible values: init, frame
+#     :param bool shortest: force termination when the shortest input terminates
+#     :param str format: set output format
+#             possible values: yuv420, yuv420p10, yuv422, yuv422p10, yuv444, yuv444p10, rgb, gbrp, auto
+#     :param bool repeatlast: repeat overlay of the last overlay frame
+#     :param str alpha: alpha format
+#             possible values: straight, premultiplied"""
+#     graph.append(
+#         Filter(
+#             command="overlay",
+#             filter_type="AVMEDIA_TYPE_VIDEO",
+#             params=[
+#                 FilterOption(name="x", value=x),
+#                 FilterOption(name="y", value=y),
+#                 FilterOption(name="eof_action", value=eof_action),
+#                 FilterOption(name="eval", value=eval),
+#                 FilterOption(name="shortest", value=shortest),
+#                 FilterOption(name="format", value=format),
+#                 FilterOption(name="repeatlast", value=repeatlast),
+#                 FilterOption(name="alpha", value=alpha),
+#             ],
+#         )
+#     )
+#     return graph
 
-    :param str x: set the x expression
-    :param str y: set the y expression
-    :param str eof_action: Action to take when encountering EOF from secondary input
-            possible values: repeat, endall, pass
-    :param str eval: specify when to evaluate expressions
-            possible values: init, frame
-    :param bool shortest: force termination when the shortest input terminates
-    :param str format: set output format
-            possible values: yuv420, yuv420p10, yuv422, yuv422p10, yuv444, yuv444p10, rgb, gbrp, auto
-    :param bool repeatlast: repeat overlay of the last overlay frame
-    :param str alpha: alpha format
-            possible values: straight, premultiplied
-    """
-    graph.append(
-        Filter(
-            command="overlay",
-            filter_type="AVMEDIA_TYPE_VIDEO",
-            params=[
-                FilterOption(name="x", value=x),
-                FilterOption(name="y", value=y),
-                FilterOption(name="eof_action", value=eof_action),
-                FilterOption(name="eval", value=eval),
-                FilterOption(name="shortest", value=shortest),
-                FilterOption(name="format", value=format),
-                FilterOption(name="repeatlast", value=repeatlast),
-                FilterOption(name="alpha", value=alpha),
-            ],
-        )
-    )
-    return graph
 
 
 def null(

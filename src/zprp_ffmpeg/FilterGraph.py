@@ -33,7 +33,7 @@ class Filter:
     def add_output(self, parent: "Filter | SinkFilter"):
         self._out.append(parent)
 
-    def add_input(self, child: "Filter | SourceFilter"):
+    def add_input(self, child: "Filter | SourceFilter | Stream"):
         self._in.append(child)
 
     def get_command(self):
@@ -41,10 +41,10 @@ class Filter:
         if joined_params:  # if there was no option, leave empty string
             joined_params = "=" + joined_params
         if self.filter_type == "AVMEDIA_TYPE_VIDEO":
-            return "-vf " + self.command + joined_params
+            return ":v]" + self.command + joined_params
 
         elif self.filter_type == "AVMEDIA_TYPE_AUDIO":
-            return "-af " + self.command + joined_params
+            return ":a]" + self.command + joined_params
 
         return ""  # in case no match
 
@@ -81,7 +81,7 @@ class SinkFilter:
         raise NotImplementedError("This node can't have outputs")
 
     def get_command(self):
-        return self.out_path
+        return "-map " + self.out_path
 
 
 # in python 3.12 there is 'type' keyword, but we are targetting 3.8
@@ -105,3 +105,55 @@ class Stream:
                 node.add_input(self._nodes[-1])
         self._nodes.append(node)
         return self  # fluent
+
+
+class FilterParser:
+    def __init__(self):
+        self.multi_input = ["concat", "overlay"]
+        self.inputs_counter = 0
+        self.outputs_counter = 0
+        self.filter_counter = 0
+        self.result_counter = 0
+
+        self.inputs = []
+        self.outputs = []
+        self.filters = []
+
+    def generate_command(self, stream: Stream) -> str:
+        last = None
+        for node in stream._nodes:
+            # many inputs one output
+            if (command := node.get_command()) and any(filter_ in command for filter_ in self.multi_input):
+                last_results = []
+                _, command = command.split("]")
+                for graph in node._in:
+                    last_results.append(self.generate_command(graph))
+                last_results = "".join([f"[{result}]" for result in last_results])
+                self.filters.append(f"{last_results}{command}[v{self.result_counter}];")
+                last = f"v{self.result_counter}"
+                self.result_counter += 1
+            # input
+            elif isinstance(node, SourceFilter):
+                self.inputs.append(f"{command}")
+                last = self.inputs_counter
+                self.inputs_counter += 1
+                continue
+            # output
+            elif isinstance(node, SinkFilter):
+                map_cmd, file = command.split(" ")
+                self.outputs.append(f"{map_cmd} [{last}] {file}")
+                self.outputs_counter += 1
+                continue
+            # single input single output
+            else:
+                if isinstance(last, int):
+                    self.filters.append(f"[{last}{command}[v{self.result_counter}];")
+                else:
+                    self.filters.append(f"[{last}{command[2:]}[v{self.result_counter}];")
+                last = f"v{self.result_counter}"
+                self.result_counter += 1
+        return last
+
+    def generate_result(self, stream):
+        self.generate_command(stream)
+        return " ".join(self.inputs) + ' -filter_complex "' + " ".join(self.filters)[:-1] + '" ' + " ".join(self.outputs)
