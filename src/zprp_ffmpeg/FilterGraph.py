@@ -48,6 +48,9 @@ class Filter:
 
         return ""  # in case no match
 
+    def __eq__(self, other):
+        return self.command == other.command and self.filter_type == other.filter_type and all(x == y for (x, y) in zip(self.params, other.params))
+
 
 # names as per ffmpeg documentation
 class SourceFilter:
@@ -66,6 +69,9 @@ class SourceFilter:
     def get_command(self):
         return "-i " + self.in_path
 
+    def __eq__(self, other):
+        return self.in_path == other.in_path
+
 
 class SinkFilter:
     """Similarly to SourceFilter, it doesn't make sense to output anything further, this is the end of graph."""
@@ -82,6 +88,9 @@ class SinkFilter:
 
     def get_command(self):
         return self.out_path
+
+    def __eq__(self, other):
+        return self.out_path == other.out_path
 
 
 # in python 3.12 there is 'type' keyword, but we are targetting 3.8
@@ -105,3 +114,6 @@ class Stream:
                 node.add_input(self._nodes[-1])
         self._nodes.append(node)
         return self  # fluent
+
+    def __eq__(self, other):
+        return all(x == y for (x, y) in zip(self._nodes, other._nodes))
