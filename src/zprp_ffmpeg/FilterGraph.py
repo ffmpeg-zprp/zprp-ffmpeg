@@ -4,7 +4,6 @@ It slightly violates DRY, but the parameter types are different. It is what it i
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
-from typing import ClassVar
 from typing import List
 from typing import Optional
 from typing import Union
@@ -109,15 +108,16 @@ class Stream:
 
 
 class FilterParser:
-    multi_input: ClassVar[List[str]] = ["concat", "overlay"]
-    inputs_counter = 0
-    outputs_counter = 0
-    filter_counter = 0
-    result_counter = 0
+    def __init__(self):
+        self.multi_input = ["concat", "overlay"]
+        self.inputs_counter = 0
+        self.outputs_counter = 0
+        self.filter_counter = 0
+        self.result_counter = 0
 
-    inputs: ClassVar[List[str]] = []
-    outputs: ClassVar[List[str]] = []
-    filters: ClassVar[List[str]] = []
+        self.inputs = []
+        self.outputs = []
+        self.filters = []
 
     def generate_command(self, stream: Stream) -> str:
         last = None
@@ -146,7 +146,10 @@ class FilterParser:
                 continue
             # single input single output
             else:
-                self.filters.append(f"[{last}{command}[v{self.result_counter}];")
+                if isinstance(last, int):
+                    self.filters.append(f"[{last}{command}[v{self.result_counter}];")
+                else:
+                    self.filters.append(f"[{last}{command[2:]}[v{self.result_counter}];")
                 last = f"v{self.result_counter}"
                 self.result_counter += 1
         return last
