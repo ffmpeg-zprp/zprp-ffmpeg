@@ -4,4 +4,4 @@ Reference
 .. toctree::
     :glob:
 
-    zprp_ffmpeg*
+    zprp_ffmpeg

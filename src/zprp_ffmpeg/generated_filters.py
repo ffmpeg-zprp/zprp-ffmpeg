@@ -7,10 +7,12 @@ from zprp_ffmpeg.FilterGraph import Stream
 
 def hwmap(graph: Stream, mode: Optional[str] = None, derive_device: Optional[str] = None, reverse: Optional[int] = None):
     """Map hardware frames
+
     :param str mode: Frame mapping mode
             possible values: read, write, overwrite, direct
     :param str derive_device: Derive a new device of this type
-    :param int reverse: Map in reverse (create and allocate in the sink)"""
+    :param int reverse: Map in reverse (create and allocate in the sink)
+    """
     graph.append(
         Filter(
             command="hwmap",
@@ -27,8 +29,10 @@ def hwmap(graph: Stream, mode: Optional[str] = None, derive_device: Optional[str
 
 def vibrato(graph: Stream, f: Optional[float] = None, d: Optional[float] = None):
     """Apply vibrato effect.
+
     :param float f: set frequency in hertz
-    :param float d: set depth as percentage"""
+    :param float d: set depth as percentage
+    """
     graph.append(
         Filter(
             command="vibrato", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="f", value=f), FilterOption(name="d", value=d)]
@@ -61,12 +65,14 @@ def colormap(
     kernel: Optional[str] = None,
 ):
     """Apply custom Color Maps to video stream.
+
     :param int patch_size: set patch size
     :param int nb_patches: set number of patches
     :param str type: set the target type used
             possible values: relative, absolute
     :param str kernel: set the kernel used for measuring color difference
-            possible values: euclidean, weuclidean"""
+            possible values: euclidean, weuclidean
+    """
     graph.append(
         Filter(
             command="colormap",
@@ -99,13 +105,15 @@ def tiltandshift(
     pad: Optional[int] = None,
 ):
     """Generate a tilt-and-shift'd video.
+
     :param int tilt: Tilt the video horizontally while shifting
     :param str start: Action at the start of input
             possible values: none, frame, black
     :param str end: Action at the end of input
             possible values: none, frame, black
     :param int hold: Number of columns to hold at the start of the video
-    :param int pad: Number of columns to pad at the end of the video"""
+    :param int pad: Number of columns to pad at the end of the video
+    """
     graph.append(
         Filter(
             command="tiltandshift",
@@ -126,6 +134,7 @@ def w3fdif(
     graph: Stream, filter: Optional[str] = None, mode: Optional[str] = None, parity: Optional[str] = None, deint: Optional[str] = None
 ):
     """Apply Martin Weston three field deinterlace.
+
     :param str filter: specify the filter
             possible values: simple, complex
     :param str mode: specify the interlacing mode
@@ -133,7 +142,8 @@ def w3fdif(
     :param str parity: specify the assumed picture field parity
             possible values: tff, bff, auto
     :param str deint: specify which frames to deinterlace
-            possible values: all, interlaced"""
+            possible values: all, interlaced
+    """
     graph.append(
         Filter(
             command="w3fdif",
@@ -159,6 +169,7 @@ def aap(
     precision: Optional[str] = None,
 ):
     """Apply Affine Projection algorithm to first audio stream.
+
     :param int order: set the filter order
     :param int projection: set the filter projection
     :param float mu: set the filter mu
@@ -166,7 +177,8 @@ def aap(
     :param str out_mode: set output mode
             possible values: i, d, o, n, e
     :param str precision: set processing precision
-            possible values: auto, float, double"""
+            possible values: auto, float, double
+    """
     graph.append(
         Filter(
             command="aap",
@@ -196,6 +208,7 @@ def drawbox(
     box_source: Optional[str] = None,
 ):
     """Draw a colored box on the input video.
+
     :param str x: set horizontal position of the left box edge
     :param str y: set vertical position of the top box edge
     :param str width: set width of the box
@@ -203,7 +216,8 @@ def drawbox(
     :param str color: set color of the box
     :param str thickness: set the box thickness
     :param bool replace: replace color & alpha
-    :param str box_source: use datas from bounding box in side data"""
+    :param str box_source: use datas from bounding box in side data
+    """
     graph.append(
         Filter(
             command="drawbox",
@@ -234,13 +248,15 @@ def drawgrid(
     replace: Optional[bool] = None,
 ):
     """Draw a colored grid on the input video.
+
     :param str x: set horizontal offset
     :param str y: set vertical offset
     :param str width: set width of grid cell
     :param str height: set height of grid cell
     :param str color: set color of the grid
     :param str thickness: set grid line thickness
-    :param bool replace: replace color & alpha"""
+    :param bool replace: replace color & alpha
+    """
     graph.append(
         Filter(
             command="drawgrid",
@@ -269,7 +285,9 @@ def earwax(
 
 def bbox(graph: Stream, min_val: Optional[int] = None):
     """Compute bounding box for each frame.
-    :param int min_val: set minimum luminance value for bounding box"""
+
+    :param int min_val: set minimum luminance value for bounding box
+    """
     graph.append(Filter(command="bbox", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="min_val", value=min_val)]))
     return graph
 
@@ -292,6 +310,7 @@ def mandelbrot(
     inner: Optional[str] = None,
 ):
     """Render a Mandelbrot fractal.
+
     :param int size: set frame size
     :param str rate: set frame rate
     :param int maxiter: set max iterations number
@@ -307,7 +326,8 @@ def mandelbrot(
     :param str outer: set outer coloring mode
             possible values: iteration_count, normalized_iteration_count, white, outz
     :param str inner: set inner coloring mode
-            possible values: black, period, convergence, mincol"""
+            possible values: black, period, convergence, mincol
+    """
     graph.append(
         Filter(
             command="mandelbrot",
@@ -350,6 +370,7 @@ def haas(
     right_phase: Optional[bool] = None,
 ):
     """Apply Haas Stereo Enhancer.
+
     :param float level_in: set level in
     :param float level_out: set level out
     :param float side_gain: set side gain
@@ -363,7 +384,8 @@ def haas(
     :param float right_delay: set right delay
     :param float right_balance: set right balance
     :param float right_gain: set right gain
-    :param bool right_phase: set right phase"""
+    :param bool right_phase: set right phase
+    """
     graph.append(
         Filter(
             command="haas",
@@ -390,8 +412,10 @@ def haas(
 
 def random(graph: Stream, frames: Optional[int] = None, seed: Optional[int] = None):
     """Return random frames.
+
     :param int frames: set number of frames in cache
-    :param int seed: set the seed"""
+    :param int seed: set the seed
+    """
     graph.append(
         Filter(
             command="random",
@@ -412,13 +436,15 @@ def aphaser(
     type: Optional[str] = None,
 ):
     """Add a phasing effect to the audio.
+
     :param float in_gain: set input gain
     :param float out_gain: set output gain
     :param float delay: set delay in milliseconds
     :param float decay: set decay
     :param float speed: set modulation speed
     :param str type: set modulation type
-            possible values: triangular, t, sinusoidal, s"""
+            possible values: triangular, t, sinusoidal, s
+    """
     graph.append(
         Filter(
             command="aphaser",
@@ -438,10 +464,12 @@ def aphaser(
 
 def feedback(graph: Stream, x: Optional[int] = None, y: Optional[int] = None, w: Optional[int] = None, h: Optional[int] = None):
     """Apply feedback video filter.
+
     :param int x: set top left crop position
     :param int y: set top left crop position
     :param int w: set crop size
-    :param int h: set crop size"""
+    :param int h: set crop size
+    """
     graph.append(
         Filter(
             command="feedback",
@@ -469,6 +497,7 @@ def aexciter(
     listen: Optional[bool] = None,
 ):
     """Enhance high frequency part of audio.
+
     :param float level_in: set level in
     :param float level_out: set level out
     :param float amount: set amount
@@ -476,7 +505,8 @@ def aexciter(
     :param float blend: set blend harmonics
     :param float freq: set scope
     :param float ceil: set ceiling
-    :param bool listen: enable listen mode"""
+    :param bool listen: enable listen mode
+    """
     graph.append(
         Filter(
             command="aexciter",
@@ -520,11 +550,13 @@ def palettegen(
     stats_mode: Optional[str] = None,
 ):
     """Find the optimal palette for a given stream.
+
     :param int max_colors: set the maximum number of colors to use in the palette
     :param bool reserve_transparent: reserve a palette entry for transparency
     :param str transparency_color: set a background color for transparency
     :param str stats_mode: set statistics mode
-            possible values: full, diff, single"""
+            possible values: full, diff, single
+    """
     graph.append(
         Filter(
             command="palettegen",
@@ -548,10 +580,12 @@ def adrc(
     channels: Optional[str] = None,
 ):
     """Audio Spectral Dynamic Range Controller.
+
     :param str transfer: set the transfer expression
     :param float attack: set the attack
     :param float release: set the release
-    :param str channels: set channels to filter"""
+    :param str channels: set channels to filter
+    """
     graph.append(
         Filter(
             command="adrc",
@@ -582,6 +616,7 @@ def loudnorm(
     print_format: Optional[str] = None,
 ):
     """EBU R128 loudness normalization
+
     :param float I: set integrated loudness target
     :param float LRA: set loudness range target
     :param float TP: set maximum true peak
@@ -593,7 +628,8 @@ def loudnorm(
     :param bool linear: normalize linearly if possible
     :param bool dual_mono: treat mono input as dual-mono
     :param str print_format: set print format for stats
-            possible values: none, json, summary"""
+            possible values: none, json, summary
+    """
     graph.append(
         Filter(
             command="loudnorm",
@@ -627,13 +663,15 @@ def colorcontrast(
     pl: Optional[float] = None,
 ):
     """Adjust color contrast between RGB components.
+
     :param float rc: set the red-cyan contrast
     :param float gm: set the green-magenta contrast
     :param float by: set the blue-yellow contrast
     :param float rcw: set the red-cyan weight
     :param float gmw: set the green-magenta weight
     :param float byw: set the blue-yellow weight
-    :param float pl: set the amount of preserving lightness"""
+    :param float pl: set the amount of preserving lightness
+    """
     graph.append(
         Filter(
             command="colorcontrast",
@@ -660,10 +698,12 @@ def scroll(
     vpos: Optional[float] = None,
 ):
     """Scroll input video.
+
     :param float horizontal: set the horizontal scrolling speed
     :param float vertical: set the vertical scrolling speed
     :param float hpos: set initial horizontal position
-    :param float vpos: set initial vertical position"""
+    :param float vpos: set initial vertical position
+    """
     graph.append(
         Filter(
             command="scroll",
@@ -688,13 +728,15 @@ def shufflepixels(
     seed: Optional[int] = None,
 ):
     """Shuffle video pixels.
+
     :param str direction: set shuffle direction
             possible values: forward, inverse
     :param str mode: set shuffle mode
             possible values: horizontal, vertical, block
     :param int width: set block width
     :param int height: set block height
-    :param int seed: set random seed"""
+    :param int seed: set random seed
+    """
     graph.append(
         Filter(
             command="shufflepixels",
@@ -725,6 +767,7 @@ def sinc(
     lptaps: Optional[int] = None,
 ):
     """Generate a sinc kaiser-windowed low-pass, high-pass, band-pass, or band-reject FIR coefficients.
+
     :param int sample_rate: set sample rate
     :param int nb_samples: set the number of samples per requested frame
     :param float hp: set high-pass filter frequency
@@ -734,7 +777,8 @@ def sinc(
     :param float att: set stop-band attenuation
     :param bool round: enable rounding
     :param int hptaps: set number of taps for high-pass filter
-    :param int lptaps: set number of taps for low-pass filter"""
+    :param int lptaps: set number of taps for low-pass filter
+    """
     graph.append(
         Filter(
             command="sinc",
@@ -764,6 +808,7 @@ def hilbert(
     win_func: Optional[str] = None,
 ):
     """Generate a Hilbert transform FIR coefficients.
+
     :param int sample_rate: set sample rate
     :param int taps: set number of taps
     :param int nb_samples: set the number of samples per requested frame
@@ -787,8 +832,10 @@ def hilbert(
 
 def exposure(graph: Stream, exposure: Optional[float] = None, black: Optional[float] = None):
     """Adjust exposure of the video stream.
+
     :param float exposure: set the exposure correction
-    :param float black: set the black level correction"""
+    :param float black: set the black level correction
+    """
     graph.append(
         Filter(
             command="exposure",
@@ -815,6 +862,7 @@ def boxblur(
     ap: Optional[int] = None,
 ):
     """Blur the input.
+
     :param str luma_radius: Radius of the luma blurring box
     :param str lr: Radius of the luma blurring box
     :param int luma_power: How many times should the boxblur be applied to luma
@@ -826,7 +874,8 @@ def boxblur(
     :param str alpha_radius: Radius of the alpha blurring box
     :param str ar: Radius of the alpha blurring box
     :param int alpha_power: How many times should the boxblur be applied to alpha
-    :param int ap: How many times should the boxblur be applied to alpha"""
+    :param int ap: How many times should the boxblur be applied to alpha
+    """
     graph.append(
         Filter(
             command="boxblur",
@@ -868,12 +917,14 @@ def addroi(
     clear: Optional[bool] = None,
 ):
     """Add region of interest to frame.
+
     :param str x: Region distance from left edge of frame.
     :param str y: Region distance from top edge of frame.
     :param str w: Region width.
     :param str h: Region height.
     :param int qoffset: Quantisation offset to apply in the region.
-    :param bool clear: Remove any existing regions of interest before adding the new one."""
+    :param bool clear: Remove any existing regions of interest before adding the new one.
+    """
     graph.append(
         Filter(
             command="addroi",
@@ -900,12 +951,14 @@ def afftfilt(
     overlap: Optional[float] = None,
 ):
     """Apply arbitrary expressions to samples in frequency domain.
+
     :param str real: set channels real expressions
     :param str imag: set channels imaginary expressions
     :param int win_size: set window size
     :param str win_func: set window function
             possible values: rect, bartlett, hann, hanning, hamming, blackman, welch, flattop, bharris, bnuttall, bhann, sine, nuttall, lanczos, gauss, tukey, dolph, cauchy, parzen, poisson, bohman, kaiser
-    :param float overlap: set window overlap"""
+    :param float overlap: set window overlap
+    """
     graph.append(
         Filter(
             command="afftfilt",
@@ -924,9 +977,11 @@ def afftfilt(
 
 def colortemperature(graph: Stream, temperature: Optional[float] = None, mix: Optional[float] = None, pl: Optional[float] = None):
     """Adjust color temperature of video.
+
     :param float temperature: set the temperature in Kelvin
     :param float mix: set the mix with filtered output
-    :param float pl: set the amount of preserving lightness"""
+    :param float pl: set the amount of preserving lightness
+    """
     graph.append(
         Filter(
             command="colortemperature",
@@ -951,13 +1006,15 @@ def colorcorrect(
     analyze: Optional[str] = None,
 ):
     """Adjust color white balance selectively for blacks and whites.
+
     :param float rl: set the red shadow spot
     :param float bl: set the blue shadow spot
     :param float rh: set the red highlight spot
     :param float bh: set the blue highlight spot
     :param float saturation: set the amount of saturation
     :param str analyze: set the analyze mode
-            possible values: manual, average, minmax, median"""
+            possible values: manual, average, minmax, median
+    """
     graph.append(
         Filter(
             command="colorcorrect",
@@ -984,11 +1041,13 @@ def maskfun(
     sum: Optional[int] = None,
 ):
     """Create Mask.
+
     :param int low: set low threshold
     :param int high: set high threshold
     :param int planes: set planes
     :param int fill: set fill value
-    :param int sum: set sum value"""
+    :param int sum: set sum value
+    """
     graph.append(
         Filter(
             command="maskfun",
@@ -1020,6 +1079,7 @@ def scale_vaapi(
     force_divisible_by: Optional[int] = None,
 ):
     """Scale to/from VAAPI surfaces.
+
     :param str w: Output video width
     :param str h: Output video height
     :param str format: Output video format (software format of hardware frames)
@@ -1068,6 +1128,7 @@ def afirsrc(
     win_func: Optional[str] = None,
 ):
     """Generate a FIR coefficients audio stream.
+
     :param int taps: set number of taps
     :param str frequency: set frequency points
     :param str magnitude: set magnitude values
@@ -1107,6 +1168,7 @@ def afireqsrc(
     phase: Optional[str] = None,
 ):
     """Generate a FIR equalizer coefficients audio stream.
+
     :param str preset: set equalizer preset
             possible values: custom
     :param str gains: set gain values per band
@@ -1117,7 +1179,8 @@ def afireqsrc(
     :param str interp: set the interpolation
             possible values: linear, cubic
     :param str phase: set the phase
-            possible values: linear, min"""
+            possible values: linear, min
+    """
     graph.append(
         Filter(
             command="afireqsrc",
@@ -1147,12 +1210,14 @@ def crop(
     exact: Optional[bool] = None,
 ):
     """Crop the input video.
+
     :param str out_w: set the width crop area expression
     :param str out_h: set the height crop area expression
     :param str x: set the x crop area expression
     :param str y: set the y crop area expression
     :param bool keep_aspect: keep aspect ratio
-    :param bool exact: do exact cropping"""
+    :param bool exact: do exact cropping
+    """
     graph.append(
         Filter(
             command="crop",
@@ -1187,11 +1252,13 @@ def readeia608(
     lp: Optional[bool] = None,
 ):
     """Read EIA-608 Closed Caption codes from input video and write them to frame metadata.
+
     :param int scan_min: set from which line to scan for codes
     :param int scan_max: set to which line to scan for codes
     :param float spw: set ratio of width reserved for sync code detection
     :param bool chp: check and apply parity bit
-    :param bool lp: lowpass line prior to processing"""
+    :param bool lp: lowpass line prior to processing
+    """
     graph.append(
         Filter(
             command="readeia608",
@@ -1218,12 +1285,14 @@ def zoompan(
     fps: Optional[str] = None,
 ):
     """Apply Zoom & Pan effect.
+
     :param str zoom: set the zoom expression
     :param str x: set the x expression
     :param str y: set the y expression
     :param str d: set the duration expression
     :param int s: set the output image size
-    :param str fps: set the output framerate"""
+    :param str fps: set the output framerate
+    """
     graph.append(
         Filter(
             command="zoompan",
@@ -1255,6 +1324,7 @@ def colorbalance(
     pl: Optional[bool] = None,
 ):
     """Adjust the color balance.
+
     :param float rs: set red shadows
     :param float gs: set green shadows
     :param float bs: set blue shadows
@@ -1264,7 +1334,8 @@ def colorbalance(
     :param float rh: set red highlights
     :param float gh: set green highlights
     :param float bh: set blue highlights
-    :param bool pl: preserve lightness"""
+    :param bool pl: preserve lightness
+    """
     graph.append(
         Filter(
             command="colorbalance",
@@ -1311,13 +1382,15 @@ def graphmonitor(
     rate: Optional[str] = None,
 ):
     """Show various filtergraph stats.
+
     :param int size: set monitor size
     :param float opacity: set video opacity
     :param str mode: set mode
             possible values: full, compact, nozero, noeof, nodisabled
     :param str flags: set flags
             possible values: none, all, queue, frame_count_in, frame_count_out, frame_count_delta, pts, pts_delta, time, time_delta, timebase, format, size, rate, eof, sample_count_in, sample_count_out, sample_count_delta, disabled
-    :param str rate: set video rate"""
+    :param str rate: set video rate
+    """
     graph.append(
         Filter(
             command="graphmonitor",
@@ -1344,23 +1417,29 @@ def agraphmonitor(
 
 def untile(graph: Stream, layout: Optional[int] = None):
     """Untile a frame into a sequence of frames.
-    :param int layout: set grid size"""
+
+    :param int layout: set grid size
+    """
     graph.append(Filter(command="untile", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="layout", value=layout)]))
     return graph
 
 
 def vmafmotion(graph: Stream, stats_file: Optional[str] = None):
     """Calculate the VMAF Motion score.
-    :param str stats_file: Set file where to store per-frame difference information"""
+
+    :param str stats_file: Set file where to store per-frame difference information
+    """
     graph.append(Filter(command="vmafmotion", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="stats_file", value=stats_file)]))
     return graph
 
 
 def blockdetect(graph: Stream, period_min: Optional[int] = None, period_max: Optional[int] = None, planes: Optional[int] = None):
     """Blockdetect filter.
+
     :param int period_min: Minimum period to search for
     :param int period_max: Maximum period to search for
-    :param int planes: set planes to filter"""
+    :param int planes: set planes to filter
+    """
     graph.append(
         Filter(
             command="blockdetect",
@@ -1377,9 +1456,11 @@ def blockdetect(graph: Stream, period_min: Optional[int] = None, period_max: Opt
 
 def tmidequalizer(graph: Stream, radius: Optional[int] = None, sigma: Optional[float] = None, planes: Optional[int] = None):
     """Apply Temporal Midway Equalization.
+
     :param int radius: set radius
     :param float sigma: set sigma
-    :param int planes: set planes"""
+    :param int planes: set planes
+    """
     graph.append(
         Filter(
             command="tmidequalizer",
@@ -1396,8 +1477,10 @@ def tmidequalizer(graph: Stream, radius: Optional[int] = None, sigma: Optional[f
 
 def overlay_vulkan(graph: Stream, x: Optional[int] = None, y: Optional[int] = None):
     """Overlay a source on top of another
+
     :param int x: Set horizontal offset
-    :param int y: Set vertical offset"""
+    :param int y: Set vertical offset
+    """
     graph.append(
         Filter(
             command="overlay_vulkan",
@@ -1420,6 +1503,7 @@ def despill(
     alpha: Optional[bool] = None,
 ):
     """Despill video.
+
     :param str type: set the screen type
             possible values: green, blue
     :param float mix: set the spillmap mix
@@ -1428,7 +1512,8 @@ def despill(
     :param float green: set green scale
     :param float blue: set blue scale
     :param float brightness: set brightness
-    :param bool alpha: change alpha component"""
+    :param bool alpha: change alpha component
+    """
     graph.append(
         Filter(
             command="despill",
@@ -1458,6 +1543,7 @@ def volume(
     replaygain_noclip: Optional[bool] = None,
 ):
     """Change input volume.
+
     :param str volume: set volume adjustment expression
     :param str precision: select mathematical precision
             possible values: fixed, float, double
@@ -1466,7 +1552,8 @@ def volume(
     :param str replaygain: Apply replaygain side data when present
             possible values: drop, ignore, track, album
     :param float replaygain_preamp: Apply replaygain pre-amplification
-    :param bool replaygain_noclip: Apply replaygain clipping prevention"""
+    :param bool replaygain_noclip: Apply replaygain clipping prevention
+    """
     graph.append(
         Filter(
             command="volume",
@@ -1497,6 +1584,7 @@ def unsharp(
     alpha_amount: Optional[float] = None,
 ):
     """Sharpen or blur the input video.
+
     :param int luma_msize_x: set luma matrix horizontal size
     :param int luma_msize_y: set luma matrix vertical size
     :param float luma_amount: set luma effect strength
@@ -1505,7 +1593,8 @@ def unsharp(
     :param float chroma_amount: set chroma effect strength
     :param int alpha_msize_x: set alpha matrix horizontal size
     :param int alpha_msize_y: set alpha matrix vertical size
-    :param float alpha_amount: set alpha effect strength"""
+    :param float alpha_amount: set alpha effect strength
+    """
     graph.append(
         Filter(
             command="unsharp",
@@ -1536,9 +1625,11 @@ def swapuv(
 
 def avgblur_vulkan(graph: Stream, sizeX: Optional[int] = None, sizeY: Optional[int] = None, planes: Optional[int] = None):
     """Apply avgblur mask to input video
+
     :param int sizeX: Set horizontal radius
     :param int sizeY: Set vertical radius
-    :param int planes: Set planes to filter (bitmask)"""
+    :param int planes: Set planes to filter (bitmask)
+    """
     graph.append(
         Filter(
             command="avgblur_vulkan",
@@ -1563,12 +1654,14 @@ def pad_opencl(
     aspect: Optional[int] = None,
 ):
     """Pad the input video.
+
     :param str width: set the pad area width
     :param str height: set the pad area height
     :param str x: set the x offset for the input image position
     :param str y: set the y offset for the input image position
     :param str color: set the color of the padded area border
-    :param int aspect: pad to fit an aspect instead of a resolution"""
+    :param int aspect: pad to fit an aspect instead of a resolution
+    """
     graph.append(
         Filter(
             command="pad_opencl",
@@ -1588,9 +1681,11 @@ def pad_opencl(
 
 def limiter(graph: Stream, min: Optional[int] = None, max: Optional[int] = None, planes: Optional[int] = None):
     """Limit pixels components to the specified range.
+
     :param int min: set min value
     :param int max: set max value
-    :param int planes: set planes"""
+    :param int planes: set planes
+    """
     graph.append(
         Filter(
             command="limiter",
@@ -1616,6 +1711,7 @@ def apulsator(
     hz: Optional[float] = None,
 ):
     """Audio pulsator.
+
     :param float level_in: set input gain
     :param float level_out: set output gain
     :param str mode: set mode
@@ -1628,7 +1724,8 @@ def apulsator(
             possible values: bpm, ms, hz
     :param float bpm: set BPM
     :param int ms: set ms
-    :param float hz: set frequency"""
+    :param float hz: set frequency
+    """
     graph.append(
         Filter(
             command="apulsator",
@@ -1661,6 +1758,7 @@ def il(
     alpha_swap: Optional[bool] = None,
 ):
     """Deinterleave or interleave fields.
+
     :param str luma_mode: select luma mode
             possible values: none, interleave, i, deinterleave, d
     :param str chroma_mode: select chroma mode
@@ -1669,7 +1767,8 @@ def il(
             possible values: none, interleave, i, deinterleave, d
     :param bool luma_swap: swap luma fields
     :param bool chroma_swap: swap chroma fields
-    :param bool alpha_swap: swap alpha fields"""
+    :param bool alpha_swap: swap alpha fields
+    """
     graph.append(
         Filter(
             command="il",
@@ -1689,11 +1788,13 @@ def il(
 
 def morpho(graph: Stream, mode: Optional[str] = None, planes: Optional[int] = None, structure: Optional[str] = None):
     """Apply Morphological filter.
+
     :param str mode: set morphological transform
             possible values: erode, dilate, open, close, gradient, tophat, blackhat
     :param int planes: set planes to filter
     :param str structure: when to process structures
-            possible values: first, all"""
+            possible values: first, all
+    """
     graph.append(
         Filter(
             command="morpho",
@@ -1734,8 +1835,10 @@ def lutrgb(
 
 def negate(graph: Stream, components: Optional[str] = None, negate_alpha: Optional[bool] = None):
     """Negate input video.
+
     :param str components: set components to negate
-            possible values: y, u, v, r, g, b, a"""
+            possible values: y, u, v, r, g, b, a
+    """
     graph.append(
         Filter(
             command="negate",
@@ -1748,7 +1851,9 @@ def negate(graph: Stream, components: Optional[str] = None, negate_alpha: Option
 
 def hwupload(graph: Stream, derive_device: Optional[str] = None):
     """Upload a normal frame to a hardware frame
-    :param str derive_device: Derive a new device of this type"""
+
+    :param str derive_device: Derive a new device of this type
+    """
     graph.append(
         Filter(command="hwupload", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="derive_device", value=derive_device)])
     )
@@ -1757,14 +1862,18 @@ def hwupload(graph: Stream, derive_device: Optional[str] = None):
 
 def dejudder(graph: Stream, cycle: Optional[int] = None):
     """Remove judder produced by pullup.
-    :param int cycle: set the length of the cycle to use for dejuddering"""
+
+    :param int cycle: set the length of the cycle to use for dejuddering
+    """
     graph.append(Filter(command="dejudder", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="cycle", value=cycle)]))
     return graph
 
 
 def fsync(graph: Stream, file: Optional[str] = None):
     """Synchronize video frames from external source.
-    :param str file: set the file name to use for frame sync"""
+
+    :param str file: set the file name to use for frame sync
+    """
     graph.append(Filter(command="fsync", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="file", value=file)]))
     return graph
 
@@ -1773,11 +1882,13 @@ def tonemap(
     graph: Stream, tonemap: Optional[str] = None, param: Optional[float] = None, desat: Optional[float] = None, peak: Optional[float] = None
 ):
     """Conversion to/from different dynamic ranges.
+
     :param str tonemap: tonemap algorithm selection
             possible values: none, linear, gamma, clip, reinhard, hable, mobius
     :param float param: tonemap parameter
     :param float desat: desaturation strength
-    :param float peak: signal peak override"""
+    :param float peak: signal peak override
+    """
     graph.append(
         Filter(
             command="tonemap",
@@ -1815,6 +1926,7 @@ def superequalizer(
     _18b: Optional[float] = None,
 ):
     """Apply 18 band equalization filter.
+
     :param float 1b: set 65Hz band gain
     :param float 2b: set 92Hz band gain
     :param float 3b: set 131Hz band gain
@@ -1832,7 +1944,8 @@ def superequalizer(
     :param float 15b: set 8372Hz band gain
     :param float 16b: set 11840Hz band gain
     :param float 17b: set 16744Hz band gain
-    :param float 18b: set 20000Hz band gain"""
+    :param float 18b: set 20000Hz band gain
+    """
     graph.append(
         Filter(
             command="superequalizer",
@@ -1875,6 +1988,7 @@ def asubboost(
     channels: Optional[str] = None,
 ):
     """Boost subwoofer frequencies.
+
     :param float dry: set dry gain
     :param float wet: set wet gain
     :param float boost: set max boost
@@ -1883,7 +1997,8 @@ def asubboost(
     :param float cutoff: set cutoff
     :param float slope: set slope
     :param float delay: set delay
-    :param str channels: set channels to filter"""
+    :param str channels: set channels to filter
+    """
     graph.append(
         Filter(
             command="asubboost",
@@ -1916,6 +2031,7 @@ def afade(
     unity: Optional[float] = None,
 ):
     """Fade in/out input audio.
+
     :param str type: set the fade direction
             possible values: in, out
     :param int start_sample: set number of first sample to start fading
@@ -1925,7 +2041,8 @@ def afade(
     :param str curve: set fade curve type
             possible values: nofade, tri, qsin, esin, hsin, log, ipar, qua, cub, squ, cbr, par, exp, iqsin, ihsin, dese, desi, losi, sinc, isinc, quat, quatr, qsin2, hsin2
     :param float silence: set the silence gain
-    :param float unity: set the unity gain"""
+    :param float unity: set the unity gain
+    """
     graph.append(
         Filter(
             command="afade",
@@ -1954,12 +2071,14 @@ def acrossfade(
     curve2: Optional[int] = None,
 ):
     """Cross fade two input audio streams.
+
     :param int nb_samples: set number of samples for cross fade duration
     :param int duration: set cross fade duration
     :param bool overlap: overlap 1st stream end with 2nd stream start
     :param str curve1: set fade curve type for 1st stream
             possible values: nofade, tri, qsin, esin, hsin, log, ipar, qua, cub, squ, cbr, par, exp, iqsin, ihsin, dese, desi, losi, sinc, isinc, quat, quatr, qsin2, hsin2
-    :param int curve2: set fade curve type for 2nd stream"""
+    :param int curve2: set fade curve type for 2nd stream
+    """
     graph.append(
         Filter(
             command="acrossfade",
@@ -1978,17 +2097,21 @@ def acrossfade(
 
 def pp(graph: Stream, subfilters: Optional[str] = None):
     """Filter video using libpostproc.
-    :param str subfilters: set postprocess subfilters"""
+
+    :param str subfilters: set postprocess subfilters
+    """
     graph.append(Filter(command="pp", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="subfilters", value=subfilters)]))
     return graph
 
 
 def histeq(graph: Stream, strength: Optional[float] = None, intensity: Optional[float] = None, antibanding: Optional[str] = None):
     """Apply global color histogram equalization.
+
     :param float strength: set the strength
     :param float intensity: set the intensity
     :param str antibanding: set the antibanding level
-            possible values: none, weak, strong"""
+            possible values: none, weak, strong
+    """
     graph.append(
         Filter(
             command="histeq",
@@ -2029,6 +2152,7 @@ def afftdn(
     gain_smooth: Optional[int] = None,
 ):
     """Denoise audio samples using FFT.
+
     :param float noise_reduction: set the noise reduction
     :param float noise_floor: set the noise floor
     :param str noise_type: set the noise type
@@ -2046,7 +2170,8 @@ def afftdn(
     :param float band_multiplier: set band multiplier
     :param str sample_noise: set sample noise mode
             possible values: none, start, begin, stop, end
-    :param int gain_smooth: set gain smooth radius"""
+    :param int gain_smooth: set gain smooth radius
+    """
     graph.append(
         Filter(
             command="afftdn",
@@ -2085,6 +2210,7 @@ def signature(
     th_it: Optional[float] = None,
 ):
     """Calculate the MPEG-7 video signature
+
     :param str detectmode: set the detectmode
             possible values: off, full, fast
     :param int nb_inputs: number of inputs
@@ -2095,7 +2221,8 @@ def signature(
     :param int th_dc: threshold to detect all words as similar
     :param int th_xh: threshold to detect frames as similar
     :param int th_di: minimum length of matching sequence in frames
-    :param float th_it: threshold for relation of good to all frames"""
+    :param float th_it: threshold for relation of good to all frames
+    """
     graph.append(
         Filter(
             command="signature",
@@ -2135,6 +2262,7 @@ def adynamicequalizer(
     precision: Optional[str] = None,
 ):
     """Apply Dynamic Equalization of input audio.
+
     :param float threshold: set detection threshold
     :param float dfrequency: set detection frequency
     :param float dqfactor: set detection Q factor
@@ -2154,7 +2282,8 @@ def adynamicequalizer(
     :param str auto: set auto threshold
             possible values: disabled, off, on, adaptive
     :param str precision: set processing precision
-            possible values: auto, float, double"""
+            possible values: auto, float, double
+    """
     graph.append(
         Filter(
             command="adynamicequalizer",
@@ -2190,11 +2319,13 @@ def sine(
     samples_per_frame: Optional[str] = None,
 ):
     """Generate sine wave audio signal.
+
     :param float frequency: set the sine frequency
     :param float beep_factor: set the beep frequency factor
     :param int sample_rate: set the sample rate
     :param int duration: set the audio duration
-    :param str samples_per_frame: set the number of samples per frame"""
+    :param str samples_per_frame: set the number of samples per frame
+    """
     graph.append(
         Filter(
             command="sine",
@@ -2221,6 +2352,7 @@ def anlms(
     precision: Optional[str] = None,
 ):
     """Apply Normalized Least-Mean-Squares algorithm to first audio stream.
+
     :param int order: set the filter order
     :param float mu: set the filter mu
     :param float eps: set the filter eps
@@ -2228,7 +2360,8 @@ def anlms(
     :param str out_mode: set output mode
             possible values: i, d, o, n, e
     :param str precision: set processing precision
-            possible values: auto, float, double"""
+            possible values: auto, float, double
+    """
     graph.append(
         Filter(
             command="anlms",
@@ -2256,10 +2389,12 @@ def anlmf(
 
 def maskedthreshold(graph: Stream, threshold: Optional[int] = None, planes: Optional[int] = None, mode: Optional[str] = None):
     """Pick pixels comparing absolute difference of two streams with threshold.
+
     :param int threshold: set threshold
     :param int planes: set planes
     :param str mode: set mode
-            possible values: abs, diff"""
+            possible values: abs, diff
+    """
     graph.append(
         Filter(
             command="maskedthreshold",
@@ -2287,6 +2422,7 @@ def alimiter(
     latency: Optional[bool] = None,
 ):
     """Audio lookahead limiter.
+
     :param float level_in: set input level
     :param float level_out: set output level
     :param float limit: set limit
@@ -2295,7 +2431,8 @@ def alimiter(
     :param bool asc: enable asc
     :param float asc_level: set asc level
     :param bool level: auto level
-    :param bool latency: compensate delay"""
+    :param bool latency: compensate delay
+    """
     graph.append(
         Filter(
             command="alimiter",
@@ -2318,6 +2455,7 @@ def alimiter(
 
 def asidedata(graph: Stream, mode: Optional[str] = None, type: Optional[str] = None):
     """Manipulate audio frame side data.
+
     :param str mode: set a mode of operation
             possible values: select, delete
     :param str type: set side data type
@@ -2335,6 +2473,7 @@ def asidedata(graph: Stream, mode: Optional[str] = None, type: Optional[str] = N
 
 def sidedata(graph: Stream, mode: Optional[str] = None, type: Optional[str] = None):
     """Manipulate video frame side data.
+
     :param str mode: set a mode of operation
             possible values: select, delete
     :param str type: set side data type
@@ -2352,7 +2491,9 @@ def sidedata(graph: Stream, mode: Optional[str] = None, type: Optional[str] = No
 
 def siti(graph: Stream, print_summary: Optional[bool] = None):
     """Calculate spatial information (SI) and temporal information (TI).
-    :param bool print_summary: Print summary showing average values"""
+
+    :param bool print_summary: Print summary showing average values
+    """
     graph.append(Filter(command="siti", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="print_summary", value=print_summary)]))
     return graph
 
@@ -2373,6 +2514,7 @@ def sab(
     cs: Optional[float] = None,
 ):
     """Apply shape adaptive blur.
+
     :param float luma_radius: set luma radius
     :param float lr: set luma radius
     :param float luma_pre_filter_radius: set luma pre-filter radius
@@ -2384,7 +2526,8 @@ def sab(
     :param float chroma_pre_filter_radius: set chroma pre-filter radius
     :param float cpfr: set chroma pre-filter radius
     :param float chroma_strength: set chroma strength
-    :param float cs: set chroma strength"""
+    :param float cs: set chroma strength
+    """
     graph.append(
         Filter(
             command="sab",
@@ -2434,10 +2577,12 @@ def lut2(
 
 def tlut2(graph: Stream, c0: Optional[str] = None, c1: Optional[str] = None, c2: Optional[str] = None, c3: Optional[str] = None):
     """Compute and apply a lookup table from two successive frames.
+
     :param str c0: set component #0 expression
     :param str c1: set component #1 expression
     :param str c2: set component #2 expression
-    :param str c3: set component #3 expression"""
+    :param str c3: set component #3 expression
+    """
     graph.append(
         Filter(
             command="tlut2",
@@ -2465,6 +2610,7 @@ def deband(
     coupling: Optional[bool] = None,
 ):
     """Debands video.
+
     :param float 1thr: set 1st plane threshold
     :param float 2thr: set 2nd plane threshold
     :param float 3thr: set 3rd plane threshold
@@ -2472,7 +2618,8 @@ def deband(
     :param int range: set range
     :param float direction: set direction
     :param bool blur: set blur
-    :param bool coupling: set plane coupling"""
+    :param bool coupling: set plane coupling
+    """
     graph.append(
         Filter(
             command="deband",
@@ -2500,10 +2647,12 @@ def median(
     percentile: Optional[float] = None,
 ):
     """Apply Median filter.
+
     :param int radius: set median radius
     :param int planes: set planes to filter
     :param int radiusV: set median vertical radius
-    :param float percentile: set median percentile"""
+    :param float percentile: set median percentile
+    """
     graph.append(
         Filter(
             command="median",
@@ -2529,6 +2678,7 @@ def paletteuse(
     debug_kdtree: Optional[str] = None,
 ):
     """Use a palette to downsample an input video stream.
+
     :param str dither: select dithering mode
             possible values: bayer, heckbert, floyd_steinberg, sierra2, sierra2_4a, sierra3, burkes, atkinson
     :param int bayer_scale: set scale for bayer dithering
@@ -2536,7 +2686,8 @@ def paletteuse(
             possible values: rectangle
     :param bool new: take new palette for each output frame
     :param int alpha_threshold: set the alpha threshold for transparency
-    :param str debug_kdtree: save Graphviz graph of the kdtree in specified file"""
+    :param str debug_kdtree: save Graphviz graph of the kdtree in specified file
+    """
     graph.append(
         Filter(
             command="paletteuse",
@@ -2565,13 +2716,15 @@ def amplify(
     planes: Optional[str] = None,
 ):
     """Amplify changes between successive video frames.
+
     :param int radius: set radius
     :param float factor: set factor
     :param float threshold: set threshold
     :param float tolerance: set tolerance
     :param float low: set low limit for amplification
     :param float high: set high limit for amplification
-    :param str planes: set what planes to filter"""
+    :param str planes: set what planes to filter
+    """
     graph.append(
         Filter(
             command="amplify",
@@ -2592,9 +2745,11 @@ def amplify(
 
 def asupercut(graph: Stream, cutoff: Optional[float] = None, order: Optional[int] = None, level: Optional[float] = None):
     """Cut super frequencies.
+
     :param float cutoff: set cutoff frequency
     :param int order: set filter order
-    :param float level: set input level"""
+    :param float level: set input level
+    """
     graph.append(
         Filter(
             command="asupercut",
@@ -2611,9 +2766,11 @@ def asupercut(graph: Stream, cutoff: Optional[float] = None, order: Optional[int
 
 def asubcut(graph: Stream, cutoff: Optional[float] = None, order: Optional[int] = None, level: Optional[float] = None):
     """Cut subwoofer frequencies.
+
     :param float cutoff: set cutoff frequency
     :param int order: set filter order
-    :param float level: set input level"""
+    :param float level: set input level
+    """
     graph.append(
         Filter(
             command="asubcut",
@@ -2648,10 +2805,12 @@ def dctdnoiz(
     graph: Stream, sigma: Optional[float] = None, overlap: Optional[int] = None, expr: Optional[str] = None, n: Optional[int] = None
 ):
     """Denoise frames using 2D DCT.
+
     :param float sigma: set noise sigma constant
     :param int overlap: set number of block overlapping pixels
     :param str expr: set coefficient factor expression
-    :param int n: set the block size, expressed in bits"""
+    :param int n: set the block size, expressed in bits
+    """
     graph.append(
         Filter(
             command="dctdnoiz",
@@ -2680,6 +2839,7 @@ def chromanr(
     distance: Optional[str] = None,
 ):
     """Reduce chrominance noise.
+
     :param float thres: set y+u+v threshold
     :param int sizew: set horizontal patch size
     :param int sizeh: set vertical patch size
@@ -2689,7 +2849,8 @@ def chromanr(
     :param float threu: set u threshold
     :param float threv: set v threshold
     :param str distance: set distance type
-            possible values: manhattan, euclidean"""
+            possible values: manhattan, euclidean
+    """
     graph.append(
         Filter(
             command="chromanr",
@@ -2712,9 +2873,11 @@ def chromanr(
 
 def colorkey(graph: Stream, color: Optional[str] = None, similarity: Optional[float] = None, blend: Optional[float] = None):
     """Turns a certain color into transparency. Operates on RGB colors.
+
     :param str color: set the colorkey key color
     :param float similarity: set the colorkey similarity value
-    :param float blend: set the colorkey key blend value"""
+    :param float blend: set the colorkey key blend value
+    """
     graph.append(
         Filter(
             command="colorkey",
@@ -2731,9 +2894,11 @@ def colorkey(graph: Stream, color: Optional[str] = None, similarity: Optional[fl
 
 def colorhold(graph: Stream, color: Optional[str] = None, similarity: Optional[float] = None, blend: Optional[float] = None):
     """Turns a certain color range into gray. Operates on RGB colors.
+
     :param str color: set the colorhold key color
     :param float similarity: set the colorhold similarity value
-    :param float blend: set the colorhold blend value"""
+    :param float blend: set the colorhold blend value
+    """
     graph.append(
         Filter(
             command="colorhold",
@@ -2766,7 +2931,9 @@ def aresample(
 
 def removelogo(graph: Stream, filename: Optional[str] = None):
     """Remove a TV logo based on a mask image.
-    :param str filename: set bitmap filename"""
+
+    :param str filename: set bitmap filename
+    """
     graph.append(Filter(command="removelogo", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="filename", value=filename)]))
     return graph
 
@@ -2789,6 +2956,7 @@ def showfreqs(
     channels: Optional[str] = None,
 ):
     """Convert input audio to a frequencies video output.
+
     :param int size: set video size
     :param str rate: set video rate
     :param str mode: set display mode
@@ -2808,7 +2976,8 @@ def showfreqs(
     :param float minamp: set minimum amplitude
     :param str data: set data mode
             possible values: magnitude, phase, delay
-    :param str channels: set channels to draw"""
+    :param str channels: set channels to draw
+    """
     graph.append(
         Filter(
             command="showfreqs",
@@ -2845,13 +3014,15 @@ def trim(
     end_frame: Optional[int] = None,
 ):
     """Pick one continuous section from the input, drop the rest.
+
     :param int start: Timestamp of the first frame that should be passed
     :param int end: Timestamp of the first frame that should be dropped again
     :param int start_pts: Timestamp of the first frame that should be  passed
     :param int end_pts: Timestamp of the first frame that should be dropped again
     :param int duration: Maximum duration of the output
     :param int start_frame: Number of the first frame that should be passed to the output
-    :param int end_frame: Number of the first frame that should be dropped again"""
+    :param int end_frame: Number of the first frame that should be dropped again
+    """
     graph.append(
         Filter(
             command="trim",
@@ -2881,13 +3052,15 @@ def atrim(
     end_sample: Optional[int] = None,
 ):
     """Pick one continuous section from the input, drop the rest.
+
     :param int start: Timestamp of the first frame that should be passed
     :param int end: Timestamp of the first frame that should be dropped again
     :param int start_pts: Timestamp of the first frame that should be  passed
     :param int end_pts: Timestamp of the first frame that should be dropped again
     :param int duration: Maximum duration of the output
     :param int start_sample: Number of the first audio sample that should be passed to the output
-    :param int end_sample: Number of the first audio sample that should be dropped again"""
+    :param int end_sample: Number of the first audio sample that should be dropped again
+    """
     graph.append(
         Filter(
             command="atrim",
@@ -2924,8 +3097,10 @@ def asendcmd(
 
 def scdet(graph: Stream, threshold: Optional[float] = None, sc_pass: Optional[bool] = None):
     """Detect video scene change
+
     :param float threshold: set scene change detect threshold
-    :param bool sc_pass: Set the flag to pass scene change frames"""
+    :param bool sc_pass: Set the flag to pass scene change frames
+    """
     graph.append(
         Filter(
             command="scdet",
@@ -2955,6 +3130,7 @@ def blend(
     all_opacity: Optional[float] = None,
 ):
     """Blend two video frames into each other.
+
     :param str c0_mode: set component #0 blend mode
             possible values: addition, addition128, grainmerge, and, average, burn, darken, difference, difference128, grainextract, divide, dodge, exclusion, extremity, freeze, glow, hardlight, hardmix, heat, lighten, linearlight, multiply, multiply128, negation, normal, or, overlay, phoenix, pinlight, reflect, screen, softlight, subtract, vividlight, xor, softdifference, geometric, harmonic, bleach, stain, interpolate, hardoverlay
     :param str c1_mode: set component #1 blend mode
@@ -2974,7 +3150,8 @@ def blend(
     :param float c1_opacity: set color component #1 opacity
     :param float c2_opacity: set color component #2 opacity
     :param float c3_opacity: set color component #3 opacity
-    :param float all_opacity: set opacity for all color components"""
+    :param float all_opacity: set opacity for all color components
+    """
     graph.append(
         Filter(
             command="blend",
@@ -3023,6 +3200,7 @@ def ciescope(
     fill: Optional[bool] = None,
 ):
     """Video CIE scope.
+
     :param str system: set color system
             possible values: ntsc, 470m, ebu, 470bg, smpte, 240m, apple, widergb, cie1931, hdtv, rec709, uhdtv, rec2020, dcip3
     :param str cie: set cie system
@@ -3031,7 +3209,8 @@ def ciescope(
             possible values: ntsc, 470m, ebu, 470bg, smpte, 240m, apple, widergb, cie1931, hdtv, rec709, uhdtv, rec2020, dcip3
     :param int size: set ciescope size
     :param float intensity: set ciescope intensity
-    :param bool fill: fill with CIE colors"""
+    :param bool fill: fill with CIE colors
+    """
     graph.append(
         Filter(
             command="ciescope",
@@ -3065,9 +3244,11 @@ def find_rect(
     discard: Optional[bool] = None,
 ):
     """Find a user specified object.
+
     :param str object: object bitmap filename
     :param float threshold: set threshold
-    :param int mipmaps: set mipmaps"""
+    :param int mipmaps: set mipmaps
+    """
     graph.append(
         Filter(
             command="find_rect",
@@ -3089,8 +3270,10 @@ def find_rect(
 
 def fieldorder(graph: Stream, order: Optional[str] = None):
     """Set the field order.
+
     :param str order: output field order
-            possible values: bff, tff"""
+            possible values: bff, tff
+    """
     graph.append(Filter(command="fieldorder", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="order", value=order)]))
     return graph
 
@@ -3104,12 +3287,14 @@ def mix(
     duration: Optional[str] = None,
 ):
     """Mix video inputs.
+
     :param int inputs: set number of inputs
     :param str weights: set weight for each input
     :param float scale: set scale
     :param str planes: set what planes to filter
     :param str duration: how to determine end of stream
-            possible values: longest, shortest, first"""
+            possible values: longest, shortest, first
+    """
     graph.append(
         Filter(
             command="mix",
@@ -3130,10 +3315,12 @@ def tmix(
     graph: Stream, frames: Optional[int] = None, weights: Optional[str] = None, scale: Optional[float] = None, planes: Optional[str] = None
 ):
     """Mix successive video frames.
+
     :param int frames: set number of successive frames to mix
     :param str weights: set weight for each frame
     :param float scale: set scale
-    :param str planes: set what planes to filter"""
+    :param str planes: set what planes to filter
+    """
     graph.append(
         Filter(
             command="tmix",
@@ -3151,10 +3338,12 @@ def tmix(
 
 def transpose_vulkan(graph: Stream, dir: Optional[str] = None, passthrough: Optional[str] = None):
     """Transpose Vulkan Filter
+
     :param str dir: set transpose direction
             possible values: cclock_flip, clock, cclock, clock_flip
     :param str passthrough: do not apply transposition if the input matches the specified geometry
-            possible values: none, portrait, landscape"""
+            possible values: none, portrait, landscape
+    """
     graph.append(
         Filter(
             command="transpose_vulkan",
@@ -3174,12 +3363,14 @@ def derain(
     output: Optional[str] = None,
 ):
     """Apply derain filter to the input.
+
     :param str filter_type: filter type(derain/dehaze)
             possible values: derain, dehaze
     :param int dnn_backend: DNN backend
     :param str model: path to model file
     :param str input: input name of the model
-    :param str output: output name of the model"""
+    :param str output: output name of the model
+    """
     graph.append(
         Filter(
             command="derain",
@@ -3204,10 +3395,12 @@ def limitdiff(
     planes: Optional[int] = None,
 ):
     """Apply filtering with limiting difference.
+
     :param float threshold: set the threshold
     :param float elasticity: set the elasticity
     :param bool reference: enable reference stream
-    :param int planes: set the planes to filter"""
+    :param int planes: set the planes to filter
+    """
     graph.append(
         Filter(
             command="limitdiff",
@@ -3299,6 +3492,7 @@ def histogram(
     colors_mode: Optional[str] = None,
 ):
     """Compute and draw a histogram.
+
     :param int level_height: set level height
     :param int scale_height: set scale height
     :param str display_mode: set display mode
@@ -3342,6 +3536,7 @@ def thistogram(
     slide: Optional[str] = None,
 ):
     """Compute and draw a temporal histogram.
+
     :param int width: set width
     :param str display_mode: set display mode
             possible values: overlay, parade, stack
@@ -3352,7 +3547,8 @@ def thistogram(
     :param bool envelope: display envelope
     :param str ecolor: set envelope color
     :param str slide: set slide mode
-            possible values: frame, replace, scroll, rscroll, picture"""
+            possible values: frame, replace, scroll, rscroll, picture
+    """
     graph.append(
         Filter(
             command="thistogram",
@@ -3374,7 +3570,9 @@ def thistogram(
 
 def hqx(graph: Stream, n: Optional[int] = None):
     """Scale the input by 2, 3 or 4 using the hq*x magnification algorithm.
-    :param int n: set scale factor"""
+
+    :param int n: set scale factor
+    """
     graph.append(Filter(command="hqx", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="n", value=n)]))
     return graph
 
@@ -3391,6 +3589,7 @@ def datascope(
     components: Optional[int] = None,
 ):
     """Video data analysis.
+
     :param int size: set output size
     :param int x: set x offset
     :param int y: set y offset
@@ -3400,7 +3599,8 @@ def datascope(
     :param float opacity: set background opacity
     :param str format: set display number format
             possible values: hex, dec
-    :param int components: set components to display"""
+    :param int components: set components to display
+    """
     graph.append(
         Filter(
             command="datascope",
@@ -3431,13 +3631,15 @@ def pixscope(
     wy: Optional[float] = None,
 ):
     """Pixel data analysis.
+
     :param float x: set scope x offset
     :param float y: set scope y offset
     :param int w: set scope width
     :param int h: set scope height
     :param float o: set window opacity
     :param float wx: set window x offset
-    :param float wy: set window y offset"""
+    :param float wy: set window y offset
+    """
     graph.append(
         Filter(
             command="pixscope",
@@ -3473,6 +3675,7 @@ def oscilloscope(
     sc: Optional[bool] = None,
 ):
     """2D Video Oscilloscope.
+
     :param float x: set scope x position
     :param float y: set scope y position
     :param float s: set scope size
@@ -3485,7 +3688,8 @@ def oscilloscope(
     :param int c: set components to trace
     :param bool g: draw trace grid
     :param bool st: draw statistics
-    :param bool sc: draw scope"""
+    :param bool sc: draw scope
+    """
     graph.append(
         Filter(
             command="oscilloscope",
@@ -3520,6 +3724,7 @@ def guided(
     planes: Optional[int] = None,
 ):
     """Apply Guided filter.
+
     :param int radius: set the box radius
     :param float eps: set the regularization parameter (with square)
     :param str mode: set filtering mode (0: basic mode; 1: fast mode)
@@ -3527,7 +3732,8 @@ def guided(
     :param int sub: subsampling ratio for fast mode
     :param str guidance: set guidance mode (0: off mode; 1: on mode)
             possible values: off, on
-    :param int planes: set planes to filter"""
+    :param int planes: set planes to filter
+    """
     graph.append(
         Filter(
             command="guided",
@@ -3558,6 +3764,7 @@ def ahistogram(
     hmode: Optional[str] = None,
 ):
     """Convert input audio to histogram video output.
+
     :param str dmode: set method to display channels
             possible values: single, separate
     :param str rate: set video rate
@@ -3571,7 +3778,8 @@ def ahistogram(
     :param str slide: set sonogram sliding
             possible values: replace, scroll
     :param str hmode: set histograms mode
-            possible values: abs, sign"""
+            possible values: abs, sign
+    """
     graph.append(
         Filter(
             command="ahistogram",
@@ -3594,7 +3802,9 @@ def ahistogram(
 
 def qp(graph: Stream, qp: Optional[str] = None):
     """Change video quantization parameters.
-    :param str qp: set qp expression"""
+
+    :param str qp: set qp expression
+    """
     graph.append(Filter(command="qp", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="qp", value=qp)]))
     return graph
 
@@ -3618,6 +3828,7 @@ def geq(
     interpolation: Optional[str] = None,
 ):
     """Apply generic equation to each pixel.
+
     :param str lum_expr: set luminance expression
     :param str lum: set luminance expression
     :param str cb_expr: set chroma blue expression
@@ -3633,7 +3844,8 @@ def geq(
     :param str blue_expr: set blue expression
     :param str b: set blue expression
     :param str interpolation: set interpolation method
-            possible values: nearest, n, bilinear, b"""
+            possible values: nearest, n, bilinear, b
+    """
     graph.append(
         Filter(
             command="geq",
@@ -3677,6 +3889,7 @@ def curves(
     interp: Optional[str] = None,
 ):
     """Adjust components curves.
+
     :param str preset: select a color curves preset
             possible values: none, color_negative, cross_process, darker, increase_contrast, lighter, linear_contrast, medium_contrast, negative, strong_contrast, vintage
     :param str master: set master points coordinates
@@ -3691,7 +3904,8 @@ def curves(
     :param str psfile: set Photoshop curves file name
     :param str plot: save Gnuplot script of the curves in specified file
     :param str interp: specify the kind of interpolation
-            possible values: natural, pchip"""
+            possible values: natural, pchip
+    """
     graph.append(
         Filter(
             command="curves",
@@ -3718,11 +3932,13 @@ def curves(
 
 def mcdeint(graph: Stream, mode: Optional[str] = None, parity: Optional[str] = None, qp: Optional[int] = None):
     """Apply motion compensating deinterlacing.
+
     :param str mode: set mode
             possible values: fast, medium, slow, extra_slow
     :param str parity: set the assumed picture field parity
             possible values: tff, bff
-    :param int qp: set qp"""
+    :param int qp: set qp
+    """
     graph.append(
         Filter(
             command="mcdeint",
@@ -3735,8 +3951,10 @@ def mcdeint(graph: Stream, mode: Optional[str] = None, parity: Optional[str] = N
 
 def freezedetect(graph: Stream, n: Optional[float] = None, d: Optional[int] = None):
     """Detects frozen video input.
+
     :param float n: set noise tolerance
-    :param int d: set minimum duration in seconds"""
+    :param int d: set minimum duration in seconds
+    """
     graph.append(
         Filter(
             command="freezedetect",
@@ -3755,12 +3973,14 @@ def fps(
     eof_action: Optional[str] = None,
 ):
     """Force constant framerate.
+
     :param str fps: A string describing desired output framerate
     :param float start_time: Assume the first PTS should be this value.
     :param str round: set rounding method for timestamps
             possible values: zero, inf, down, up, near
     :param str eof_action: action performed for last frame
-            possible values: round, pass"""
+            possible values: round, pass
+    """
     graph.append(
         Filter(
             command="fps",
@@ -3778,8 +3998,10 @@ def fps(
 
 def chromaber_vulkan(graph: Stream, dist_x: Optional[float] = None, dist_y: Optional[float] = None):
     """Offset chroma of input video (chromatic aberration)
+
     :param float dist_x: Set horizontal distortion amount
-    :param float dist_y: Set vertical distortion amount"""
+    :param float dist_y: Set vertical distortion amount
+    """
     graph.append(
         Filter(
             command="chromaber_vulkan",
@@ -3817,6 +4039,7 @@ def tpad(
     color: Optional[str] = None,
 ):
     """Temporarily pad video frames.
+
     :param int start: set the number of frames to delay input
     :param int stop: set the number of frames to add after input finished
     :param str start_mode: set the mode of added frames to start
@@ -3824,7 +4047,8 @@ def tpad(
     :param int stop_mode: set the mode of added frames to end
     :param int start_duration: set the duration to delay input
     :param int stop_duration: set the duration to pad input
-    :param str color: set the color of the added frames"""
+    :param str color: set the color of the added frames
+    """
     graph.append(
         Filter(
             command="tpad",
@@ -3854,6 +4078,7 @@ def fftfilt(
     eval: Optional[str] = None,
 ):
     """Apply arbitrary expressions to pixels in frequency domain.
+
     :param int dc_Y: adjust gain in Y plane
     :param int dc_U: adjust gain in U plane
     :param int dc_V: adjust gain in V plane
@@ -3861,7 +4086,8 @@ def fftfilt(
     :param str weight_U: set chrominance expression in U plane
     :param str weight_V: set chrominance expression in V plane
     :param str eval: specify when to evaluate expressions
-            possible values: init, frame"""
+            possible values: init, frame
+    """
     graph.append(
         Filter(
             command="fftfilt",
@@ -3890,12 +4116,14 @@ def compensationdelay(
     temp: Optional[int] = None,
 ):
     """Audio Compensation Delay Line.
+
     :param int mm: set mm distance
     :param int cm: set cm distance
     :param int m: set meter distance
     :param float dry: set dry amount
     :param float wet: set wet amount
-    :param int temp: set temperature °C"""
+    :param int temp: set temperature °C
+    """
     graph.append(
         Filter(
             command="compensationdelay",
@@ -3922,13 +4150,15 @@ def arls(
     precision: Optional[str] = None,
 ):
     """Apply Recursive Least Squares algorithm to first audio stream.
+
     :param int order: set the filter order
     :param float lambda: set the filter lambda
     :param float delta: set the filter delta
     :param str out_mode: set output mode
             possible values: i, d, o, n, e
     :param str precision: set processing precision
-            possible values: auto, float, double"""
+            possible values: auto, float, double
+    """
     graph.append(
         Filter(
             command="arls",
@@ -3947,8 +4177,10 @@ def arls(
 
 def entropy(graph: Stream, mode: Optional[str] = None):
     """Measure video frames entropy.
+
     :param str mode: set kind of histogram entropy measurement
-            possible values: normal, diff"""
+            possible values: normal, diff
+    """
     graph.append(Filter(command="entropy", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="mode", value=mode)]))
     return graph
 
@@ -3970,11 +4202,13 @@ def mpdecimate(
     frac: Optional[float] = None,
 ):
     """Remove near-duplicate frames.
+
     :param int max: set the maximum number of consecutive dropped frames (positive), or the minimum interval between dropped frames (negative)
     :param int keep: set the number of similar consecutive frames to be kept before starting to drop similar frames
     :param int hi: set high dropping threshold
     :param int lo: set low dropping threshold
-    :param float frac: set fraction dropping threshold"""
+    :param float frac: set fraction dropping threshold
+    """
     graph.append(
         Filter(
             command="mpdecimate",
@@ -3993,9 +4227,11 @@ def mpdecimate(
 
 def avgblur(graph: Stream, sizeX: Optional[int] = None, planes: Optional[int] = None, sizeY: Optional[int] = None):
     """Apply Average Blur filter.
+
     :param int sizeX: set horizontal size
     :param int planes: set planes to filter
-    :param int sizeY: set vertical size"""
+    :param int sizeY: set vertical size
+    """
     graph.append(
         Filter(
             command="avgblur",
@@ -4012,10 +4248,12 @@ def avgblur(graph: Stream, sizeX: Optional[int] = None, planes: Optional[int] = 
 
 def transpose(graph: Stream, dir: Optional[str] = None, passthrough: Optional[str] = None):
     """Transpose input video.
+
     :param str dir: set transpose direction
             possible values: cclock_flip, clock, cclock, clock_flip
     :param str passthrough: do not apply transposition if the input matches the specified geometry
-            possible values: none, portrait, landscape"""
+            possible values: none, portrait, landscape
+    """
     graph.append(
         Filter(
             command="transpose",
@@ -4028,10 +4266,12 @@ def transpose(graph: Stream, dir: Optional[str] = None, passthrough: Optional[st
 
 def transpose_vaapi(graph: Stream, dir: Optional[str] = None, passthrough: Optional[str] = None):
     """VAAPI VPP for transpose
+
     :param str dir: set transpose direction
             possible values: cclock_flip, clock, cclock, clock_flip, reversal, hflip, vflip
     :param str passthrough: do not apply transposition if the input matches the specified geometry
-            possible values: none, portrait, landscape"""
+            possible values: none, portrait, landscape
+    """
     graph.append(
         Filter(
             command="transpose_vaapi",
@@ -4044,8 +4284,10 @@ def transpose_vaapi(graph: Stream, dir: Optional[str] = None, passthrough: Optio
 
 def virtualbass(graph: Stream, cutoff: Optional[float] = None, strength: Optional[float] = None):
     """Audio Virtual Bass.
+
     :param float cutoff: set virtual bass cutoff
-    :param float strength: set virtual bass strength"""
+    :param float strength: set virtual bass strength
+    """
     graph.append(
         Filter(
             command="virtualbass",
@@ -4087,6 +4329,7 @@ def afir(
     irload: Optional[str] = None,
 ):
     """Apply Finite Impulse Response filter with supplied coefficients in additional stream(s).
+
     :param float dry: set dry gain
     :param float wet: set wet gain
     :param float length: set IR length
@@ -4109,7 +4352,8 @@ def afir(
     :param str precision: set processing precision
             possible values: auto, float, double
     :param str irload: set IR loading type
-            possible values: init, access"""
+            possible values: init, access
+    """
     graph.append(
         Filter(
             command="afir",
@@ -4162,6 +4406,7 @@ def waveform(
     input: Optional[str] = None,
 ):
     """Video waveform monitor.
+
     :param str mode: set mode
             possible values: row, column
     :param float intensity: set intensity
@@ -4188,7 +4433,8 @@ def waveform(
     :param str fitmode: set fit mode
             possible values: none, size
     :param str input: set input formats selection
-            possible values: all, first"""
+            possible values: all, first
+    """
     graph.append(
         Filter(
             command="waveform",
@@ -4220,9 +4466,11 @@ def waveform(
 
 def silencedetect(graph: Stream, n: Optional[float] = None, d: Optional[int] = None, mono: Optional[bool] = None):
     """Detect silence.
+
     :param float n: set noise tolerance
     :param int d: set minimum duration in seconds
-    :param bool mono: check each channel separately"""
+    :param bool mono: check each channel separately
+    """
     graph.append(
         Filter(
             command="silencedetect",
@@ -4241,10 +4489,12 @@ def anullsrc(
     duration: Optional[int] = None,
 ):
     """Null audio source, return empty audio frames.
+
     :param str channel_layout: set channel_layout
     :param int sample_rate: set sample rate
     :param int nb_samples: set the number of samples per requested frame
-    :param int duration: set the audio duration"""
+    :param int duration: set the audio duration
+    """
     graph.append(
         Filter(
             command="anullsrc",
@@ -4262,9 +4512,11 @@ def anullsrc(
 
 def afreqshift(graph: Stream, shift: Optional[float] = None, level: Optional[float] = None, order: Optional[int] = None):
     """Apply frequency shifting to input audio.
+
     :param float shift: set frequency shift
     :param float level: set output level
-    :param int order: set filter order"""
+    :param int order: set filter order
+    """
     graph.append(
         Filter(
             command="afreqshift",
@@ -4281,9 +4533,11 @@ def afreqshift(graph: Stream, shift: Optional[float] = None, level: Optional[flo
 
 def aphaseshift(graph: Stream, shift: Optional[float] = None, level: Optional[float] = None, order: Optional[int] = None):
     """Apply phase shifting to input audio.
+
     :param float shift: set phase shift
     :param float level: set output level
-    :param int order: set filter order"""
+    :param int order: set filter order
+    """
     graph.append(
         Filter(
             command="aphaseshift",
@@ -4300,10 +4554,12 @@ def aphaseshift(graph: Stream, shift: Optional[float] = None, level: Optional[fl
 
 def colormatrix(graph: Stream, src: Optional[str] = None, dst: Optional[str] = None):
     """Convert color matrix.
+
     :param str src: set source color matrix
             possible values: bt709, fcc, bt601, bt470, bt470bg, smpte170m, smpte240m, bt2020
     :param str dst: set destination color matrix
-            possible values: bt709, fcc, bt601, bt470, bt470bg, smpte170m, smpte240m, bt2020"""
+            possible values: bt709, fcc, bt601, bt470, bt470bg, smpte170m, smpte240m, bt2020
+    """
     graph.append(
         Filter(
             command="colormatrix",
@@ -4324,12 +4580,14 @@ def pad_vaapi(
     aspect: Optional[int] = None,
 ):
     """Pad the input video.
+
     :param str width: set the pad area width
     :param str height: set the pad area height
     :param str x: set the x offset for the input image position
     :param str y: set the y offset for the input image position
     :param str color: set the color of the padded area border
-    :param int aspect: pad to fit an aspect instead of a resolution"""
+    :param int aspect: pad to fit an aspect instead of a resolution
+    """
     graph.append(
         Filter(
             command="pad_vaapi",
@@ -4367,6 +4625,7 @@ def vectorscope(
     t1: Optional[float] = None,
 ):
     """Video vectorscope.
+
     :param str mode: set vectorscope mode
             possible values: gray, tint, color, color2, color3, color4, color5
     :param int x: set color component on X axis
@@ -4387,7 +4646,8 @@ def vectorscope(
     :param float tint0: set 1st tint
     :param float t0: set 1st tint
     :param float tint1: set 2nd tint
-    :param float t1: set 2nd tint"""
+    :param float t1: set 2nd tint
+    """
     graph.append(
         Filter(
             command="vectorscope",
@@ -4434,6 +4694,7 @@ def showvolume(
     ds: Optional[str] = None,
 ):
     """Convert input audio volume to video output.
+
     :param str rate: set video rate
     :param int b: set border width
     :param int w: set channel width
@@ -4451,7 +4712,8 @@ def showvolume(
     :param str m: set mode
             possible values: p, r
     :param str ds: set display scale
-            possible values: lin, log"""
+            possible values: lin, log
+    """
     graph.append(
         Filter(
             command="showvolume",
@@ -4486,10 +4748,12 @@ def colorize(
     mix: Optional[float] = None,
 ):
     """Overlay a solid color on the video stream.
+
     :param float hue: set the hue
     :param float saturation: set the saturation
     :param float lightness: set the lightness
-    :param float mix: set the mix of source lightness"""
+    :param float mix: set the mix of source lightness
+    """
     graph.append(
         Filter(
             command="colorize",
@@ -4524,6 +4788,7 @@ def drawgraph(
     rate: Optional[str] = None,
 ):
     """Draw a graph using input video metadata.
+
     :param str m1: set 1st metadata key
     :param str fg1: set 1st foreground color expression
     :param str m2: set 2nd metadata key
@@ -4540,7 +4805,8 @@ def drawgraph(
     :param str slide: set slide mode
             possible values: frame, replace, scroll, rscroll, picture
     :param int size: set graph size
-    :param str rate: set video rate"""
+    :param str rate: set video rate
+    """
     graph.append(
         Filter(
             command="drawgraph",
@@ -4577,10 +4843,12 @@ def adrawgraph(
 
 def convolve(graph: Stream, planes: Optional[int] = None, impulse: Optional[str] = None, noise: Optional[float] = None):
     """Convolve first video stream with second video stream.
+
     :param int planes: set planes to convolve
     :param str impulse: when to process impulses
             possible values: first, all
-    :param float noise: set noise"""
+    :param float noise: set noise
+    """
     graph.append(
         Filter(
             command="convolve",
@@ -4597,10 +4865,12 @@ def convolve(graph: Stream, planes: Optional[int] = None, impulse: Optional[str]
 
 def deconvolve(graph: Stream, planes: Optional[int] = None, impulse: Optional[str] = None, noise: Optional[float] = None):
     """Deconvolve first video stream with second video stream.
+
     :param int planes: set planes to deconvolve
     :param str impulse: when to process impulses
             possible values: first, all
-    :param float noise: set noise"""
+    :param float noise: set noise
+    """
     graph.append(
         Filter(
             command="deconvolve",
@@ -4617,9 +4887,11 @@ def deconvolve(graph: Stream, planes: Optional[int] = None, impulse: Optional[st
 
 def xcorrelate(graph: Stream, planes: Optional[int] = None, secondary: Optional[str] = None):
     """Cross-correlate first video stream with second video stream.
+
     :param int planes: set planes to cross-correlate
     :param str secondary: when to process secondary frame
-            possible values: first, all"""
+            possible values: first, all
+    """
     graph.append(
         Filter(
             command="xcorrelate",
@@ -4634,10 +4906,12 @@ def gblur(
     graph: Stream, sigma: Optional[float] = None, steps: Optional[int] = None, planes: Optional[int] = None, sigmaV: Optional[float] = None
 ):
     """Apply Gaussian Blur filter.
+
     :param float sigma: set sigma
     :param int steps: set number of steps
     :param int planes: set planes to filter
-    :param float sigmaV: set vertical sigma"""
+    :param float sigmaV: set vertical sigma
+    """
     graph.append(
         Filter(
             command="gblur",
@@ -4671,6 +4945,7 @@ def colorspace(
     itrc: Optional[int] = None,
 ):
     """Convert between colorspaces.
+
     :param str all: Set all color properties together
             possible values: bt470m, bt470bg, bt601-6-525, bt601-6-625, bt709, smpte170m, smpte240m, bt2020
     :param str space: Output colorspace
@@ -4692,7 +4967,8 @@ def colorspace(
     :param int ispace: Input colorspace
     :param int irange: Input color range
     :param int iprimaries: Input color primaries
-    :param int itrc: Input transfer characteristics"""
+    :param int itrc: Input transfer characteristics
+    """
     graph.append(
         Filter(
             command="colorspace",
@@ -4722,11 +4998,13 @@ def shear(
     graph: Stream, shx: Optional[float] = None, shy: Optional[float] = None, fillcolor: Optional[str] = None, interp: Optional[str] = None
 ):
     """Shear transform the input image.
+
     :param float shx: set x shear factor
     :param float shy: set y shear factor
     :param str fillcolor: set background fill color
     :param str interp: set interpolation
-            possible values: nearest, bilinear"""
+            possible values: nearest, bilinear
+    """
     graph.append(
         Filter(
             command="shear",
@@ -4766,10 +5044,12 @@ def photosensitivity(
     bypass: Optional[bool] = None,
 ):
     """Filter out photosensitive epilepsy seizure-inducing flashes.
+
     :param int frames: set how many frames to use
     :param float threshold: set detection threshold factor (lower is stricter)
     :param int skip: set pixels to skip when sampling frames
-    :param bool bypass: leave frames unchanged"""
+    :param bool bypass: leave frames unchanged
+    """
     graph.append(
         Filter(
             command="photosensitivity",
@@ -4787,7 +5067,9 @@ def photosensitivity(
 
 def drmeter(graph: Stream, length: Optional[float] = None):
     """Measure audio dynamic range.
-    :param float length: set the window length"""
+
+    :param float length: set the window length
+    """
     graph.append(Filter(command="drmeter", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="length", value=length)]))
     return graph
 
@@ -4801,12 +5083,14 @@ def astats(
     measure_overall: Optional[str] = None,
 ):
     """Show time domain statistics about audio frames.
+
     :param float length: set the window length
     :param bool metadata: inject metadata in the filtergraph
     :param int reset: Set the number of frames over which cumulative stats are calculated before being reset
     :param str measure_perchannel: Select the parameters which are measured per channel
             possible values: none, all, Bit_depth, Crest_factor, DC_offset, Dynamic_range, Entropy, Flat_factor, Max_difference, Max_level, Mean_difference, Min_difference, Min_level, Noise_floor, Noise_floor_count, Number_of_Infs, Number_of_NaNs, Number_of_denormals, Number_of_samples, Peak_count, Peak_level, RMS_difference, RMS_level, RMS_peak, RMS_trough, Zero_crossings, Zero_crossings_rate, Abs_Peak_count
-    :param str measure_overall: Select the parameters which are measured overall"""
+    :param str measure_overall: Select the parameters which are measured overall
+    """
     graph.append(
         Filter(
             command="astats",
@@ -4844,6 +5128,7 @@ def fftdnoiz(
     window: Optional[str] = None,
 ):
     """Denoise frames using 3D FFT.
+
     :param float sigma: set denoise strength
     :param float amount: set amount of denoising
     :param int block: set block size
@@ -4878,9 +5163,11 @@ def fftdnoiz(
 
 def dblur(graph: Stream, angle: Optional[float] = None, radius: Optional[float] = None, planes: Optional[int] = None):
     """Apply Directional Blur filter.
+
     :param float angle: set angle
     :param float radius: set radius
-    :param int planes: set planes to filter"""
+    :param int planes: set planes to filter
+    """
     graph.append(
         Filter(
             command="dblur",
@@ -4911,6 +5198,7 @@ def atadenoise(
     _2s: Optional[float] = None,
 ):
     """Apply an Adaptive Temporal Averaging Denoiser.
+
     :param float 0a: set threshold A for 1st plane
     :param float 0b: set threshold B for 1st plane
     :param float 1a: set threshold A for 2nd plane
@@ -4923,7 +5211,8 @@ def atadenoise(
             possible values: p, s
     :param float 0s: set sigma for 1st plane
     :param float 1s: set sigma for 2nd plane
-    :param float 2s: set sigma for 3rd plane"""
+    :param float 2s: set sigma for 3rd plane
+    """
     graph.append(
         Filter(
             command="atadenoise",
@@ -4949,9 +5238,11 @@ def atadenoise(
 
 def psnr(graph: Stream, stats_file: Optional[str] = None, stats_version: Optional[int] = None, output_max: Optional[bool] = None):
     """Calculate the PSNR between two video streams.
+
     :param str stats_file: Set file where to store per-frame difference information
     :param int stats_version: Set the format version for the stats file.
-    :param bool output_max: Add raw stats (max values) to the output log."""
+    :param bool output_max: Add raw stats (max values) to the output log.
+    """
     graph.append(
         Filter(
             command="psnr",
@@ -4968,9 +5259,11 @@ def psnr(graph: Stream, stats_file: Optional[str] = None, stats_version: Optiona
 
 def dialoguenhance(graph: Stream, original: Optional[float] = None, enhance: Optional[float] = None, voice: Optional[float] = None):
     """Audio Dialogue Enhancement.
+
     :param float original: set original center factor
     :param float enhance: set dialogue enhance factor
-    :param float voice: set voice detection factor"""
+    :param float voice: set voice detection factor
+    """
     graph.append(
         Filter(
             command="dialoguenhance",
@@ -5025,6 +5318,7 @@ def v360(
     reset_rot: Optional[bool] = None,
 ):
     """Convert 360 projection of video.
+
     :param str input: set input projection
             possible values: e, equirect, c3x2, c6x1, eac, dfisheye, flat, rectilinear, gnomonic, barrel, fb, c1x6, sg, mercator, ball, hammer, sinusoidal, fisheye, pannini, cylindrical, tetrahedron, barrelsplit, tsp, hequirect, he, equisolid, og, octahedron, cylindricalea
     :param str output: set output projection
@@ -5065,7 +5359,8 @@ def v360(
     :param float h_offset: output horizontal off-axis offset
     :param float v_offset: output vertical off-axis offset
     :param bool alpha_mask: build mask in alpha plane
-    :param bool reset_rot: reset rotation"""
+    :param bool reset_rot: reset rotation
+    """
     graph.append(
         Filter(
             command="v360",
@@ -5121,10 +5416,12 @@ def fspp(
     use_bframe_qp: Optional[bool] = None,
 ):
     """Apply Fast Simple Post-processing filter.
+
     :param int quality: set quality
     :param int qp: force a constant quantizer parameter
     :param int strength: set filter strength
-    :param bool use_bframe_qp: use B-frames' QP"""
+    :param bool use_bframe_qp: use B-frames' QP
+    """
     graph.append(
         Filter(
             command="fspp",
@@ -5142,9 +5439,11 @@ def fspp(
 
 def yaepblur(graph: Stream, radius: Optional[int] = None, planes: Optional[int] = None, sigma: Optional[int] = None):
     """Yet another edge preserving blur filter.
+
     :param int radius: set window radius
     :param int planes: set planes to filter
-    :param int sigma: set blur strength"""
+    :param int sigma: set blur strength
+    """
     graph.append(
         Filter(
             command="yaepblur",
@@ -5177,10 +5476,12 @@ def normalize(
 ):
     """Normalize RGB video.
     :param str blackpt: output color to which darkest input color is mapped
+
     :param str whitept: output color to which brightest input color is mapped
     :param int smoothing: amount of temporal smoothing of the input range, to reduce flicker
     :param float independence: proportion of independent to linked channel normalization
-    :param float strength: strength of filter, from no effect to full normalization"""
+    :param float strength: strength of filter, from no effect to full normalization
+    """
     graph.append(
         Filter(
             command="normalize",
@@ -5211,6 +5512,7 @@ def minterpolate(
     scd_threshold: Optional[float] = None,
 ):
     """Frame rate conversion using Motion Interpolation.
+
     :param str fps: output's frame rate
     :param str mi_mode: motion interpolation mode
             possible values: dup, blend, mci
@@ -5225,7 +5527,8 @@ def minterpolate(
     :param int vsbmc: variable-size block motion compensation
     :param str scd: scene change detection method
             possible values: none, fdiff
-    :param float scd_threshold: scene change threshold"""
+    :param float scd_threshold: scene change threshold
+    """
     graph.append(
         Filter(
             command="minterpolate",
@@ -5267,6 +5570,7 @@ def convolution(
     _3mode: Optional[str] = None,
 ):
     """Apply convolution filter.
+
     :param str 0m: set matrix for 1st plane
     :param str 1m: set matrix for 2nd plane
     :param str 2m: set matrix for 3rd plane
@@ -5286,7 +5590,8 @@ def convolution(
     :param str 2mode: set matrix mode for 3rd plane
             possible values: square, row, column
     :param str 3mode: set matrix mode for 4th plane
-            possible values: square, row, column"""
+            possible values: square, row, column
+    """
     graph.append(
         Filter(
             command="convolution",
@@ -5365,6 +5670,7 @@ def ametadata(
     direct: Optional[bool] = None,
 ):
     """Manipulate audio frame metadata.
+
     :param str mode: set a mode of operation
             possible values: select, add, modify, delete, print
     :param str key: set metadata key
@@ -5373,7 +5679,8 @@ def ametadata(
             possible values: same_str, starts_with, less, equal, greater, expr, ends_with
     :param str expr: set expression for expr function
     :param str file: set file where to print metadata information
-    :param bool direct: reduce buffering when printing to user-set file or pipe"""
+    :param bool direct: reduce buffering when printing to user-set file or pipe
+    """
     graph.append(
         Filter(
             command="ametadata",
@@ -5403,6 +5710,7 @@ def metadata(
     direct: Optional[bool] = None,
 ):
     """Manipulate video frame metadata.
+
     :param str mode: set a mode of operation
             possible values: select, add, modify, delete, print
     :param str key: set metadata key
@@ -5411,7 +5719,8 @@ def metadata(
             possible values: same_str, starts_with, less, equal, greater, expr, ends_with
     :param str expr: set expression for expr function
     :param str file: set file where to print metadata information
-    :param bool direct: reduce buffering when printing to user-set file or pipe"""
+    :param bool direct: reduce buffering when printing to user-set file or pipe
+    """
     graph.append(
         Filter(
             command="metadata",
@@ -5443,6 +5752,7 @@ def eq(
     eval: Optional[str] = None,
 ):
     """Adjust brightness, contrast, gamma, and saturation.
+
     :param str contrast: set the contrast adjustment, negative values give a negative image
     :param str brightness: set the brightness adjustment
     :param str saturation: set the saturation adjustment
@@ -5452,7 +5762,8 @@ def eq(
     :param str gamma_b: gamma value for blue
     :param str gamma_weight: set the gamma weight which reduces the effect of gamma on bright areas
     :param str eval: specify when to evaluate expressions
-            possible values: init, frame"""
+            possible values: init, frame
+    """
     graph.append(
         Filter(
             command="eq",
@@ -5483,12 +5794,14 @@ def chorus(
     depths: Optional[str] = None,
 ):
     """Add a chorus effect to the audio.
+
     :param float in_gain: set input gain
     :param float out_gain: set output gain
     :param str delays: set delays
     :param str decays: set decays
     :param str speeds: set speeds
-    :param str depths: set depths"""
+    :param str depths: set depths
+    """
     graph.append(
         Filter(
             command="chorus",
@@ -5508,9 +5821,11 @@ def chorus(
 
 def readvitc(graph: Stream, scan_max: Optional[int] = None, thr_b: Optional[float] = None, thr_w: Optional[float] = None):
     """Read vertical interval timecode and write it to frame metadata.
+
     :param int scan_max: maximum line numbers to scan for VITC data
     :param float thr_b: black color threshold
-    :param float thr_w: white color threshold"""
+    :param float thr_w: white color threshold
+    """
     graph.append(
         Filter(
             command="readvitc",
@@ -5534,13 +5849,15 @@ def codecview(
     block: Optional[bool] = None,
 ):
     """Visualize information about some codecs.
+
     :param str mv: set motion vectors to visualize
             possible values: pf, bf, bb
     :param str mv_type: set motion vectors type
             possible values: fp, bp
     :param str frame_type: set frame types to visualize motion vectors of
             possible values: if, pf, bf
-    :param bool block: set block partitioning structure to visualize"""
+    :param bool block: set block partitioning structure to visualize
+    """
     graph.append(
         Filter(
             command="codecview",
@@ -5567,9 +5884,11 @@ def vif(
 
 def aformat(graph: Stream, sample_fmts: Optional[str] = None, sample_rates: Optional[str] = None, channel_layouts: Optional[str] = None):
     """Convert the input audio to one of the specified formats.
+
     :param str sample_fmts: A '|'-separated list of sample formats.
     :param str sample_rates: A '|'-separated list of sample rates.
-    :param str channel_layouts: A '|'-separated list of channel layouts."""
+    :param str channel_layouts: A '|'-separated list of channel layouts.
+    """
     graph.append(
         Filter(
             command="aformat",
@@ -5593,12 +5912,14 @@ def asoftclip(
     oversample: Optional[int] = None,
 ):
     """Audio Soft Clipper.
+
     :param str type: set softclip type
             possible values: hard, tanh, atan, cubic, exp, alg, quintic, sin, erf
     :param float threshold: set softclip threshold
     :param float output: set softclip output gain
     :param float param: set softclip parameter
-    :param int oversample: set oversample factor"""
+    :param int oversample: set oversample factor
+    """
     graph.append(
         Filter(
             command="asoftclip",
@@ -5617,8 +5938,10 @@ def asoftclip(
 
 def bitplanenoise(graph: Stream, bitplane: Optional[int] = None, filter: Optional[bool] = None):
     """Measure bit plane noise.
+
     :param int bitplane: set bit plane to use for measuring noise
-    :param bool filter: show noisy pixels"""
+    :param bool filter: show noisy pixels
+    """
     graph.append(
         Filter(
             command="bitplanenoise",
@@ -5653,6 +5976,7 @@ def stereotools(
     bmode_out: Optional[int] = None,
 ):
     """Apply various stereo tools.
+
     :param float level_in: set level in
     :param float level_out: set level out
     :param float balance_in: set balance in
@@ -5674,7 +5998,8 @@ def stereotools(
     :param float phase: set stereo phase
     :param str bmode_in: set balance in mode
             possible values: balance, amplitude, power
-    :param int bmode_out: set balance out mode"""
+    :param int bmode_out: set balance out mode
+    """
     graph.append(
         Filter(
             command="stereotools",
@@ -5715,12 +6040,14 @@ def framerate(
     flags: Optional[str] = None,
 ):
     """Upsamples or downsamples progressive source between specified frame rates.
+
     :param str fps: required output frames per second rate
     :param int interp_start: point to start linear interpolation
     :param int interp_end: point to end linear interpolation
     :param float scene: scene change level
     :param str flags: set flags
-            possible values: scene_change_detect, scd"""
+            possible values: scene_change_detect, scd
+    """
     graph.append(
         Filter(
             command="framerate",
@@ -5746,11 +6073,13 @@ def nlmeans_opencl(
     rc: Optional[int] = None,
 ):
     """Non-local means denoiser through OpenCL
+
     :param float s: denoising strength
     :param int p: patch size
     :param int pc: patch size for chroma planes
     :param int r: research window
-    :param int rc: research window for chroma planes"""
+    :param int rc: research window for chroma planes
+    """
     graph.append(
         Filter(
             command="nlmeans_opencl",
@@ -5777,9 +6106,11 @@ def hwupload_cuda(
 
 def telecine(graph: Stream, first_field: Optional[str] = None, pattern: Optional[str] = None):
     """Apply a telecine pattern.
+
     :param str first_field: select first field
             possible values: top, t, bottom, b
-    :param str pattern: pattern that describe for how many fields a frame is to be displayed"""
+    :param str pattern: pattern that describe for how many fields a frame is to be displayed
+    """
     graph.append(
         Filter(
             command="telecine",
@@ -5800,13 +6131,15 @@ def pixelize(
     planes: Optional[str] = None,
 ):
     """Pixelize video.
+
     :param int width: set block width
     :param int w: set block width
     :param int height: set block height
     :param int h: set block height
     :param str mode: set the pixelize mode
             possible values: avg, min, max
-    :param str planes: set what planes to filter"""
+    :param str planes: set what planes to filter
+    """
     graph.append(
         Filter(
             command="pixelize",
@@ -5847,6 +6180,7 @@ def gradients(
     type: Optional[str] = None,
 ):
     """Draw a gradients.
+
     :param int size: set frame size
     :param str rate: set frame rate
     :param str c0: set 1st color
@@ -5866,7 +6200,8 @@ def gradients(
     :param int duration: set video duration
     :param float speed: set gradients rotation speed
     :param str type: set gradient type
-            possible values: linear, radial, circular, spiral, square"""
+            possible values: linear, radial, circular, spiral, square
+    """
     graph.append(
         Filter(
             command="gradients",
@@ -5913,6 +6248,7 @@ def smartblur(
     ct: Optional[int] = None,
 ):
     """Blur the input video without impacting the outlines.
+
     :param float luma_radius: set luma radius
     :param float lr: set luma radius
     :param float luma_strength: set luma strength
@@ -5924,7 +6260,8 @@ def smartblur(
     :param float chroma_strength: set chroma strength
     :param float cs: set chroma strength
     :param int chroma_threshold: set chroma threshold
-    :param int ct: set chroma threshold"""
+    :param int ct: set chroma threshold
+    """
     graph.append(
         Filter(
             command="smartblur",
@@ -5950,7 +6287,9 @@ def smartblur(
 
 def acontrast(graph: Stream, contrast: Optional[float] = None):
     """Simple audio dynamic range compression/expansion filter.
-    :param float contrast: set contrast"""
+
+    :param float contrast: set contrast
+    """
     graph.append(Filter(command="acontrast", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="contrast", value=contrast)]))
     return graph
 
@@ -5972,6 +6311,7 @@ def ssim360(
     default_heatmap_height: Optional[int] = None,
 ):
     """Calculate the SSIM between two 360 video streams.
+
     :param str stats_file: Set file where to store per-frame difference information
     :param int compute_chroma: Specifies if non-luma channels must be computed
     :param int frame_skip_ratio: Specifies the number of frames to be skipped from evaluation, for every evaluated frame
@@ -5986,7 +6326,8 @@ def ssim360(
     :param int use_tape: Specifies if the tape based SSIM 360 algorithm must be used independent of the input video types
     :param str heatmap_str: Heatmap data for view-based evaluation. For heatmap file format, please refer to EntSphericalVideoHeatmapData.
     :param int default_heatmap_width: Default heatmap dimension. Will be used when dimension is not specified in heatmap data.
-    :param int default_heatmap_height: Default heatmap dimension. Will be used when dimension is not specified in heatmap data."""
+    :param int default_heatmap_height: Default heatmap dimension. Will be used when dimension is not specified in heatmap data.
+    """
     graph.append(
         Filter(
             command="ssim360",
@@ -6013,7 +6354,9 @@ def ssim360(
 
 def mcompand(graph: Stream, args: Optional[str] = None):
     """Multiband Compress or expand audio dynamic range.
-    :param str args: set parameters for each band"""
+
+    :param str args: set parameters for each band
+    """
     graph.append(Filter(command="mcompand", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="args", value=args)]))
     return graph
 
@@ -6027,12 +6370,14 @@ def anlmdn(
     smooth: Optional[float] = None,
 ):
     """Reduce broadband noise from stream using Non-Local Means.
+
     :param float strength: set denoising strength
     :param int patch: set patch duration
     :param int research: set research duration
     :param str output: set output mode
             possible values: i, o, n
-    :param float smooth: set smooth factor"""
+    :param float smooth: set smooth factor
+    """
     graph.append(
         Filter(
             command="anlmdn",
@@ -6060,6 +6405,7 @@ def fade(
     color: Optional[str] = None,
 ):
     """Fade in/out input video.
+
     :param str type: set the fade direction
             possible values: in, out
     :param int start_frame: Number of the first frame to which to apply the effect.
@@ -6067,7 +6413,8 @@ def fade(
     :param bool alpha: fade alpha if it is available on the input
     :param int start_time: Number of seconds of the beginning of the effect.
     :param int duration: Duration of the effect in seconds.
-    :param str color: set color"""
+    :param str color: set color
+    """
     graph.append(
         Filter(
             command="fade",
@@ -6088,9 +6435,11 @@ def fade(
 
 def freezeframes(graph: Stream, first: Optional[int] = None, last: Optional[int] = None, replace: Optional[int] = None):
     """Freeze video frames.
+
     :param int first: set first frame to freeze
     :param int last: set last frame to freeze
-    :param int replace: set frame to replace"""
+    :param int replace: set frame to replace
+    """
     graph.append(
         Filter(
             command="freezeframes",
@@ -6107,8 +6456,10 @@ def freezeframes(graph: Stream, first: Optional[int] = None, last: Optional[int]
 
 def phase(graph: Stream, mode: Optional[str] = None):
     """Phase shift fields.
+
     :param str mode: set phase mode
-            possible values: p, t, b, T, B, u, U, a, A"""
+            possible values: p, t, b, T, B, u, U, a, A
+    """
     graph.append(Filter(command="phase", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="mode", value=mode)]))
     return graph
 
@@ -6123,6 +6474,7 @@ def headphone(
     hrir: Optional[str] = None,
 ):
     """Apply headphone binaural spatialization with HRTFs in additional streams.
+
     :param str map: set channels convolution mappings
     :param float gain: set gain in dB
     :param float lfe: set lfe gain in dB
@@ -6130,7 +6482,8 @@ def headphone(
             possible values: time, freq
     :param int size: set frame size
     :param str hrir: set hrir format
-            possible values: stereo, multich"""
+            possible values: stereo, multich
+    """
     graph.append(
         Filter(
             command="headphone",
@@ -6157,11 +6510,13 @@ def gblur_vulkan(
     sizeV: Optional[int] = None,
 ):
     """Gaussian Blur in Vulkan
+
     :param float sigma: Set sigma
     :param float sigmaV: Set vertical sigma
     :param int planes: Set planes to filter
     :param int size: Set kernel size
-    :param int sizeV: Set vertical kernel size"""
+    :param int sizeV: Set vertical kernel size
+    """
     graph.append(
         Filter(
             command="gblur_vulkan",
@@ -6188,8 +6543,10 @@ def yadif(
 
 def hysteresis(graph: Stream, planes: Optional[int] = None, threshold: Optional[int] = None):
     """Grow first stream into second stream by connecting components.
+
     :param int planes: set planes
-    :param int threshold: set threshold"""
+    :param int threshold: set threshold
+    """
     graph.append(
         Filter(
             command="hysteresis",
@@ -6218,6 +6575,7 @@ def dnn_detect(
     anchors: Optional[str] = None,
 ):
     """Apply DNN detect filter to the input.
+
     :param int dnn_backend: DNN backend
     :param str model: path to model file
     :param str input: input name of the model
@@ -6232,7 +6590,8 @@ def dnn_detect(
     :param int cell_w: cell width
     :param int cell_h: cell height
     :param int nb_classes: The number of class
-    :param str anchors: anchors, splited by '&'"""
+    :param str anchors: anchors, splited by '&'
+    """
     graph.append(
         Filter(
             command="dnn_detect",
@@ -6272,6 +6631,7 @@ def floodfill(
     d3: Optional[int] = None,
 ):
     """Fill area with same color with another color.
+
     :param int x: set pixel x coordinate
     :param int y: set pixel y coordinate
     :param int s0: set source #0 component value
@@ -6281,7 +6641,8 @@ def floodfill(
     :param int d0: set destination #0 component value
     :param int d1: set destination #1 component value
     :param int d2: set destination #2 component value
-    :param int d3: set destination #3 component value"""
+    :param int d3: set destination #3 component value
+    """
     graph.append(
         Filter(
             command="floodfill",
@@ -6312,11 +6673,13 @@ def delogo(
     show: Optional[bool] = None,
 ):
     """Remove logo from input video.
+
     :param str x: set logo x position
     :param str y: set logo y position
     :param str w: set logo width
     :param str h: set logo height
-    :param bool show: show delogo area"""
+    :param bool show: show delogo area
+    """
     graph.append(
         Filter(
             command="delogo",
@@ -6350,11 +6713,13 @@ def color(
     sar: Optional[int] = None,
 ):
     """Provide an uniformly colored input.
+
     :param str color: set color
     :param int size: set video size
     :param str rate: set video rate
     :param int duration: set video duration
-    :param int sar: set video sample aspect ratio"""
+    :param int sar: set video sample aspect ratio
+    """
     graph.append(
         Filter(
             command="color",
@@ -6375,10 +6740,12 @@ def haldclutsrc(
     graph: Stream, level: Optional[int] = None, rate: Optional[str] = None, duration: Optional[int] = None, sar: Optional[int] = None
 ):
     """Provide an identity Hald CLUT.
+
     :param int level: set level
     :param str rate: set video rate
     :param int duration: set video duration
-    :param int sar: set video sample aspect ratio"""
+    :param int sar: set video sample aspect ratio
+    """
     graph.append(
         Filter(
             command="haldclutsrc",
@@ -6411,11 +6778,13 @@ def testsrc(
     decimals: Optional[int] = None,
 ):
     """Generate test pattern.
+
     :param int size: set video size
     :param str rate: set video rate
     :param int duration: set video duration
     :param int sar: set video sample aspect ratio
-    :param int decimals: set number of decimals to show"""
+    :param int decimals: set number of decimals to show
+    """
     graph.append(
         Filter(
             command="testsrc",
@@ -6441,11 +6810,13 @@ def testsrc2(
     alpha: Optional[int] = None,
 ):
     """Generate another test pattern.
+
     :param int size: set video size
     :param str rate: set video rate
     :param int duration: set video duration
     :param int sar: set video sample aspect ratio
-    :param int alpha: set global alpha (opacity)"""
+    :param int alpha: set global alpha (opacity)
+    """
     graph.append(
         Filter(
             command="testsrc2",
@@ -6471,11 +6842,13 @@ def rgbtestsrc(
     complement: Optional[bool] = None,
 ):
     """Generate RGB test pattern.
+
     :param int size: set video size
     :param str rate: set video rate
     :param int duration: set video duration
     :param int sar: set video sample aspect ratio
-    :param bool complement: set complement colors"""
+    :param bool complement: set complement colors
+    """
     graph.append(
         Filter(
             command="rgbtestsrc",
@@ -6557,12 +6930,14 @@ def colorspectrum(
     type: Optional[str] = None,
 ):
     """Generate colors spectrum.
+
     :param int size: set video size
     :param str rate: set video rate
     :param int duration: set video duration
     :param int sar: set video sample aspect ratio
     :param str type: set the color spectrum type
-            possible values: black, white, all"""
+            possible values: black, white, all
+    """
     graph.append(
         Filter(
             command="colorspectrum",
@@ -6588,12 +6963,14 @@ def colorchart(
     preset: Optional[str] = None,
 ):
     """Generate color checker chart.
+
     :param str rate: set video rate
     :param int duration: set video duration
     :param int sar: set video sample aspect ratio
     :param int patch_size: set the single patch size
     :param str preset: set the color checker chart preset
-            possible values: reference, skintones"""
+            possible values: reference, skintones
+    """
     graph.append(
         Filter(
             command="colorchart",
@@ -6634,6 +7011,7 @@ def zoneplate(
     kv: Optional[int] = None,
 ):
     """Generate zone-plate.
+
     :param int size: set video size
     :param str rate: set video rate
     :param int duration: set video duration
@@ -6653,7 +7031,8 @@ def zoneplate(
     :param int ky2: set 2-order Y-axis phase
     :param int kt2: set 2-order T-axis phase
     :param int ku: set 0-order U-color phase
-    :param int kv: set 0-order V-color phase"""
+    :param int kv: set 0-order V-color phase
+    """
     graph.append(
         Filter(
             command="zoneplate",
@@ -6707,6 +7086,7 @@ def colorchannelmixer(
     pa: Optional[float] = None,
 ):
     """Adjust colors by mixing color channels.
+
     :param float rr: set the red gain for the red channel
     :param float rg: set the green gain for the red channel
     :param float rb: set the blue gain for the red channel
@@ -6725,7 +7105,8 @@ def colorchannelmixer(
     :param float aa: set the alpha gain for the alpha channel
     :param str pc: set the preserve color mode
             possible values: none, lum, max, avg, sum, nrm, pwr
-    :param float pa: set the preserve color amount"""
+    :param float pa: set the preserve color amount
+    """
     graph.append(
         Filter(
             command="colorchannelmixer",
@@ -6757,9 +7138,11 @@ def colorchannelmixer(
 
 def backgroundkey(graph: Stream, threshold: Optional[float] = None, similarity: Optional[float] = None, blend: Optional[float] = None):
     """Turns a static background into transparency.
+
     :param float threshold: set the scene change threshold
     :param float similarity: set the similarity
-    :param float blend: set the blend value"""
+    :param float blend: set the blend value
+    """
     graph.append(
         Filter(
             command="backgroundkey",
@@ -6776,8 +7159,10 @@ def backgroundkey(graph: Stream, threshold: Optional[float] = None, similarity: 
 
 def displace(graph: Stream, edge: Optional[str] = None):
     """Displace pixels.
+
     :param str edge: set edge mode
-            possible values: blank, smear, wrap, mirror"""
+            possible values: blank, smear, wrap, mirror
+    """
     graph.append(Filter(command="displace", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="edge", value=edge)]))
     return graph
 
@@ -6797,11 +7182,13 @@ def afdelaysrc(
     channel_layout: Optional[str] = None,
 ):
     """Generate a Fractional delay FIR coefficients.
+
     :param float delay: set fractional delay
     :param int sample_rate: set sample rate
     :param int nb_samples: set the number of samples per requested frame
     :param int taps: set number of taps for delay filter
-    :param str channel_layout: set channel layout"""
+    :param str channel_layout: set channel layout
+    """
     graph.append(
         Filter(
             command="afdelaysrc",
@@ -6820,10 +7207,12 @@ def afdelaysrc(
 
 def tinterlace(graph: Stream, mode: Optional[str] = None, flags: Optional[str] = None):
     """Perform temporal field interlacing.
+
     :param str mode: select interlace mode
             possible values: merge, drop_even, drop_odd, pad, interleave_top, interleave_bottom, interlacex2, mergex2
     :param str flags: set flags
-            possible values: low_pass_filter, vlpf, complex_filter, cvlpf, exact_tb, bypass_il"""
+            possible values: low_pass_filter, vlpf, complex_filter, cvlpf, exact_tb, bypass_il
+    """
     graph.append(
         Filter(
             command="tinterlace",
@@ -6836,10 +7225,12 @@ def tinterlace(graph: Stream, mode: Optional[str] = None, flags: Optional[str] =
 
 def interlace(graph: Stream, scan: Optional[str] = None, lowpass: Optional[str] = None):
     """Convert progressive video into interlaced.
+
     :param str scan: scanning mode
             possible values: tff, bff
     :param str lowpass: set vertical low-pass filter
-            possible values: off, linear, complex"""
+            possible values: off, linear, complex
+    """
     graph.append(
         Filter(
             command="interlace",
@@ -6868,14 +7259,18 @@ def noformat(
 
 def framestep(graph: Stream, step: Optional[int] = None):
     """Select one frame every N frames.
-    :param int step: set frame step"""
+
+    :param int step: set frame step
+    """
     graph.append(Filter(command="framestep", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="step", value=step)]))
     return graph
 
 
 def ssim(graph: Stream, stats_file: Optional[str] = None):
     """Calculate the SSIM between two video streams.
-    :param str stats_file: Set file where to store per-frame difference information"""
+
+    :param str stats_file: Set file where to store per-frame difference information
+    """
     graph.append(Filter(command="ssim", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="stats_file", value=stats_file)]))
     return graph
 
@@ -6893,6 +7288,7 @@ def cropdetect(
     mv_threshold: Optional[int] = None,
 ):
     """Auto-detect crop size.
+
     :param float limit: Threshold below which the pixel is considered black
     :param int round: Value by which the width/height should be divisible
     :param int reset: Recalculate the crop area after this many frames
@@ -6902,7 +7298,8 @@ def cropdetect(
             possible values: black, mvedges
     :param float high: Set high threshold for edge detection
     :param float low: Set low threshold for edge detection
-    :param int mv_threshold: motion vector threshold when estimating video window size"""
+    :param int mv_threshold: motion vector threshold when estimating video window size
+    """
     graph.append(
         Filter(
             command="cropdetect",
@@ -6932,12 +7329,14 @@ def chromashift(
     edge: Optional[str] = None,
 ):
     """Shift chroma.
+
     :param int cbh: shift chroma-blue horizontally
     :param int cbv: shift chroma-blue vertically
     :param int crh: shift chroma-red horizontally
     :param int crv: shift chroma-red vertically
     :param str edge: set edge operation
-            possible values: smear, wrap"""
+            possible values: smear, wrap
+    """
     graph.append(
         Filter(
             command="chromashift",
@@ -6967,6 +7366,7 @@ def rgbashift(
     edge: Optional[str] = None,
 ):
     """Shift RGBA.
+
     :param int rh: shift red horizontally
     :param int rv: shift red vertically
     :param int gh: shift green horizontally
@@ -6976,7 +7376,8 @@ def rgbashift(
     :param int ah: shift alpha horizontally
     :param int av: shift alpha vertically
     :param str edge: set edge operation
-            possible values: smear, wrap"""
+            possible values: smear, wrap
+    """
     graph.append(
         Filter(
             command="rgbashift",
@@ -7001,11 +7402,13 @@ def showspatial(
     graph: Stream, size: Optional[int] = None, win_size: Optional[int] = None, win_func: Optional[str] = None, rate: Optional[str] = None
 ):
     """Convert input audio to a spatial video output.
+
     :param int size: set video size
     :param int win_size: set window size
     :param str win_func: set window function
             possible values: rect, bartlett, hann, hanning, hamming, blackman, welch, flattop, bharris, bnuttall, bhann, sine, nuttall, lanczos, gauss, tukey, dolph, cauchy, parzen, poisson, bohman, kaiser
-    :param str rate: set video rate"""
+    :param str rate: set video rate
+    """
     graph.append(
         Filter(
             command="showspatial",
@@ -7021,47 +7424,48 @@ def showspatial(
     return graph
 
 
-def overlay(
-    graph: Stream,
-    x: Optional[str] = None,
-    y: Optional[str] = None,
-    eof_action: Optional[str] = None,
-    eval: Optional[str] = None,
-    shortest: Optional[bool] = None,
-    format: Optional[str] = None,
-    repeatlast: Optional[bool] = None,
-    alpha: Optional[str] = None,
-):
-    """Overlay a video source on top of the input.
-    :param str x: set the x expression
-    :param str y: set the y expression
-    :param str eof_action: Action to take when encountering EOF from secondary input
-            possible values: repeat, endall, pass
-    :param str eval: specify when to evaluate expressions
-            possible values: init, frame
-    :param bool shortest: force termination when the shortest input terminates
-    :param str format: set output format
-            possible values: yuv420, yuv420p10, yuv422, yuv422p10, yuv444, yuv444p10, rgb, gbrp, auto
-    :param bool repeatlast: repeat overlay of the last overlay frame
-    :param str alpha: alpha format
-            possible values: straight, premultiplied"""
-    graph.append(
-        Filter(
-            command="overlay",
-            filter_type="AVMEDIA_TYPE_VIDEO",
-            params=[
-                FilterOption(name="x", value=x),
-                FilterOption(name="y", value=y),
-                FilterOption(name="eof_action", value=eof_action),
-                FilterOption(name="eval", value=eval),
-                FilterOption(name="shortest", value=shortest),
-                FilterOption(name="format", value=format),
-                FilterOption(name="repeatlast", value=repeatlast),
-                FilterOption(name="alpha", value=alpha),
-            ],
-        )
-    )
-    return graph
+# def overlay(
+#     graph: Stream,
+#     x: Optional[str] = None,
+#     y: Optional[str] = None,
+#     eof_action: Optional[str] = None,
+#     eval: Optional[str] = None,
+#     shortest: Optional[bool] = None,
+#     format: Optional[str] = None,
+#     repeatlast: Optional[bool] = None,
+#     alpha: Optional[str] = None,
+# ):
+#     """Overlay a video source on top of the input.
+#     :param str x: set the x expression
+#     :param str y: set the y expression
+#     :param str eof_action: Action to take when encountering EOF from secondary input
+#             possible values: repeat, endall, pass
+#     :param str eval: specify when to evaluate expressions
+#             possible values: init, frame
+#     :param bool shortest: force termination when the shortest input terminates
+#     :param str format: set output format
+#             possible values: yuv420, yuv420p10, yuv422, yuv422p10, yuv444, yuv444p10, rgb, gbrp, auto
+#     :param bool repeatlast: repeat overlay of the last overlay frame
+#     :param str alpha: alpha format
+#             possible values: straight, premultiplied"""
+#     graph.append(
+#         Filter(
+#             command="overlay",
+#             filter_type="AVMEDIA_TYPE_VIDEO",
+#             params=[
+#                 FilterOption(name="x", value=x),
+#                 FilterOption(name="y", value=y),
+#                 FilterOption(name="eof_action", value=eof_action),
+#                 FilterOption(name="eval", value=eval),
+#                 FilterOption(name="shortest", value=shortest),
+#                 FilterOption(name="format", value=format),
+#                 FilterOption(name="repeatlast", value=repeatlast),
+#                 FilterOption(name="alpha", value=alpha),
+#             ],
+#         )
+#     )
+#     return graph
+
 
 
 def null(
@@ -7088,6 +7492,7 @@ def deshake(
     opencl: Optional[bool] = None,
 ):
     """Stabilize shaky video.
+
     :param int x: set x for the rectangular search area
     :param int y: set y for the rectangular search area
     :param int w: set width for the rectangular search area
@@ -7101,7 +7506,8 @@ def deshake(
     :param str search: set search strategy
             possible values: exhaustive, less
     :param str filename: set motion search detailed log file name
-    :param bool opencl: ignored"""
+    :param bool opencl: ignored
+    """
     graph.append(
         Filter(
             command="deshake",
@@ -7138,6 +7544,7 @@ def estdif(
     interp: Optional[str] = None,
 ):
     """Apply Edge Slope Tracing deinterlace.
+
     :param str mode: specify the mode
             possible values: frame, field
     :param str parity: specify the assumed picture field parity
@@ -7150,7 +7557,8 @@ def estdif(
     :param int mcost: specify the middle cost for edge matching
     :param int dcost: specify the distance cost for edge matching
     :param str interp: specify the type of interpolation
-            possible values: 2p, 4p, 6p"""
+            possible values: 2p, 4p, 6p
+    """
     graph.append(
         Filter(
             command="estdif",
@@ -7182,6 +7590,7 @@ def anoisesrc(
     density: Optional[float] = None,
 ):
     """Generate a noise audio signal.
+
     :param int sample_rate: set sample rate
     :param float amplitude: set amplitude
     :param int duration: set duration
@@ -7189,7 +7598,8 @@ def anoisesrc(
             possible values: white, pink, brown, blue, violet, velvet
     :param int seed: set random seed
     :param int nb_samples: set the number of samples per requested frame
-    :param float density: set density"""
+    :param float density: set density
+    """
     graph.append(
         Filter(
             command="anoisesrc",
@@ -7216,10 +7626,12 @@ def aecho(
     decays: Optional[str] = None,
 ):
     """Add echoing to the audio.
+
     :param float in_gain: set signal input gain
     :param float out_gain: set signal output gain
     :param str delays: set list of signal delays
-    :param str decays: set list of signal decays"""
+    :param str decays: set list of signal decays
+    """
     graph.append(
         Filter(
             command="aecho",
@@ -7257,6 +7669,7 @@ def scale(
     eval: Optional[str] = None,
 ):
     """Scale the input video size and/or convert the image format.
+
     :param str w: Output video width
     :param str h: Output video height
     :param str flags: Flags to pass to libswscale
@@ -7280,7 +7693,8 @@ def scale(
     :param float param0: Scaler param 0
     :param float param1: Scaler param 1
     :param str eval: specify when to evaluate expressions
-            possible values: init, frame"""
+            possible values: init, frame
+    """
     graph.append(
         Filter(
             command="scale",
@@ -7330,6 +7744,7 @@ def decimate(
     mixed: Optional[bool] = None,
 ):
     """Decimate frames (post field matching filter).
+
     :param int cycle: set the number of frame from which one will be dropped
     :param float dupthresh: set duplicate threshold
     :param float scthresh: set scene change threshold
@@ -7337,7 +7752,8 @@ def decimate(
     :param int blocky: set the size of the y-axis blocks used during metric calculations
     :param bool ppsrc: mark main input as a pre-processed input and activate clean source input stream
     :param bool chroma: set whether or not chroma is considered in the metric calculations
-    :param bool mixed: set whether or not the input only partially contains content to be decimated"""
+    :param bool mixed: set whether or not the input only partially contains content to be decimated
+    """
     graph.append(
         Filter(
             command="decimate",
@@ -7361,10 +7777,12 @@ def monochrome(
     graph: Stream, cb: Optional[float] = None, cr: Optional[float] = None, size: Optional[float] = None, high: Optional[float] = None
 ):
     """Convert video to gray using custom color filter.
+
     :param float cb: set the chroma blue spot
     :param float cr: set the chroma red spot
     :param float size: set the color filter size
-    :param float high: set the highlights strength"""
+    :param float high: set the highlights strength
+    """
     graph.append(
         Filter(
             command="monochrome",
@@ -7394,6 +7812,7 @@ def equalizer(
     blocksize: Optional[int] = None,
 ):
     """Apply two-pole peaking equalization (EQ) filter.
+
     :param float frequency: set central frequency
     :param str width_type: set filter-width type
             possible values: h, q, o, s, k
@@ -7406,7 +7825,8 @@ def equalizer(
             possible values: di, dii, tdi, tdii, latt, svf, zdf
     :param str precision: set filtering precision
             possible values: auto, s16, s32, f32, f64
-    :param int blocksize: set the block size"""
+    :param int blocksize: set the block size
+    """
     graph.append(
         Filter(
             command="equalizer",
@@ -7482,6 +7902,7 @@ def bandpass(
     blocksize: Optional[int] = None,
 ):
     """Apply a two-pole Butterworth band-pass filter.
+
     :param float frequency: set central frequency
     :param str width_type: set filter-width type
             possible values: h, q, o, s, k
@@ -7494,7 +7915,8 @@ def bandpass(
             possible values: di, dii, tdi, tdii, latt, svf, zdf
     :param str precision: set filtering precision
             possible values: auto, s16, s32, f32, f64
-    :param int blocksize: set the block size"""
+    :param int blocksize: set the block size
+    """
     graph.append(
         Filter(
             command="bandpass",
@@ -7529,6 +7951,7 @@ def bandreject(
     blocksize: Optional[int] = None,
 ):
     """Apply a two-pole Butterworth band-reject filter.
+
     :param float frequency: set central frequency
     :param str width_type: set filter-width type
             possible values: h, q, o, s, k
@@ -7540,7 +7963,8 @@ def bandreject(
             possible values: di, dii, tdi, tdii, latt, svf, zdf
     :param str precision: set filtering precision
             possible values: auto, s16, s32, f32, f64
-    :param int blocksize: set the block size"""
+    :param int blocksize: set the block size
+    """
     graph.append(
         Filter(
             command="bandreject",
@@ -7575,6 +7999,7 @@ def lowpass(
     blocksize: Optional[int] = None,
 ):
     """Apply a low-pass filter with 3dB point frequency.
+
     :param float frequency: set frequency
     :param str width_type: set filter-width type
             possible values: h, q, o, s, k
@@ -7587,7 +8012,8 @@ def lowpass(
             possible values: di, dii, tdi, tdii, latt, svf, zdf
     :param str precision: set filtering precision
             possible values: auto, s16, s32, f32, f64
-    :param int blocksize: set the block size"""
+    :param int blocksize: set the block size
+    """
     graph.append(
         Filter(
             command="lowpass",
@@ -7623,6 +8049,7 @@ def highpass(
     blocksize: Optional[int] = None,
 ):
     """Apply a high-pass filter with 3dB point frequency.
+
     :param float frequency: set frequency
     :param str width_type: set filter-width type
             possible values: h, q, o, s, k
@@ -7635,7 +8062,8 @@ def highpass(
             possible values: di, dii, tdi, tdii, latt, svf, zdf
     :param str precision: set filtering precision
             possible values: auto, s16, s32, f32, f64
-    :param int blocksize: set the block size"""
+    :param int blocksize: set the block size
+    """
     graph.append(
         Filter(
             command="highpass",
@@ -7670,6 +8098,7 @@ def allpass(
     precision: Optional[str] = None,
 ):
     """Apply a two-pole all-pass filter.
+
     :param float frequency: set central frequency
     :param str width_type: set filter-width type
             possible values: h, q, o, s, k
@@ -7681,7 +8110,8 @@ def allpass(
     :param str transform: set transform type
             possible values: di, dii, tdi, tdii, latt, svf, zdf
     :param str precision: set filtering precision
-            possible values: auto, s16, s32, f32, f64"""
+            possible values: auto, s16, s32, f32, f64
+    """
     graph.append(
         Filter(
             command="allpass",
@@ -7718,6 +8148,7 @@ def biquad(
     blocksize: Optional[int] = None,
 ):
     """Apply a biquad IIR filter with the given coefficients.
+
     :param float mix: set mix
     :param str channels: set channels to filter
     :param bool normalize: normalize coefficients
@@ -7725,7 +8156,8 @@ def biquad(
             possible values: di, dii, tdi, tdii, latt, svf, zdf
     :param str precision: set filtering precision
             possible values: auto, s16, s32, f32, f64
-    :param int blocksize: set the block size"""
+    :param int blocksize: set the block size
+    """
     graph.append(
         Filter(
             command="biquad",
@@ -7760,6 +8192,7 @@ def spectrumsynth(
     orientation: Optional[str] = None,
 ):
     """Convert input spectrum videos to audio output.
+
     :param int sample_rate: set sample rate
     :param int channels: set channels
     :param str scale: set input amplitude scale
@@ -7770,7 +8203,8 @@ def spectrumsynth(
             possible values: rect, bartlett, hann, hanning, hamming, blackman, welch, flattop, bharris, bnuttall, bhann, sine, nuttall, lanczos, gauss, tukey, dolph, cauchy, parzen, poisson, bohman, kaiser
     :param float overlap: set window overlap
     :param str orientation: set orientation
-            possible values: vertical, horizontal"""
+            possible values: vertical, horizontal
+    """
     graph.append(
         Filter(
             command="spectrumsynth",
@@ -7798,12 +8232,14 @@ def amix(
     normalize: Optional[bool] = None,
 ):
     """Audio mixing.
+
     :param int inputs: Number of inputs.
     :param str duration: How to determine the end-of-stream.
             possible values: longest, shortest, first
     :param float dropout_transition: Transition time, in seconds, for volume renormalization when an input stream ends.
     :param str weights: Set weight for each input.
-    :param bool normalize: Scale inputs"""
+    :param bool normalize: Scale inputs
+    """
     graph.append(
         Filter(
             command="amix",
@@ -7822,8 +8258,10 @@ def amix(
 
 def blackframe(graph: Stream, amount: Optional[int] = None, threshold: Optional[int] = None):
     """Detect frames that are (almost) black.
+
     :param int amount: percentage of the pixels that have to be below the threshold for the frame to be considered black
-    :param int threshold: threshold below which a pixel value is considered black"""
+    :param int threshold: threshold below which a pixel value is considered black
+    """
     graph.append(
         Filter(
             command="blackframe",
@@ -7874,6 +8312,7 @@ def nlmeans_vulkan(
     p4: Optional[int] = None,
 ):
     """Non-local means denoiser (Vulkan)
+
     :param float s: denoising strength for all components
     :param int p: patch size for all components
     :param int r: research window radius
@@ -7885,7 +8324,8 @@ def nlmeans_vulkan(
     :param int p1: patch size for component 1
     :param int p2: patch size for component 2
     :param int p3: patch size for component 3
-    :param int p4: patch size for component 4"""
+    :param int p4: patch size for component 4
+    """
     graph.append(
         Filter(
             command="nlmeans_vulkan",
@@ -7917,10 +8357,12 @@ def chromakey(
     yuv: Optional[bool] = None,
 ):
     """Turns a certain color into transparency. Operates on YUV colors.
+
     :param str color: set the chromakey key color
     :param float similarity: set the chromakey similarity value
     :param float blend: set the chromakey key blend value
-    :param bool yuv: color parameter is in yuv instead of rgb"""
+    :param bool yuv: color parameter is in yuv instead of rgb
+    """
     graph.append(
         Filter(
             command="chromakey",
@@ -7944,10 +8386,12 @@ def chromahold(
     yuv: Optional[bool] = None,
 ):
     """Turns a certain color range into gray.
+
     :param str color: set the chromahold key color
     :param float similarity: set the chromahold similarity value
     :param float blend: set the chromahold blend value
-    :param bool yuv: color parameter is in yuv instead of rgb"""
+    :param bool yuv: color parameter is in yuv instead of rgb
+    """
     graph.append(
         Filter(
             command="chromahold",
@@ -7980,6 +8424,7 @@ def dynaudnorm(
     curve: Optional[str] = None,
 ):
     """Dynamic Audio Normalizer.
+
     :param int framelen: set the frame length in msec
     :param int gausssize: set the filter size
     :param float peak: set the peak value
@@ -7992,7 +8437,8 @@ def dynaudnorm(
     :param float threshold: set the threshold value
     :param str channels: set channels to filter
     :param float overlap: set the frame overlap
-    :param str curve: set the custom peak mapping curve"""
+    :param str curve: set the custom peak mapping curve
+    """
     graph.append(
         Filter(
             command="dynaudnorm",
@@ -8031,6 +8477,7 @@ def cellauto(
     stitch: Optional[bool] = None,
 ):
     """Create pattern generated by an elementary cellular automaton.
+
     :param str filename: read initial pattern from file
     :param str pattern: set initial pattern
     :param str rate: set video rate
@@ -8040,7 +8487,8 @@ def cellauto(
     :param int random_seed: set the seed for filling the initial grid randomly
     :param bool scroll: scroll pattern downward
     :param bool start_full: start filling the whole video
-    :param bool stitch: stitch boundaries"""
+    :param bool stitch: stitch boundaries
+    """
     graph.append(
         Filter(
             command="cellauto",
@@ -8082,6 +8530,7 @@ def showcwt(
     rotation: Optional[float] = None,
 ):
     """Convert input audio to a CWT (Continuous Wavelet Transform) spectrum video output.
+
     :param int size: set video size
     :param str rate: set video rate
     :param str scale: set frequency scale
@@ -8102,7 +8551,8 @@ def showcwt(
     :param str direction: set direction mode
             possible values: lr, rl, ud, du
     :param float bar: set bargraph ratio
-    :param float rotation: set color rotation"""
+    :param float rotation: set color rotation
+    """
     graph.append(
         Filter(
             command="showcwt",
@@ -8132,7 +8582,9 @@ def showcwt(
 
 def atempo(graph: Stream, tempo: Optional[float] = None):
     """Adjust audio tempo.
-    :param float tempo: set tempo scale factor"""
+
+    :param float tempo: set tempo scale factor
+    """
     graph.append(Filter(command="atempo", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="tempo", value=tempo)]))
     return graph
 
@@ -8148,6 +8600,7 @@ def color_vulkan(
     out_range: Optional[str] = None,
 ):
     """Generate a constant color (Vulkan)
+
     :param str color: set color
     :param int size: set video size
     :param str rate: set video rate
@@ -8155,7 +8608,8 @@ def color_vulkan(
     :param int sar: set video sample aspect ratio
     :param str format: Output video format (software format of hardware frames)
     :param str out_range: Output colour range (from 0 to 2) (default 0)
-            possible values: full, limited, jpeg, mpeg, tv, pc"""
+            possible values: full, limited, jpeg, mpeg, tv, pc
+    """
     graph.append(
         Filter(
             command="color_vulkan",
@@ -8176,7 +8630,9 @@ def color_vulkan(
 
 def midequalizer(graph: Stream, planes: Optional[int] = None):
     """Apply Midway Equalization.
-    :param int planes: set planes"""
+
+    :param int planes: set planes
+    """
     graph.append(Filter(command="midequalizer", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="planes", value=planes)]))
     return graph
 
@@ -8195,6 +8651,7 @@ def blend_vulkan(
     all_opacity: Optional[float] = None,
 ):
     """Blend two video frames in Vulkan
+
     :param str c0_mode: set component #0 blend mode
             possible values: normal, multiply
     :param str c1_mode: set component #1 blend mode
@@ -8209,7 +8666,8 @@ def blend_vulkan(
     :param float c1_opacity: set color component #1 opacity
     :param float c2_opacity: set color component #2 opacity
     :param float c3_opacity: set color component #3 opacity
-    :param float all_opacity: set opacity for all color components"""
+    :param float all_opacity: set opacity for all color components
+    """
     graph.append(
         Filter(
             command="blend_vulkan",
@@ -8248,6 +8706,7 @@ def a3dscope(
     length: Optional[int] = None,
 ):
     """Convert input audio to 3d scope video output.
+
     :param str rate: set video rate
     :param int size: set video size
     :param float fov: set camera FoV
@@ -8260,7 +8719,8 @@ def a3dscope(
     :param float xpos: set camera position
     :param float ypos: set camera position
     :param float zpos: set camera position
-    :param int length: set length"""
+    :param int length: set length
+    """
     graph.append(
         Filter(
             command="a3dscope",
@@ -8287,9 +8747,11 @@ def a3dscope(
 
 def thumbnail(graph: Stream, n: Optional[int] = None, log: Optional[str] = None):
     """Select the most representative frame in a given sequence of consecutive frames.
+
     :param int n: set the frames batch size
     :param str log: force stats logging level
-            possible values: quiet, info, verbose"""
+            possible values: quiet, info, verbose
+    """
     graph.append(
         Filter(
             command="thumbnail",
@@ -8311,6 +8773,7 @@ def deblock(
     planes: Optional[int] = None,
 ):
     """Deblock video.
+
     :param str filter: set type of filter
             possible values: weak, strong
     :param int block: set size of block
@@ -8318,7 +8781,8 @@ def deblock(
     :param float beta: set 2nd detection threshold
     :param float gamma: set 3rd detection threshold
     :param float delta: set 4th detection threshold
-    :param int planes: set planes to filter"""
+    :param int planes: set planes to filter
+    """
     graph.append(
         Filter(
             command="deblock",
@@ -8347,12 +8811,14 @@ def crossfeed(
     block_size: Optional[int] = None,
 ):
     """Apply headphone crossfeed filter.
+
     :param float strength: set crossfeed strength
     :param float range: set soundstage wideness
     :param float slope: set curve slope
     :param float level_in: set level in
     :param float level_out: set level out
-    :param int block_size: set the block size"""
+    :param int block_size: set the block size
+    """
     graph.append(
         Filter(
             command="crossfeed",
@@ -8372,10 +8838,12 @@ def crossfeed(
 
 def deflicker(graph: Stream, size: Optional[int] = None, mode: Optional[str] = None, bypass: Optional[bool] = None):
     """Remove temporal frame luminance variations.
+
     :param int size: set how many frames to use
     :param str mode: set how to smooth luminance
             possible values: am, gm, hm, qm, cm, pm, median
-    :param bool bypass: leave frames unchanged"""
+    :param bool bypass: leave frames unchanged
+    """
     graph.append(
         Filter(
             command="deflicker",
@@ -8402,6 +8870,7 @@ def showwaves(
     draw: Optional[str] = None,
 ):
     """Convert input audio to a video output.
+
     :param int size: set video size
     :param str mode: select display mode
             possible values: point, line, p2p, cline
@@ -8412,7 +8881,8 @@ def showwaves(
     :param str scale: set amplitude scale
             possible values: lin, log, sqrt, cbrt
     :param str draw: set draw mode
-            possible values: scale, full"""
+            possible values: scale, full
+    """
     graph.append(
         Filter(
             command="showwaves",
@@ -8442,6 +8912,7 @@ def showwavespic(
     filter: Optional[str] = None,
 ):
     """Convert input audio to a video output single picture.
+
     :param int size: set video size
     :param bool split_channels: draw channels separately
     :param str colors: set channels colors
@@ -8450,7 +8921,8 @@ def showwavespic(
     :param str draw: set draw mode
             possible values: scale, full
     :param str filter: set filter mode
-            possible values: average, peak"""
+            possible values: average, peak
+    """
     graph.append(
         Filter(
             command="showwavespic",
@@ -8476,12 +8948,14 @@ def aemphasis(
     type: Optional[str] = None,
 ):
     """Audio emphasis.
+
     :param float level_in: set input gain
     :param float level_out: set output gain
     :param str mode: set filter mode
             possible values: reproduction, production
     :param str type: set filter type
-            possible values: col, emi, bsi, riaa, cd, 50fm, 75fm, 50kf, 75kf"""
+            possible values: col, emi, bsi, riaa, cd, 50fm, 75fm, 50kf, 75kf
+    """
     graph.append(
         Filter(
             command="aemphasis",
@@ -8508,13 +8982,15 @@ def tile(
     init_padding: Optional[int] = None,
 ):
     """Tile several successive frames together.
+
     :param int layout: set grid size
     :param int nb_frames: set maximum number of frame to render
     :param int margin: set outer border margin in pixels
     :param int padding: set inner border thickness in pixels
     :param str color: set the color of the unused area
     :param int overlap: set how many frames to overlap for each render
-    :param int init_padding: set how many frames to initially pad"""
+    :param int init_padding: set how many frames to initially pad
+    """
     graph.append(
         Filter(
             command="tile",
@@ -8535,9 +9011,11 @@ def tile(
 
 def colorkey_opencl(graph: Stream, color: Optional[str] = None, similarity: Optional[float] = None, blend: Optional[float] = None):
     """Turns a certain color into transparency. Operates on RGB colors.
+
     :param str color: set the colorkey key color
     :param float similarity: set the colorkey similarity value
-    :param float blend: set the colorkey key blend value"""
+    :param float blend: set the colorkey key blend value
+    """
     graph.append(
         Filter(
             command="colorkey_opencl",
@@ -8562,13 +9040,15 @@ def fillborders(
     color: Optional[str] = None,
 ):
     """Fill borders of the input video.
+
     :param int left: set the left fill border
     :param int right: set the right fill border
     :param int top: set the top fill border
     :param int bottom: set the bottom fill border
     :param str mode: set the fill borders mode
             possible values: smear, mirror, fixed, reflect, wrap, fade, margins
-    :param str color: set the color for the fixed/fade mode"""
+    :param str color: set the color for the fixed/fade mode
+    """
     graph.append(
         Filter(
             command="fillborders",
@@ -8588,19 +9068,23 @@ def fillborders(
 
 def maskedmerge(graph: Stream, planes: Optional[int] = None):
     """Merge first stream with second stream using third stream as mask.
-    :param int planes: set planes"""
+
+    :param int planes: set planes
+    """
     graph.append(Filter(command="maskedmerge", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="planes", value=planes)]))
     return graph
 
 
 def bwdif(graph: Stream, mode: Optional[str] = None, parity: Optional[str] = None, deint: Optional[str] = None):
     """Deinterlace the input image.
+
     :param str mode: specify the interlacing mode
             possible values: send_frame, send_field
     :param str parity: specify the assumed picture field parity
             possible values: tff, bff, auto
     :param str deint: specify which frames to deinterlace
-            possible values: all, interlaced"""
+            possible values: all, interlaced
+    """
     graph.append(
         Filter(
             command="bwdif",
@@ -8630,6 +9114,7 @@ def avsynctest(
     ag: Optional[str] = None,
 ):
     """Generate an Audio Video Sync Test.
+
     :param int size: set frame size
     :param str framerate: set frame rate
     :param int samplerate: set sample rate
@@ -8640,7 +9125,8 @@ def avsynctest(
     :param int duration: set duration
     :param str fg: set foreground color
     :param str bg: set background color
-    :param str ag: set additional color"""
+    :param str ag: set additional color
+    """
     graph.append(
         Filter(
             command="avsynctest",
@@ -8677,6 +9163,7 @@ def dnn_classify(
     target: Optional[str] = None,
 ):
     """Apply DNN classify filter to the input.
+
     :param int dnn_backend: DNN backend
     :param str model: path to model file
     :param str input: input name of the model
@@ -8686,7 +9173,8 @@ def dnn_classify(
     :param bool async: use DNN async inference (ignored, use backend_configs='async=1')
     :param float confidence: threshold of confidence
     :param str labels: path to labels file
-    :param str target: which one to be classified"""
+    :param str target: which one to be classified
+    """
     graph.append(
         Filter(
             command="dnn_classify",
@@ -8719,13 +9207,15 @@ def blurdetect(
     planes: Optional[int] = None,
 ):
     """Blurdetect filter.
+
     :param float high: set high threshold
     :param float low: set low threshold
     :param int radius: search radius for maxima detection
     :param int block_pct: block pooling threshold when calculating blurriness
     :param int block_width: block size for block-based abbreviation of blurriness
     :param int block_height: block size for block-based abbreviation of blurriness
-    :param int planes: set planes to filter"""
+    :param int planes: set planes to filter
+    """
     graph.append(
         Filter(
             command="blurdetect",
@@ -8754,9 +9244,11 @@ def grayworld(
 
 def cover_rect(graph: Stream, cover: Optional[str] = None, mode: Optional[str] = None):
     """Find and cover a user specified object.
+
     :param str cover: cover bitmap filename
     :param str mode: set removal mode
-            possible values: cover, blur"""
+            possible values: cover, blur
+    """
     graph.append(
         Filter(
             command="cover_rect",
@@ -8769,8 +9261,10 @@ def cover_rect(graph: Stream, cover: Optional[str] = None, mode: Optional[str] =
 
 def channelmap(graph: Stream, map: Optional[str] = None, channel_layout: Optional[str] = None):
     """Remap audio channels.
+
     :param str map: A comma-separated list of input channel numbers in output order.
-    :param str channel_layout: Output channel layout."""
+    :param str channel_layout: Output channel layout.
+    """
     graph.append(
         Filter(
             command="channelmap",
@@ -8790,12 +9284,14 @@ def dedot(
     ct: Optional[float] = None,
 ):
     """Reduce cross-luminance and cross-color.
+
     :param str m: set filtering mode
             possible values: dotcrawl, rainbows
     :param float lt: set spatial luma threshold
     :param float tl: set tolerance for temporal luma
     :param float tc: set tolerance for chroma temporal variation
-    :param float ct: set temporal chroma threshold"""
+    :param float ct: set temporal chroma threshold
+    """
     graph.append(
         Filter(
             command="dedot",
@@ -8822,13 +9318,15 @@ def adeclick(
     method: Optional[str] = None,
 ):
     """Remove impulsive noise from input audio.
+
     :param float window: set window size
     :param float overlap: set window overlap
     :param float arorder: set autoregression order
     :param float threshold: set threshold
     :param float burst: set burst fusion
     :param str method: set overlap method
-            possible values: add, a, save, s"""
+            possible values: add, a, save, s
+    """
     graph.append(
         Filter(
             command="adeclick",
@@ -8856,13 +9354,15 @@ def adeclip(
     method: Optional[str] = None,
 ):
     """Remove clipping from input audio.
+
     :param float window: set window size
     :param float overlap: set window overlap
     :param float arorder: set autoregression order
     :param float threshold: set threshold
     :param int hsize: set histogram size
     :param str method: set overlap method
-            possible values: add, a, save, s"""
+            possible values: add, a, save, s
+    """
     graph.append(
         Filter(
             command="adeclip",
@@ -8882,14 +9382,18 @@ def adeclip(
 
 def settb(graph: Stream, expr: Optional[str] = None):
     """Set timebase for the video output link.
-    :param str expr: set expression determining the output timebase"""
+
+    :param str expr: set expression determining the output timebase
+    """
     graph.append(Filter(command="settb", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="expr", value=expr)]))
     return graph
 
 
 def asettb(graph: Stream, expr: Optional[str] = None):
     """Set timebase for the audio output link.
-    :param str expr: set expression determining the output timebase"""
+
+    :param str expr: set expression determining the output timebase
+    """
     graph.append(Filter(command="asettb", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="expr", value=expr)]))
     return graph
 
@@ -8903,12 +9407,14 @@ def xfade_opencl(
     offset: Optional[int] = None,
 ):
     """Cross fade one video with another video.
+
     :param str transition: set cross fade transition
             possible values: custom, fade, wipeleft, wiperight, wipeup, wipedown, slideleft, slideright, slideup, slidedown
     :param str source: set OpenCL program source file for custom transition
     :param str kernel: set kernel name in program file for custom transition
     :param int duration: set cross fade duration
-    :param int offset: set cross fade start relative to first input stream"""
+    :param int offset: set cross fade start relative to first input stream
+    """
     graph.append(
         Filter(
             command="xfade_opencl",
@@ -8934,11 +9440,13 @@ def idet(
     analyze_interlaced_flag: Optional[int] = None,
 ):
     """Interlace detect Filter.
+
     :param float intl_thres: set interlacing threshold
     :param float prog_thres: set progressive threshold
     :param float rep_thres: set repeat threshold
     :param float half_life: half life of cumulative statistics
-    :param int analyze_interlaced_flag: set number of frames to use to determine if the interlace flag is accurate"""
+    :param int analyze_interlaced_flag: set number of frames to use to determine if the interlace flag is accurate
+    """
     graph.append(
         Filter(
             command="idet",
@@ -8957,8 +9465,10 @@ def idet(
 
 def weave(graph: Stream, first_field: Optional[str] = None):
     """Weave input video fields into frames.
+
     :param str first_field: set first field
-            possible values: top, t, bottom, b"""
+            possible values: top, t, bottom, b
+    """
     graph.append(Filter(command="weave", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="first_field", value=first_field)]))
     return graph
 
@@ -8982,6 +9492,7 @@ def pad(
     aspect: Optional[int] = None,
 ):
     """Pad the input video.
+
     :param str width: set the pad area width expression
     :param str height: set the pad area height expression
     :param str x: set the x offset expression for the input image position
@@ -8989,7 +9500,8 @@ def pad(
     :param str color: set the color of the padded area border
     :param str eval: specify when to evaluate expressions
             possible values: init, frame
-    :param int aspect: pad to fit an aspect instead of a resolution"""
+    :param int aspect: pad to fit an aspect instead of a resolution
+    """
     graph.append(
         Filter(
             command="pad",
@@ -9027,13 +9539,15 @@ def compand(
     delay: Optional[float] = None,
 ):
     """Compress or expand audio dynamic range.
+
     :param str attacks: set time over which increase of volume is determined
     :param str decays: set time over which decrease of volume is determined
     :param str points: set points of transfer function
     :param float soft-knee: set soft-knee
     :param float gain: set output gain
     :param float volume: set initial volume
-    :param float delay: set delay for samples before sending them to volume adjuster"""
+    :param float delay: set delay for samples before sending them to volume adjuster
+    """
     graph.append(
         Filter(
             command="compand",
@@ -9067,6 +9581,7 @@ def life(
     mold_color: Optional[str] = None,
 ):
     """Create life.
+
     :param str filename: set source file
     :param int size: set video size
     :param str rate: set video rate
@@ -9077,7 +9592,8 @@ def life(
     :param int mold: set mold speed for dead cells
     :param str life_color: set life color
     :param str death_color: set death color
-    :param str mold_color: set mold color"""
+    :param str mold_color: set mold color
+    """
     graph.append(
         Filter(
             command="life",
@@ -9114,6 +9630,7 @@ def speechnorm(
     rms: Optional[float] = None,
 ):
     """Speech Normalizer.
+
     :param float peak: set the peak value
     :param float expansion: set the max expansion factor
     :param float compression: set the max compression factor
@@ -9123,7 +9640,8 @@ def speechnorm(
     :param str channels: set channels to filter
     :param bool invert: set inverted filtering
     :param bool link: set linked channels filtering
-    :param float rms: set the RMS value"""
+    :param float rms: set the RMS value
+    """
     graph.append(
         Filter(
             command="speechnorm",
@@ -9147,16 +9665,20 @@ def speechnorm(
 
 def amerge(graph: Stream, inputs: Optional[int] = None):
     """Merge two or more audio streams into a single multi-channel stream.
-    :param int inputs: specify the number of inputs"""
+
+    :param int inputs: specify the number of inputs
+    """
     graph.append(Filter(command="amerge", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="inputs", value=inputs)]))
     return graph
 
 
 def xmedian(graph: Stream, inputs: Optional[int] = None, planes: Optional[int] = None, percentile: Optional[float] = None):
     """Pick median pixels from several video inputs.
+
     :param int inputs: set number of inputs
     :param int planes: set planes to filter
-    :param float percentile: set percentile"""
+    :param float percentile: set percentile
+    """
     graph.append(
         Filter(
             command="xmedian",
@@ -9173,9 +9695,11 @@ def xmedian(graph: Stream, inputs: Optional[int] = None, planes: Optional[int] =
 
 def tmedian(graph: Stream, radius: Optional[int] = None, planes: Optional[int] = None, percentile: Optional[float] = None):
     """Pick median pixels from successive frames.
+
     :param int radius: set median filter radius
     :param int planes: set planes to filter
-    :param float percentile: set percentile"""
+    :param float percentile: set percentile
+    """
     graph.append(
         Filter(
             command="tmedian",
@@ -9192,10 +9716,12 @@ def tmedian(graph: Stream, radius: Optional[int] = None, planes: Optional[int] =
 
 def detelecine(graph: Stream, first_field: Optional[str] = None, pattern: Optional[str] = None, start_frame: Optional[int] = None):
     """Apply an inverse telecine pattern.
+
     :param str first_field: select first field
             possible values: top, t, bottom, b
     :param str pattern: pattern that describe for how many fields a frame is to be displayed
-    :param int start_frame: position of first frame with respect to the pattern if stream is cut"""
+    :param int start_frame: position of first frame with respect to the pattern if stream is cut
+    """
     graph.append(
         Filter(
             command="detelecine",
@@ -9212,15 +9738,19 @@ def detelecine(graph: Stream, first_field: Optional[str] = None, pattern: Option
 
 def framepack(graph: Stream, format: Optional[str] = None):
     """Generate a frame packed stereoscopic video.
+
     :param str format: Frame pack output format
-            possible values: sbs, tab, frameseq, lines, columns"""
+            possible values: sbs, tab, frameseq, lines, columns
+    """
     graph.append(Filter(command="framepack", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="format", value=format)]))
     return graph
 
 
 def asetrate(graph: Stream, sample_rate: Optional[int] = None):
     """Change the sample rate without altering the data.
-    :param int sample_rate: set the sample rate"""
+
+    :param int sample_rate: set the sample rate
+    """
     graph.append(Filter(command="asetrate", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="sample_rate", value=sample_rate)]))
     return graph
 
@@ -9233,10 +9763,12 @@ def stereowiden(
     drymix: Optional[float] = None,
 ):
     """Apply stereo widening effect.
+
     :param float delay: set delay time
     :param float feedback: set feedback gain
     :param float crossfeed: set cross feed
-    :param float drymix: set dry-mix"""
+    :param float drymix: set dry-mix
+    """
     graph.append(
         Filter(
             command="stereowiden",
@@ -9256,10 +9788,12 @@ def shuffleplanes(
     graph: Stream, map0: Optional[int] = None, map1: Optional[int] = None, map2: Optional[int] = None, map3: Optional[int] = None
 ):
     """Shuffle video planes.
+
     :param int map0: Index of the input plane to be used as the first output plane
     :param int map1: Index of the input plane to be used as the second output plane
     :param int map2: Index of the input plane to be used as the third output plane
-    :param int map3: Index of the input plane to be used as the fourth output plane"""
+    :param int map3: Index of the input plane to be used as the fourth output plane
+    """
     graph.append(
         Filter(
             command="shuffleplanes",
@@ -9279,11 +9813,13 @@ def mptestsrc(
     graph: Stream, rate: Optional[str] = None, duration: Optional[int] = None, test: Optional[str] = None, max_frames: Optional[int] = None
 ):
     """Generate various test pattern.
+
     :param str rate: set video rate
     :param int duration: set video duration
     :param str test: set test to perform
             possible values: dc_luma, dc_chroma, freq_luma, freq_chroma, amp_luma, amp_chroma, cbp, mv, ring1, ring2, all
-    :param int max_frames: Set the maximum number of frames generated for each test"""
+    :param int max_frames: Set the maximum number of frames generated for each test
+    """
     graph.append(
         Filter(
             command="mptestsrc",
@@ -9301,7 +9837,9 @@ def mptestsrc(
 
 def xbr(graph: Stream, n: Optional[int] = None):
     """Scale the input using xBR algorithm.
-    :param int n: set scale factor"""
+
+    :param int n: set scale factor
+    """
     graph.append(Filter(command="xbr", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="n", value=n)]))
     return graph
 
@@ -9339,11 +9877,13 @@ def xstack(
     fill: Optional[str] = None,
 ):
     """Stack video inputs into custom layout.
+
     :param int inputs: set number of inputs
     :param str layout: set custom layout
     :param int grid: set fixed size grid layout
     :param bool shortest: force termination when the shortest input terminates
-    :param str fill: set the color for unused pixels"""
+    :param str fill: set the color for unused pixels
+    """
     graph.append(
         Filter(
             command="xstack",
@@ -9369,13 +9909,15 @@ def scale_vulkan(
     out_range: Optional[str] = None,
 ):
     """Scale Vulkan frames
+
     :param str w: Output video width
     :param str h: Output video height
     :param str scaler: Scaler function
             possible values: bilinear, nearest
     :param str format: Output video format (software format of hardware frames)
     :param str out_range: Output colour range (from 0 to 2) (default 0)
-            possible values: full, limited, jpeg, mpeg, tv, pc"""
+            possible values: full, limited, jpeg, mpeg, tv, pc
+    """
     graph.append(
         Filter(
             command="scale_vulkan",
@@ -9400,10 +9942,12 @@ def uspp(
     codec: Optional[str] = None,
 ):
     """Apply Ultra Simple / Slow Post-processing filter.
+
     :param int quality: set quality
     :param int qp: force a constant quantizer parameter
     :param bool use_bframe_qp: use B-frames' QP
-    :param str codec: Codec name"""
+    :param str codec: Codec name
+    """
     graph.append(
         Filter(
             command="uspp",
@@ -9434,6 +9978,7 @@ def acrusher(
     lforate: Optional[float] = None,
 ):
     """Reduce audio bit resolution.
+
     :param float level_in: set level in
     :param float level_out: set level out
     :param float bits: set bit reduction
@@ -9445,7 +9990,8 @@ def acrusher(
     :param float samples: set sample reduction
     :param bool lfo: enable LFO
     :param float lforange: set LFO depth
-    :param float lforate: set LFO rate"""
+    :param float lforate: set LFO rate
+    """
     graph.append(
         Filter(
             command="acrusher",
@@ -9498,6 +10044,7 @@ def showcqt(
     cscheme: Optional[str] = None,
 ):
     """Convert input audio to a CQT (Constant/Clamped Q Transform) spectrum video output.
+
     :param int size: set video size
     :param str fps: set video rate
     :param int bar_h: set bargraph height
@@ -9524,7 +10071,8 @@ def showcqt(
     :param bool axis: draw axis
     :param str csp: set color space
             possible values: unspecified, bt709, fcc, bt470bg, smpte170m, smpte240m, bt2020ncl
-    :param str cscheme: set color scheme"""
+    :param str cscheme: set color scheme
+    """
     graph.append(
         Filter(
             command="showcqt",
@@ -9588,8 +10136,10 @@ def flip_vulkan(
 
 def adelay(graph: Stream, delays: Optional[str] = None, all: Optional[bool] = None):
     """Delay one or more audio channels.
+
     :param str delays: set list of delays for each channel
-    :param bool all: use last available delay for remained channels"""
+    :param bool all: use last available delay for remained channels
+    """
     graph.append(
         Filter(
             command="adelay",
@@ -9609,11 +10159,13 @@ def aevalsrc(
     channel_layout: Optional[str] = None,
 ):
     """Generate an audio signal generated by an expression.
+
     :param str exprs: set the '|'-separated list of channels expressions
     :param int nb_samples: set the number of samples per requested frame
     :param str sample_rate: set the sample rate
     :param int duration: set audio duration
-    :param str channel_layout: set channel layout"""
+    :param str channel_layout: set channel layout
+    """
     graph.append(
         Filter(
             command="aevalsrc",
@@ -9632,8 +10184,10 @@ def aevalsrc(
 
 def aeval(graph: Stream, exprs: Optional[str] = None, channel_layout: Optional[str] = None):
     """Filter audio signal according to a specified expression.
+
     :param str exprs: set the '|'-separated list of channels expressions
-    :param str channel_layout: set channel layout"""
+    :param str channel_layout: set channel layout
+    """
     graph.append(
         Filter(
             command="aeval",
@@ -9646,9 +10200,11 @@ def aeval(graph: Stream, exprs: Optional[str] = None, channel_layout: Optional[s
 
 def greyedge(graph: Stream, difford: Optional[int] = None, minknorm: Optional[int] = None, sigma: Optional[float] = None):
     """Estimates scene illumination by grey edge assumption.
+
     :param int difford: set differentiation order
     :param int minknorm: set Minkowski norm
-    :param float sigma: set sigma"""
+    :param float sigma: set sigma
+    """
     graph.append(
         Filter(
             command="greyedge",
@@ -9688,11 +10244,13 @@ def kerndeint(
     twoway: Optional[bool] = None,
 ):
     """Apply kernel deinterlacing to the input.
+
     :param int thresh: set the threshold
     :param bool map: set the map
     :param bool order: set the order
     :param bool sharp: set sharpening
-    :param bool twoway: set twoway"""
+    :param bool twoway: set twoway
+    """
     graph.append(
         Filter(
             command="kerndeint",
@@ -9711,7 +10269,9 @@ def kerndeint(
 
 def showpalette(graph: Stream, s: Optional[int] = None):
     """Display frame palette.
-    :param int s: set pixel box size"""
+
+    :param int s: set pixel box size
+    """
     graph.append(Filter(command="showpalette", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="s", value=s)]))
     return graph
 
@@ -9738,6 +10298,7 @@ def tonemap_opencl(
     threshold: Optional[float] = None,
 ):
     """Perform HDR to SDR conversion with tonemapping.
+
     :param str tonemap: tonemap algorithm selection
             possible values: none, linear, gamma, clip, reinhard, hable, mobius
     :param str transfer: set transfer characteristic
@@ -9752,7 +10313,8 @@ def tonemap_opencl(
     :param float peak: signal peak override
     :param float param: tonemap parameter
     :param float desat: desaturation parameter
-    :param float threshold: scene detection threshold"""
+    :param float threshold: scene detection threshold
+    """
     graph.append(
         Filter(
             command="tonemap_opencl",
@@ -9787,6 +10349,7 @@ def nnedi(
     pscrn: Optional[str] = None,
 ):
     """Apply neural network edge directed interpolation intra-only deinterlacer.
+
     :param str weights: set weights file
     :param str deint: set which frames to deinterlace
             possible values: all, interlaced
@@ -9802,7 +10365,8 @@ def nnedi(
     :param str etype: set which set of weights to use in the predictor
             possible values: a, abs, s, mse
     :param str pscrn: set prescreening
-            possible values: none, original, new, new2, new3"""
+            possible values: none, original, new, new2, new3
+    """
     graph.append(
         Filter(
             command="nnedi",
@@ -9833,13 +10397,15 @@ def pullup(
     mp: Optional[str] = None,
 ):
     """Pullup from field sequence to frames.
+
     :param int jl: set left junk size
     :param int jr: set right junk size
     :param int jt: set top junk size
     :param int jb: set bottom junk size
     :param bool sb: set strict breaks
     :param str mp: set metric plane
-            possible values: y, u, v"""
+            possible values: y, u, v
+    """
     graph.append(
         Filter(
             command="pullup",
@@ -9859,8 +10425,10 @@ def pullup(
 
 def crystalizer(graph: Stream, i: Optional[float] = None, c: Optional[bool] = None):
     """Simple audio noise sharpening filter.
+
     :param float i: set intensity
-    :param bool c: enable clipping"""
+    :param bool c: enable clipping
+    """
     graph.append(
         Filter(
             command="crystalizer",
@@ -9883,6 +10451,7 @@ def flanger(
     interp: Optional[str] = None,
 ):
     """Apply a flanging effect to the audio.
+
     :param float delay: base delay in milliseconds
     :param float depth: added swept delay in milliseconds
     :param float regen: percentage regeneration (delayed signal feedback)
@@ -9892,7 +10461,8 @@ def flanger(
             possible values: triangular, t, sinusoidal, s
     :param float phase: swept wave percentage phase-shift for multi-channel
     :param str interp: delay-line interpolation
-            possible values: linear, quadratic"""
+            possible values: linear, quadratic
+    """
     graph.append(
         Filter(
             command="flanger",
@@ -9914,9 +10484,11 @@ def flanger(
 
 def owdenoise(graph: Stream, depth: Optional[int] = None, luma_strength: Optional[float] = None, chroma_strength: Optional[float] = None):
     """Denoise using wavelets.
+
     :param int depth: set depth
     :param float luma_strength: set luma strength
-    :param float chroma_strength: set chroma strength"""
+    :param float chroma_strength: set chroma strength
+    """
     graph.append(
         Filter(
             command="owdenoise",
@@ -9940,11 +10512,13 @@ def sr(
     output: Optional[str] = None,
 ):
     """Apply DNN-based image super resolution to the input.
+
     :param int dnn_backend: DNN backend used for model execution
     :param int scale_factor: scale factor for SRCNN model
     :param str model: path to model file specifying network architecture and its parameters
     :param str input: input name of the model
-    :param str output: output name of the model"""
+    :param str output: output name of the model
+    """
     graph.append(
         Filter(
             command="sr",
@@ -9963,8 +10537,10 @@ def sr(
 
 def overlay_opencl(graph: Stream, x: Optional[int] = None, y: Optional[int] = None):
     """Overlay one video on top of another
+
     :param int x: Overlay x position
-    :param int y: Overlay y position"""
+    :param int y: Overlay y position
+    """
     graph.append(
         Filter(
             command="overlay_opencl",
@@ -9977,8 +10553,10 @@ def overlay_opencl(graph: Stream, x: Optional[int] = None, y: Optional[int] = No
 
 def extrastereo(graph: Stream, m: Optional[float] = None, c: Optional[bool] = None):
     """Increase difference between stereo audio channels.
+
     :param float m: set the difference coefficient
-    :param bool c: enable clipping"""
+    :param bool c: enable clipping
+    """
     graph.append(
         Filter(
             command="extrastereo",
@@ -9991,9 +10569,11 @@ def extrastereo(graph: Stream, m: Optional[float] = None, c: Optional[bool] = No
 
 def maskedclamp(graph: Stream, undershoot: Optional[int] = None, overshoot: Optional[int] = None, planes: Optional[int] = None):
     """Clamp first stream with second stream and third stream.
+
     :param int undershoot: set undershoot
     :param int overshoot: set overshoot
-    :param int planes: set planes"""
+    :param int planes: set planes
+    """
     graph.append(
         Filter(
             command="maskedclamp",
@@ -10019,6 +10599,7 @@ def pseudocolor(
     opacity: Optional[float] = None,
 ):
     """Make pseudocolored video frames.
+
     :param str c0: set component #0 expression
     :param str c1: set component #1 expression
     :param str c2: set component #2 expression
@@ -10026,7 +10607,8 @@ def pseudocolor(
     :param int index: set component as base
     :param str preset: set preset
             possible values: none, magma, inferno, plasma, viridis, turbo, cividis, range1, range2, shadows, highlights, solar, nominal, preferred, total, spectral, cool, heat, fiery, blues, green, helix
-    :param float opacity: set pseudocolor opacity"""
+    :param float opacity: set pseudocolor opacity
+    """
     graph.append(
         Filter(
             command="pseudocolor",
@@ -10053,11 +10635,13 @@ def xfade(
     expr: Optional[str] = None,
 ):
     """Cross fade one video with another video.
+
     :param str transition: set cross fade transition
             possible values: custom, fade, wipeleft, wiperight, wipeup, wipedown, slideleft, slideright, slideup, slidedown, circlecrop, rectcrop, distance, fadeblack, fadewhite, radial, smoothleft, smoothright, smoothup, smoothdown, circleopen, circleclose, vertopen, vertclose, horzopen, horzclose, dissolve, pixelize, diagtl, diagtr, diagbl, diagbr, hlslice, hrslice, vuslice, vdslice, hblur, fadegrays, wipetl, wipetr, wipebl, wipebr, squeezeh, squeezev, zoomin, fadefast, fadeslow, hlwind, hrwind, vuwind, vdwind, coverleft, coverright, coverup, coverdown, revealleft, revealright, revealup, revealdown
     :param int duration: set cross fade duration
     :param int offset: set cross fade start relative to first input stream
-    :param str expr: set expression for custom transition"""
+    :param str expr: set expression for custom transition
+    """
     graph.append(
         Filter(
             command="xfade",
@@ -10088,6 +10672,7 @@ def perspective(
     eval: Optional[str] = None,
 ):
     """Correct the perspective of video.
+
     :param str x0: set top left x coordinate
     :param str y0: set top left y coordinate
     :param str x1: set top right x coordinate
@@ -10101,7 +10686,8 @@ def perspective(
     :param str sense: specify the sense of the coordinates
             possible values: source, destination
     :param str eval: specify when to evaluate expressions
-            possible values: init, frame"""
+            possible values: init, frame
+    """
     graph.append(
         Filter(
             command="perspective",
@@ -10126,8 +10712,10 @@ def perspective(
 
 def tremolo(graph: Stream, f: Optional[float] = None, d: Optional[float] = None):
     """Apply tremolo effect.
+
     :param float f: set frequency in hertz
-    :param float d: set depth as percentage"""
+    :param float d: set depth as percentage
+    """
     graph.append(
         Filter(
             command="tremolo", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="f", value=f), FilterOption(name="d", value=d)]
@@ -10138,8 +10726,10 @@ def tremolo(graph: Stream, f: Optional[float] = None, d: Optional[float] = None)
 
 def adynamicsmooth(graph: Stream, sensitivity: Optional[float] = None, basefreq: Optional[float] = None):
     """Apply Dynamic Smoothing of input audio.
+
     :param float sensitivity: set smooth sensitivity
-    :param float basefreq: set base frequency"""
+    :param float basefreq: set base frequency
+    """
     graph.append(
         Filter(
             command="adynamicsmooth",
@@ -10165,6 +10755,7 @@ def bm3d(
     planes: Optional[int] = None,
 ):
     """Block-Matching 3D denoiser.
+
     :param float sigma: set denoising strength
     :param int block: set size of local patch
     :param int bstep: set sliding step for processing blocks
@@ -10176,7 +10767,8 @@ def bm3d(
     :param str estim: set filtering estimation mode
             possible values: basic, final
     :param bool ref: have reference stream
-    :param int planes: set planes to filter"""
+    :param int planes: set planes to filter
+    """
     graph.append(
         Filter(
             command="bm3d",
@@ -10201,7 +10793,9 @@ def bm3d(
 
 def shuffleframes(graph: Stream, mapping: Optional[str] = None):
     """Shuffle video frames.
-    :param str mapping: set destination indexes of input frames"""
+
+    :param str mapping: set destination indexes of input frames
+    """
     graph.append(Filter(command="shuffleframes", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="mapping", value=mapping)]))
     return graph
 
@@ -10214,10 +10808,12 @@ def hqdn3d(
     chroma_tmp: Optional[float] = None,
 ):
     """Apply a High Quality 3D Denoiser.
+
     :param float luma_spatial: spatial luma strength
     :param float chroma_spatial: spatial chroma strength
     :param float luma_tmp: temporal luma strength
-    :param float chroma_tmp: temporal chroma strength"""
+    :param float chroma_tmp: temporal chroma strength
+    """
     graph.append(
         Filter(
             command="hqdn3d",
@@ -10251,9 +10847,11 @@ def haldclut(
 
 def lut1d(graph: Stream, file: Optional[str] = None, interp: Optional[str] = None):
     """Adjust colors using a 1D LUT.
+
     :param str file: set 1D LUT file name
     :param str interp: select interpolation mode
-            possible values: nearest, linear, cosine, cubic, spline"""
+            possible values: nearest, linear, cosine, cubic, spline
+    """
     graph.append(
         Filter(
             command="lut1d",
@@ -10273,11 +10871,13 @@ def elbg(
     use_alpha: Optional[bool] = None,
 ):
     """Apply posterize effect, using the ELBG algorithm.
+
     :param int codebook_length: set codebook length
     :param int nb_steps: set max number of steps used to compute the mapping
     :param int seed: set the random seed
     :param bool pal8: set the pal8 output
-    :param bool use_alpha: use alpha channel for mapping"""
+    :param bool use_alpha: use alpha channel for mapping
+    """
     graph.append(
         Filter(
             command="elbg",
@@ -10298,9 +10898,11 @@ def blackdetect(
     graph: Stream, d: Optional[float] = None, picture_black_ratio_th: Optional[float] = None, pixel_black_th: Optional[float] = None
 ):
     """Detect video intervals that are (almost) black.
+
     :param float d: set minimum detected black duration in seconds
     :param float picture_black_ratio_th: set the picture black ratio threshold
-    :param float pixel_black_th: set the pixel black threshold"""
+    :param float pixel_black_th: set the pixel black threshold
+    """
     graph.append(
         Filter(
             command="blackdetect",
@@ -10317,8 +10919,10 @@ def blackdetect(
 
 def gradfun(graph: Stream, strength: Optional[float] = None, radius: Optional[int] = None):
     """Debands video quickly using gradients.
+
     :param float strength: The maximum amount by which the filter will change any one pixel.
-    :param int radius: The neighborhood to fit the gradient to."""
+    :param int radius: The neighborhood to fit the gradient to.
+    """
     graph.append(
         Filter(
             command="gradfun",
@@ -10346,6 +10950,7 @@ def firequalizer(
     min_phase: Optional[bool] = None,
 ):
     """Finite Impulse Response Equalizer.
+
     :param str gain: set gain curve
     :param str gain_entry: set gain entry
     :param float delay: set delay
@@ -10360,7 +10965,8 @@ def firequalizer(
     :param str dumpfile: set dump file
     :param int dumpscale: set dump scale
     :param bool fft2: set 2-channels fft
-    :param bool min_phase: set minimum phase mode"""
+    :param bool min_phase: set minimum phase mode
+    """
     graph.append(
         Filter(
             command="firequalizer",
@@ -10387,9 +10993,11 @@ def firequalizer(
 
 def interleave(graph: Stream, nb_inputs: Optional[int] = None, duration: Optional[str] = None):
     """Temporally interleave video inputs.
+
     :param int nb_inputs: set number of inputs
     :param str duration: how to determine the end-of-stream
-            possible values: longest, shortest, first"""
+            possible values: longest, shortest, first
+    """
     graph.append(
         Filter(
             command="interleave",
@@ -10402,9 +11010,11 @@ def interleave(graph: Stream, nb_inputs: Optional[int] = None, duration: Optiona
 
 def ainterleave(graph: Stream, nb_inputs: Optional[int] = None, duration: Optional[str] = None):
     """Temporally interleave audio inputs.
+
     :param int nb_inputs: set number of inputs
     :param str duration: how to determine the end-of-stream
-            possible values: longest, shortest, first"""
+            possible values: longest, shortest, first
+    """
     graph.append(
         Filter(
             command="ainterleave",
@@ -10417,10 +11027,12 @@ def ainterleave(graph: Stream, nb_inputs: Optional[int] = None, duration: Option
 
 def transpose_opencl(graph: Stream, dir: Optional[str] = None, passthrough: Optional[str] = None):
     """Transpose input video
+
     :param str dir: set transpose direction
             possible values: cclock_flip, clock, cclock, clock_flip
     :param str passthrough: do not apply transposition if the input matches the specified geometry
-            possible values: none, portrait, landscape"""
+            possible values: none, portrait, landscape
+    """
     graph.append(
         Filter(
             command="transpose_opencl",
@@ -10441,12 +11053,14 @@ def deshake_opencl(
     smooth_window_multiplier: Optional[float] = None,
 ):
     """Feature-point based video stabilization filter
+
     :param bool tripod: simulates a tripod by preventing any camera movement whatsoever from the original frame
     :param bool debug: turn on additional debugging information
     :param bool adaptive_crop: attempt to subtly crop borders to reduce mirrored content
     :param bool refine_features: refine feature point locations at a sub-pixel level
     :param float smooth_strength: smoothing strength (0 attempts to adaptively determine optimal strength)
-    :param float smooth_window_multiplier: multiplier for number of frames to buffer for motion data"""
+    :param float smooth_window_multiplier: multiplier for number of frames to buffer for motion data
+    """
     graph.append(
         Filter(
             command="deshake_opencl",
@@ -10474,12 +11088,14 @@ def unsharp_opencl(
     chroma_amount: Optional[float] = None,
 ):
     """Apply unsharp mask to input video
+
     :param float luma_msize_x: Set luma mask horizontal diameter (pixels)
     :param float luma_msize_y: Set luma mask vertical diameter (pixels)
     :param float luma_amount: Set luma amount (multiplier)
     :param float chroma_msize_x: Set chroma mask horizontal diameter (pixels after subsampling)
     :param float chroma_msize_y: Set chroma mask vertical diameter (pixels after subsampling)
-    :param float chroma_amount: Set chroma amount (multiplier)"""
+    :param float chroma_amount: Set chroma amount (multiplier)
+    """
     graph.append(
         Filter(
             command="unsharp_opencl",
@@ -10518,6 +11134,7 @@ def colorlevels(
     preserve: Optional[str] = None,
 ):
     """Adjust the color levels.
+
     :param float rimin: set input red black point
     :param float gimin: set input green black point
     :param float bimin: set input blue black point
@@ -10535,7 +11152,8 @@ def colorlevels(
     :param float bomax: set output blue white point
     :param float aomax: set output alpha white point
     :param str preserve: set preserve color mode
-            possible values: none, lum, max, avg, sum, nrm, pwr"""
+            possible values: none, lum, max, avg, sum, nrm, pwr
+    """
     graph.append(
         Filter(
             command="colorlevels",
@@ -10584,11 +11202,13 @@ def buffer(
     range: Optional[str] = None,
 ):
     """Buffer video frames, and make them accessible to the filterchain.
+
     :param int sar: sample aspect ratio
     :param str colorspace: select colorspace
             possible values: gbr, bt709, unknown, fcc, bt470bg, smpte170m, smpte240m, ycgco, ycgco-re, ycgco-ro, bt2020nc, bt2020c, smpte2085, chroma-derived-nc, chroma-derived-c, ictcp, ipt-c2
     :param str range: select color range
-            possible values: unspecified, unknown, limited, tv, mpeg, full, pc, jpeg"""
+            possible values: unspecified, unknown, limited, tv, mpeg, full, pc, jpeg
+    """
     graph.append(
         Filter(
             command="buffer",
@@ -10635,8 +11255,10 @@ def abuffer(
 
 def arnndn(graph: Stream, model: Optional[str] = None, mix: Optional[float] = None):
     """Reduce noise from speech using Recurrent Neural Networks.
+
     :param str model: set model name
-    :param float mix: set output vs input mix"""
+    :param float mix: set output vs input mix
+    """
     graph.append(
         Filter(
             command="arnndn",
@@ -10649,8 +11271,10 @@ def arnndn(graph: Stream, model: Optional[str] = None, mix: Optional[float] = No
 
 def adecorrelate(graph: Stream, stages: Optional[int] = None, seed: Optional[int] = None):
     """Apply decorrelation to input audio.
+
     :param int stages: set filtering stages
-    :param int seed: set random seed"""
+    :param int seed: set random seed
+    """
     graph.append(
         Filter(
             command="adecorrelate",
@@ -10663,9 +11287,11 @@ def adecorrelate(graph: Stream, stages: Optional[int] = None, seed: Optional[int
 
 def join(graph: Stream, inputs: Optional[int] = None, channel_layout: Optional[str] = None, map: Optional[str] = None):
     """Join multiple audio streams into multi-channel output.
+
     :param int inputs: Number of input streams.
     :param str channel_layout: Channel layout of the output stream.
-    :param str map: A comma-separated list of channels maps in the format 'input_stream.input_channel-output_channel."""
+    :param str map: A comma-separated list of channels maps in the format 'input_stream.input_channel-output_channel.
+    """
     graph.append(
         Filter(
             command="join",
@@ -10699,13 +11325,15 @@ def dnn_processing(
     _async: Optional[bool] = None,
 ):
     """Apply DNN processing filter to the input.
+
     :param int dnn_backend: DNN backend
     :param str model: path to model file
     :param str input: input name of the model
     :param str output: output name of the model
     :param str backend_configs: backend configs
     :param str options: backend configs (deprecated, use backend_configs)
-    :param bool async: use DNN async inference (ignored, use backend_configs='async=1')"""
+    :param bool async: use DNN async inference (ignored, use backend_configs='async=1')
+    """
     graph.append(
         Filter(
             command="dnn_processing",
@@ -10734,6 +11362,7 @@ def hdcd(
     bits_per_sample: Optional[str] = None,
 ):
     """Apply High Definition Compatible Digital (HDCD) decoding.
+
     :param bool disable_autoconvert: Disable any format conversion or resampling in the filter graph.
     :param bool process_stereo: Process stereo channels together. Only apply target_gain when both channels match.
     :param int cdt_ms: Code detect timer period in ms.
@@ -10741,7 +11370,8 @@ def hdcd(
     :param str analyze_mode: Replace audio with solid tone and signal some processing aspect in the amplitude.
             possible values: off, lle, pe, cdt, tgm
     :param str bits_per_sample: Valid bits per sample (location of the true LSB).
-            possible values: 16, 20, 24"""
+            possible values: 16, 20, 24
+    """
     graph.append(
         Filter(
             command="hdcd",
@@ -10779,6 +11409,7 @@ def avectorscope(
     mirror: Optional[str] = None,
 ):
     """Convert input audio to vectorscope video output.
+
     :param str mode: set mode
             possible values: lissajous, lissajous_xy, polar
     :param str rate: set video rate
@@ -10798,7 +11429,8 @@ def avectorscope(
             possible values: lin, sqrt, cbrt, log
     :param bool swap: swap x axis with y axis
     :param str mirror: mirror axis
-            possible values: none, x, y, xy"""
+            possible values: none, x, y, xy
+    """
     graph.append(
         Filter(
             command="avectorscope",
@@ -10838,6 +11470,7 @@ def vibrance(
     alternate: Optional[bool] = None,
 ):
     """Boost or alter saturation.
+
     :param float intensity: set the intensity value
     :param float rbal: set the red balance value
     :param float gbal: set the green balance value
@@ -10845,7 +11478,8 @@ def vibrance(
     :param float rlum: set the red luma coefficient
     :param float glum: set the green luma coefficient
     :param float blum: set the blue luma coefficient
-    :param bool alternate: use alternate colors"""
+    :param bool alternate: use alternate colors
+    """
     graph.append(
         Filter(
             command="vibrance",
@@ -10889,6 +11523,7 @@ def showspectrum(
     opacity: Optional[float] = None,
 ):
     """Convert input audio to a spectrum video output.
+
     :param int size: set video size
     :param str slide: set sliding mode
             possible values: replace, scroll, fullframe, rscroll, lreplace
@@ -10916,7 +11551,8 @@ def showspectrum(
     :param bool legend: draw legend
     :param float drange: set dynamic range in dBFS
     :param float limit: set upper limit in dBFS
-    :param float opacity: set opacity strength"""
+    :param float opacity: set opacity strength
+    """
     graph.append(
         Filter(
             command="showspectrum",
@@ -10968,6 +11604,7 @@ def showspectrumpic(
     opacity: Optional[float] = None,
 ):
     """Convert input audio to a spectrum video output single picture.
+
     :param int size: set video size
     :param str mode: set channel display mode
             possible values: combined, separate
@@ -10989,7 +11626,8 @@ def showspectrumpic(
     :param int stop: stop frequency
     :param float drange: set dynamic range in dBFS
     :param float limit: set upper limit in dBFS
-    :param float opacity: set opacity strength"""
+    :param float opacity: set opacity strength
+    """
     graph.append(
         Filter(
             command="showspectrumpic",
@@ -11019,14 +11657,18 @@ def showspectrumpic(
 
 def setpts(graph: Stream, expr: Optional[str] = None):
     """Set PTS for the output video frame.
-    :param str expr: Expression determining the frame timestamp"""
+
+    :param str expr: Expression determining the frame timestamp
+    """
     graph.append(Filter(command="setpts", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="expr", value=expr)]))
     return graph
 
 
 def asetpts(graph: Stream, expr: Optional[str] = None):
     """Set PTS for the output audio frame.
-    :param str expr: Expression determining the frame timestamp"""
+
+    :param str expr: Expression determining the frame timestamp
+    """
     graph.append(Filter(command="asetpts", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="expr", value=expr)]))
     return graph
 
@@ -11041,6 +11683,7 @@ def volumedetect(
 
 def stereo3d(graph: Stream, _in: Optional[str] = None, out: Optional[str] = None):
     """Convert video stereoscopic 3D view.
+
     :param str in: set input format
             possible values: ab2l, tb2l, ab2r, tb2r, abl, tbl, abr, tbr, al, ar, sbs2l, sbs2r, sbsl, sbsr, irl, irr, icl, icr
     :param str out: set output format
@@ -11065,11 +11708,13 @@ def rotate(
     bilinear: Optional[bool] = None,
 ):
     """Rotate the input image.
+
     :param str angle: set angle (in radians)
     :param str out_w: set output width expression
     :param str out_h: set output height expression
     :param str fillcolor: set background fill color
-    :param bool bilinear: use bilinear interpolation"""
+    :param bool bilinear: use bilinear interpolation
+    """
     graph.append(
         Filter(
             command="rotate",
@@ -11097,13 +11742,15 @@ def apsyclip(
     level: Optional[bool] = None,
 ):
     """Audio Psychoacoustic Clipper.
+
     :param float level_in: set input level
     :param float level_out: set output level
     :param float clip: set clip level
     :param bool diff: enable difference
     :param float adaptive: set adaptive distortion
     :param int iterations: set iterations
-    :param bool level: set auto level"""
+    :param bool level: set auto level
+    """
     graph.append(
         Filter(
             command="apsyclip",
@@ -11124,8 +11771,10 @@ def apsyclip(
 
 def dcshift(graph: Stream, shift: Optional[float] = None, limitergain: Optional[float] = None):
     """Apply a DC shift to the audio.
+
     :param float shift: set DC shift
-    :param float limitergain: set limiter gain"""
+    :param float limitergain: set limiter gain
+    """
     graph.append(
         Filter(
             command="dcshift",
@@ -11138,9 +11787,11 @@ def dcshift(graph: Stream, shift: Optional[float] = None, limitergain: Optional[
 
 def varblur(graph: Stream, min_r: Optional[int] = None, max_r: Optional[int] = None, planes: Optional[int] = None):
     """Apply Variable Blur filter.
+
     :param int min_r: set min blur radius
     :param int max_r: set max blur radius
-    :param int planes: set planes to filter"""
+    :param int planes: set planes to filter
+    """
     graph.append(
         Filter(
             command="varblur",
@@ -11157,15 +11808,19 @@ def varblur(graph: Stream, min_r: Optional[int] = None, max_r: Optional[int] = N
 
 def threshold(graph: Stream, planes: Optional[int] = None):
     """Threshold first video stream using other video streams.
-    :param int planes: set planes to filter"""
+
+    :param int planes: set planes to filter
+    """
     graph.append(Filter(command="threshold", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="planes", value=planes)]))
     return graph
 
 
 def replaygain(graph: Stream, track_gain: Optional[float] = None, track_peak: Optional[float] = None):
     """ReplayGain scanner.
+
     :param float track_gain: track gain (dB)
-    :param float track_peak: track peak"""
+    :param float track_peak: track peak
+    """
     graph.append(
         Filter(
             command="replaygain",
@@ -11178,10 +11833,12 @@ def replaygain(graph: Stream, track_gain: Optional[float] = None, track_peak: Op
 
 def xfade_vulkan(graph: Stream, transition: Optional[str] = None, duration: Optional[int] = None, offset: Optional[int] = None):
     """Cross fade one video with another video.
+
     :param str transition: set cross fade transition
             possible values: fade, wipeleft, wiperight, wipeup, wipedown, slidedown, slideup, slideleft, slideright, circleopen, circleclose, dissolve, pixelize, wipetl, wipetr, wipebl, wipebr
     :param int duration: set cross fade duration
-    :param int offset: set cross fade start relative to first input stream"""
+    :param int offset: set cross fade start relative to first input stream
+    """
     graph.append(
         Filter(
             command="xfade_vulkan",
@@ -11211,6 +11868,7 @@ def selectivecolor(
     psfile: Optional[str] = None,
 ):
     """Apply CMYK adjustments to specific color ranges.
+
     :param str correction_method: select correction method
             possible values: absolute, relative
     :param str reds: adjust red regions
@@ -11222,7 +11880,8 @@ def selectivecolor(
     :param str whites: adjust white regions
     :param str neutrals: adjust neutral regions
     :param str blacks: adjust black regions
-    :param str psfile: set Photoshop selectivecolor file name"""
+    :param str psfile: set Photoshop selectivecolor file name
+    """
     graph.append(
         Filter(
             command="selectivecolor",
@@ -11254,11 +11913,13 @@ def apad(
     whole_dur: Optional[int] = None,
 ):
     """Pad audio with silence.
+
     :param int packet_size: set silence packet size
     :param int pad_len: set number of samples of silence to add
     :param int whole_len: set minimum target number of samples in the audio stream
     :param int pad_dur: set duration of silence to add
-    :param int whole_dur: set minimum target duration in the audio stream"""
+    :param int whole_dur: set minimum target duration in the audio stream
+    """
     graph.append(
         Filter(
             command="apad",
@@ -11277,9 +11938,11 @@ def apad(
 
 def fieldhint(graph: Stream, hint: Optional[str] = None, mode: Optional[str] = None):
     """Field matching using hints.
+
     :param str hint: set hint file
     :param str mode: set hint mode
-            possible values: absolute, relative, pattern"""
+            possible values: absolute, relative, pattern
+    """
     graph.append(
         Filter(
             command="fieldhint",
@@ -11309,6 +11972,7 @@ def fieldmatch(
     combpel: Optional[int] = None,
 ):
     """Field matching for inverse telecine.
+
     :param str order: specify the assumed field order
             possible values: auto, bff, tff
     :param str mode: set the matching mode or strategy to use
@@ -11358,26 +12022,32 @@ def fieldmatch(
 
 def bench(graph: Stream, action: Optional[str] = None):
     """Benchmark part of a filtergraph.
+
     :param str action: set action
-            possible values: start, stop"""
+            possible values: start, stop
+    """
     graph.append(Filter(command="bench", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="action", value=action)]))
     return graph
 
 
 def abench(graph: Stream, action: Optional[str] = None):
     """Benchmark part of a filtergraph.
+
     :param str action: set action
-            possible values: start, stop"""
+            possible values: start, stop
+    """
     graph.append(Filter(command="abench", filter_type="AVMEDIA_TYPE_AUDIO", params=[FilterOption(name="action", value=action)]))
     return graph
 
 
 def aloop(graph: Stream, loop: Optional[int] = None, size: Optional[int] = None, start: Optional[int] = None, time: Optional[int] = None):
     """Loop audio samples.
+
     :param int loop: number of loops
     :param int size: max number of samples to loop
     :param int start: set the loop start sample
-    :param int time: set the loop start time"""
+    :param int time: set the loop start time
+    """
     graph.append(
         Filter(
             command="aloop",
@@ -11395,10 +12065,12 @@ def aloop(graph: Stream, loop: Optional[int] = None, size: Optional[int] = None,
 
 def loop(graph: Stream, loop: Optional[int] = None, size: Optional[int] = None, start: Optional[int] = None, time: Optional[int] = None):
     """Loop video frames.
+
     :param int loop: number of loops
     :param int size: max number of frames to loop
     :param int start: set the loop start frame
-    :param int time: set the loop start time"""
+    :param int time: set the loop start time
+    """
     graph.append(
         Filter(
             command="loop",
@@ -11416,10 +12088,12 @@ def loop(graph: Stream, loop: Optional[int] = None, size: Optional[int] = None, 
 
 def hue(graph: Stream, h: Optional[str] = None, s: Optional[str] = None, H: Optional[str] = None, b: Optional[str] = None):
     """Adjust the hue and saturation of the input video.
+
     :param str h: set the hue angle degrees expression
     :param str s: set the saturation expression
     :param str H: set the hue angle radians expression
-    :param str b: set the brightness expression"""
+    :param str b: set the brightness expression
+    """
     graph.append(
         Filter(
             command="hue",
@@ -11437,9 +12111,11 @@ def hue(graph: Stream, h: Optional[str] = None, s: Optional[str] = None, H: Opti
 
 def remap_opencl(graph: Stream, interp: Optional[str] = None, fill: Optional[str] = None):
     """Remap pixels using OpenCL.
+
     :param str interp: set interpolation method
             possible values: near, linear
-    :param str fill: set the color of the unmapped pixels"""
+    :param str fill: set the color of the unmapped pixels
+    """
     graph.append(
         Filter(
             command="remap_opencl",
@@ -11452,8 +12128,10 @@ def remap_opencl(graph: Stream, interp: Optional[str] = None, fill: Optional[str
 
 def field(graph: Stream, type: Optional[str] = None):
     """Extract a field from the input video.
+
     :param str type: set field type (top or bottom)
-            possible values: top, bottom"""
+            possible values: top, bottom
+    """
     graph.append(Filter(command="field", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="type", value=type)]))
     return graph
 
@@ -11466,6 +12144,7 @@ def aspectralstats(
     measure: Optional[str] = None,
 ):
     """Show frequency domain statistics about audio frames.
+
     :param int win_size: set the window size
     :param str win_func: set window function
             possible values: rect, bartlett, hann, hanning, hamming, blackman, welch, flattop, bharris, bnuttall, bhann, sine, nuttall, lanczos, gauss, tukey, dolph, cauchy, parzen, poisson, bohman, kaiser
@@ -11490,9 +12169,11 @@ def aspectralstats(
 
 def axcorrelate(graph: Stream, size: Optional[int] = None, algo: Optional[str] = None):
     """Cross-correlate two audio streams.
+
     :param int size: set the segment size
     :param str algo: set the algorithm
-            possible values: slow, fast, best"""
+            possible values: slow, fast, best
+    """
     graph.append(
         Filter(
             command="axcorrelate",
@@ -11544,6 +12225,7 @@ def setparams(
     colorspace: Optional[str] = None,
 ):
     """Force field, or color property for the output video frame.
+
     :param str field_mode: select interlace mode
             possible values: auto, bff, tff, prog
     :param str range: select color range
@@ -11573,24 +12255,30 @@ def setparams(
 
 def setrange(graph: Stream, range: Optional[str] = None):
     """Force color range for the output video frame.
+
     :param str range: select color range
-            possible values: auto, unspecified, unknown, limited, tv, mpeg, full, pc, jpeg"""
+            possible values: auto, unspecified, unknown, limited, tv, mpeg, full, pc, jpeg
+    """
     graph.append(Filter(command="setrange", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="range", value=range)]))
     return graph
 
 
 def setfield(graph: Stream, mode: Optional[str] = None):
     """Force field for the output video frame.
+
     :param str mode: select interlace mode
-            possible values: auto, bff, tff, prog"""
+            possible values: auto, bff, tff, prog
+    """
     graph.append(Filter(command="setfield", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="mode", value=mode)]))
     return graph
 
 
 def setdar(graph: Stream, dar: Optional[str] = None, max: Optional[int] = None):
     """Set the frame display aspect ratio.
+
     :param str dar: set display aspect ratio
-    :param int max: set max value for nominator or denominator in the ratio"""
+    :param int max: set max value for nominator or denominator in the ratio
+    """
     graph.append(
         Filter(
             command="setdar",
@@ -11603,8 +12291,10 @@ def setdar(graph: Stream, dar: Optional[str] = None, max: Optional[int] = None):
 
 def setsar(graph: Stream, sar: Optional[str] = None, max: Optional[int] = None):
     """Set the pixel sample aspect ratio.
+
     :param str sar: set sample (pixel) aspect ratio
-    :param int max: set max value for nominator or denominator in the ratio"""
+    :param int max: set max value for nominator or denominator in the ratio
+    """
     graph.append(
         Filter(
             command="setsar",
@@ -11617,9 +12307,11 @@ def setsar(graph: Stream, sar: Optional[str] = None, max: Optional[int] = None):
 
 def lumakey(graph: Stream, threshold: Optional[float] = None, tolerance: Optional[float] = None, softness: Optional[float] = None):
     """Turns a certain luma into transparency.
+
     :param float threshold: set the threshold value
     :param float tolerance: set the tolerance value
-    :param float softness: set the softness value"""
+    :param float softness: set the softness value
+    """
     graph.append(
         Filter(
             command="lumakey",
@@ -11636,8 +12328,10 @@ def lumakey(graph: Stream, threshold: Optional[float] = None, tolerance: Optiona
 
 def cas(graph: Stream, strength: Optional[float] = None, planes: Optional[str] = None):
     """Contrast Adaptive Sharpen.
+
     :param float strength: set the sharpening strength
-    :param str planes: set what planes to filter"""
+    :param str planes: set what planes to filter
+    """
     graph.append(
         Filter(
             command="cas",
@@ -11652,11 +12346,13 @@ def spp(
     graph: Stream, quality: Optional[int] = None, qp: Optional[int] = None, mode: Optional[str] = None, use_bframe_qp: Optional[bool] = None
 ):
     """Apply a simple post processing filter.
+
     :param int quality: set quality
     :param int qp: force a constant quantizer parameter
     :param str mode: set thresholding mode
             possible values: hard, soft
-    :param bool use_bframe_qp: use B-frames' QP"""
+    :param bool use_bframe_qp: use B-frames' QP
+    """
     graph.append(
         Filter(
             command="spp",
@@ -11674,9 +12370,11 @@ def spp(
 
 def multiply(graph: Stream, scale: Optional[float] = None, offset: Optional[float] = None, planes: Optional[str] = None):
     """Multiply first video stream with second video stream.
+
     :param float scale: set scale
     :param float offset: set offset
-    :param str planes: set planes"""
+    :param str planes: set planes
+    """
     graph.append(
         Filter(
             command="multiply",
@@ -11702,6 +12400,7 @@ def vignette(
     aspect: Optional[int] = None,
 ):
     """Make or reverse a vignette effect.
+
     :param str angle: set lens angle
     :param str x0: set circle center position on x-axis
     :param str y0: set circle center position on y-axis
@@ -11710,7 +12409,8 @@ def vignette(
     :param str eval: specify when to evaluate expressions
             possible values: init, frame
     :param bool dither: set dithering
-    :param int aspect: set aspect ratio"""
+    :param int aspect: set aspect ratio
+    """
     graph.append(
         Filter(
             command="vignette",
@@ -11746,6 +12446,7 @@ def silenceremove(
     timestamp: Optional[str] = None,
 ):
     """Remove silence.
+
     :param int start_periods: set periods of silence parts to skip from start
     :param int start_duration: set start duration of non-silence part
     :param float start_threshold: set threshold for start silence detection
@@ -11761,7 +12462,8 @@ def silenceremove(
             possible values: avg, rms, peak, median, ptp, dev
     :param int window: set duration of window for silence detection
     :param str timestamp: set how every output frame timestamp is processed
-            possible values: write, copy"""
+            possible values: write, copy
+    """
     graph.append(
         Filter(
             command="silenceremove",
@@ -11788,11 +12490,13 @@ def silenceremove(
 
 def deesser(graph: Stream, i: Optional[float] = None, m: Optional[float] = None, f: Optional[float] = None, s: Optional[str] = None):
     """Apply de-essing to the audio.
+
     :param float i: set intensity
     :param float m: set max deessing
     :param float f: set frequency
     :param str s: set output mode
-            possible values: i, o, e"""
+            possible values: i, o, e
+    """
     graph.append(
         Filter(
             command="deesser",
@@ -11817,11 +12521,13 @@ def nlmeans(
     rc: Optional[int] = None,
 ):
     """Non-local means denoiser.
+
     :param float s: denoising strength
     :param int p: patch size
     :param int pc: patch size for chroma planes
     :param int r: research window
-    :param int rc: research window for chroma planes"""
+    :param int rc: research window for chroma planes
+    """
     graph.append(
         Filter(
             command="nlmeans",
@@ -11840,10 +12546,12 @@ def nlmeans(
 
 def mestimate(graph: Stream, method: Optional[str] = None, mb_size: Optional[int] = None, search_param: Optional[int] = None):
     """Generate motion vectors.
+
     :param str method: motion estimation method
             possible values: esa, tss, tdls, ntss, fss, ds, hexbs, epzs, umh
     :param int mb_size: macroblock size
-    :param int search_param: search parameter"""
+    :param int search_param: search parameter
+    """
     graph.append(
         Filter(
             command="mestimate",
@@ -11862,12 +12570,14 @@ def edgedetect(
     graph: Stream, high: Optional[float] = None, low: Optional[float] = None, mode: Optional[str] = None, planes: Optional[str] = None
 ):
     """Detect and draw edge.
+
     :param float high: set high threshold
     :param float low: set low threshold
     :param str mode: set mode
             possible values: wires, colormix, canny
     :param str planes: set planes to filter
-            possible values: y, u, v, r, g, b"""
+            possible values: y, u, v, r, g, b
+    """
     graph.append(
         Filter(
             command="edgedetect",
@@ -11885,10 +12595,12 @@ def edgedetect(
 
 def removegrain(graph: Stream, m0: Optional[int] = None, m1: Optional[int] = None, m2: Optional[int] = None, m3: Optional[int] = None):
     """Remove grain.
+
     :param int m0: set mode for 1st plane
     :param int m1: set mode for 2nd plane
     :param int m2: set mode for 3rd plane
-    :param int m3: set mode for 4th plane"""
+    :param int m3: set mode for 4th plane
+    """
     graph.append(
         Filter(
             command="removegrain",
@@ -11913,12 +12625,14 @@ def sierpinski(
     type: Optional[str] = None,
 ):
     """Render a Sierpinski fractal.
+
     :param int size: set frame size
     :param str rate: set frame rate
     :param int seed: set the seed
     :param int jump: set the jump
     :param str type: set fractal type
-            possible values: carpet, triangle"""
+            possible values: carpet, triangle
+    """
     graph.append(
         Filter(
             command="sierpinski",
@@ -11945,12 +12659,14 @@ def swaprect(
     y2: Optional[str] = None,
 ):
     """Swap 2 rectangular objects in video.
+
     :param str w: set rect width
     :param str h: set rect height
     :param str x1: set 1st rect x top left coordinate
     :param str y1: set 1st rect y top left coordinate
     :param str x2: set 2nd rect x top left coordinate
-    :param str y2: set 2nd rect y top left coordinate"""
+    :param str y2: set 2nd rect y top left coordinate
+    """
     graph.append(
         Filter(
             command="swaprect",
@@ -11972,11 +12688,13 @@ def abitscope(
     graph: Stream, rate: Optional[str] = None, size: Optional[int] = None, colors: Optional[str] = None, mode: Optional[str] = None
 ):
     """Convert input audio to audio bit scope video output.
+
     :param str rate: set video rate
     :param int size: set video size
     :param str colors: set channels colors
     :param str mode: set output mode
-            possible values: bars, trace"""
+            possible values: bars, trace
+    """
     graph.append(
         Filter(
             command="abitscope",
@@ -12002,13 +12720,15 @@ def lenscorrection(
     fc: Optional[str] = None,
 ):
     """Rectify the image by correcting for lens distortion.
+
     :param float cx: set relative center x
     :param float cy: set relative center y
     :param float k1: set quadratic distortion factor
     :param float k2: set double quadratic distortion factor
     :param str i: set interpolation type
             possible values: nearest, bilinear
-    :param str fc: set the color of the unmapped pixels"""
+    :param str fc: set the color of the unmapped pixels
+    """
     graph.append(
         Filter(
             command="lenscorrection",
@@ -12043,11 +12763,13 @@ def atilt(
     level: Optional[float] = None,
 ):
     """Apply spectral tilt to audio.
+
     :param float freq: set central frequency
     :param float slope: set filter slope
     :param float width: set filter width
     :param int order: set filter order
-    :param float level: set input level"""
+    :param float level: set input level
+    """
     graph.append(
         Filter(
             command="atilt",
@@ -12066,9 +12788,11 @@ def atilt(
 
 def remap(graph: Stream, format: Optional[str] = None, fill: Optional[str] = None):
     """Remap pixels.
+
     :param str format: set output format
             possible values: color, gray
-    :param str fill: set the color of the unmapped pixels"""
+    :param str fill: set the color of the unmapped pixels
+    """
     graph.append(
         Filter(
             command="remap",
@@ -12081,9 +12805,11 @@ def remap(graph: Stream, format: Optional[str] = None, fill: Optional[str] = Non
 
 def bilateral(graph: Stream, sigmaS: Optional[float] = None, sigmaR: Optional[float] = None, planes: Optional[int] = None):
     """Apply Bilateral filter.
+
     :param float sigmaS: set spatial sigma
     :param float sigmaR: set range sigma
-    :param int planes: set planes to filter"""
+    :param int planes: set planes to filter
+    """
     graph.append(
         Filter(
             command="bilateral",
@@ -12111,6 +12837,7 @@ def huesaturation(
     lightness: Optional[bool] = None,
 ):
     """Apply hue-saturation-intensity adjustments.
+
     :param float hue: set the hue shift
     :param float saturation: set the saturation shift
     :param float intensity: set the intensity shift
@@ -12120,7 +12847,8 @@ def huesaturation(
     :param float rw: set the red weight
     :param float gw: set the green weight
     :param float bw: set the blue weight
-    :param bool lightness: set the preserve lightness"""
+    :param bool lightness: set the preserve lightness
+    """
     graph.append(
         Filter(
             command="huesaturation",
@@ -12143,15 +12871,19 @@ def huesaturation(
 
 def epx(graph: Stream, n: Optional[int] = None):
     """Scale the input using EPX algorithm.
-    :param int n: set scale factor"""
+
+    :param int n: set scale factor
+    """
     graph.append(Filter(command="epx", filter_type="AVMEDIA_TYPE_VIDEO", params=[FilterOption(name="n", value=n)]))
     return graph
 
 
 def lagfun(graph: Stream, decay: Optional[float] = None, planes: Optional[str] = None):
     """Slowly update darker pixels.
+
     :param float decay: set decay
-    :param str planes: set what planes to filter"""
+    :param str planes: set what planes to filter
+    """
     graph.append(
         Filter(
             command="lagfun",
@@ -12172,11 +12904,13 @@ def alphamerge(
 
 def signalstats(graph: Stream, stat: Optional[str] = None, out: Optional[str] = None, c: Optional[str] = None):
     """Generate statistics from video analysis.
+
     :param str stat: set statistics filters
             possible values: tout, vrep, brng
     :param str out: set video filter
             possible values: tout, vrep, brng
-    :param str c: set highlight color"""
+    :param str c: set highlight color
+    """
     graph.append(
         Filter(
             command="signalstats",
@@ -12189,8 +12923,10 @@ def signalstats(graph: Stream, stat: Optional[str] = None, out: Optional[str] = 
 
 def asetnsamples(graph: Stream, nb_out_samples: Optional[int] = None, pad: Optional[bool] = None):
     """Set the number of samples for each output audio frames.
+
     :param int nb_out_samples: set the number of per-frame output samples
-    :param bool pad: pad last frame with zeros"""
+    :param bool pad: pad last frame with zeros
+    """
     graph.append(
         Filter(
             command="asetnsamples",
@@ -12203,9 +12939,11 @@ def asetnsamples(graph: Stream, nb_out_samples: Optional[int] = None, pad: Optio
 
 def adenorm(graph: Stream, level: Optional[float] = None, type: Optional[str] = None):
     """Remedy denormals by adding extremely low-level noise.
+
     :param float level: set level
     :param str type: set type
-            possible values: dc, ac, square, pulse"""
+            possible values: dc, ac, square, pulse
+    """
     graph.append(
         Filter(
             command="adenorm",
@@ -12270,6 +13008,7 @@ def surround(
     overlap: Optional[float] = None,
 ):
     """Apply audio surround upmix filter.
+
     :param str chl_out: set output channel layout
     :param str chl_in: set input channel layout
     :param float level_in: set input level
@@ -12321,7 +13060,8 @@ def surround(
     :param int win_size: set window size
     :param str win_func: set window function
             possible values: rect, bartlett, hann, hanning, hamming, blackman, welch, flattop, bharris, bnuttall, bhann, sine, nuttall, lanczos, gauss, tukey, dolph, cauchy, parzen, poisson, bohman, kaiser
-    :param float overlap: set window overlap"""
+    :param float overlap: set window overlap
+    """
     graph.append(
         Filter(
             command="surround",
@@ -12412,6 +13152,7 @@ def noise(
     c3f: Optional[str] = None,
 ):
     """Add noise.
+
     :param int all_seed: set component #0 noise seed
     :param int all_strength: set component #0 strength
     :param int alls: set component #0 strength
@@ -12446,7 +13187,8 @@ def noise(
     :param str c3_flags: set component #3 flags
             possible values: a, p, t, u
     :param str c3f: set component #3 flags
-            possible values: a, p, t, u"""
+            possible values: a, p, t, u
+    """
     graph.append(
         Filter(
             command="noise",
@@ -12485,9 +13227,11 @@ def noise(
 
 def pp7(graph: Stream, qp: Optional[int] = None, mode: Optional[str] = None):
     """Apply Postprocessing 7 filter.
+
     :param int qp: force a constant quantizer parameter
     :param str mode: set thresholding mode
-            possible values: hard, soft, medium"""
+            possible values: hard, soft, medium
+    """
     graph.append(
         Filter(
             command="pp7",
@@ -12500,8 +13244,10 @@ def pp7(graph: Stream, qp: Optional[int] = None, mode: Optional[str] = None):
 
 def showinfo(graph: Stream, checksum: Optional[bool] = None, udu_sei_as_ascii: Optional[bool] = None):
     """Show textual information for each video frame.
+
     :param bool checksum: calculate checksums
-    :param bool udu_sei_as_ascii: try to print user data unregistered SEI as ascii character when possible"""
+    :param bool udu_sei_as_ascii: try to print user data unregistered SEI as ascii character when possible
+    """
     graph.append(
         Filter(
             command="showinfo",
@@ -12526,6 +13272,7 @@ def mergeplanes(
     map3p: Optional[int] = None,
 ):
     """Merge planes.
+
     :param int mapping: set input to output plane mapping
     :param str format: set output pixel format
     :param int map0s: set 1st input to output stream mapping
@@ -12535,7 +13282,8 @@ def mergeplanes(
     :param int map2s: set 3rd input to output stream mapping
     :param int map2p: set 3rd input to output plane mapping
     :param int map3s: set 4th input to output stream mapping
-    :param int map3p: set 4th input to output plane mapping"""
+    :param int map3p: set 4th input to output plane mapping
+    """
     graph.append(
         Filter(
             command="mergeplanes",
@@ -12569,6 +13317,7 @@ def afwtdn(
     softness: Optional[float] = None,
 ):
     """Denoise audio stream using Wavelets.
+
     :param float sigma: set noise sigma
     :param int levels: set number of wavelet levels
     :param str wavet: set wavelet type
@@ -12577,7 +13326,8 @@ def afwtdn(
     :param bool profile: profile noise
     :param bool adaptive: adaptive profiling of noise
     :param int samples: set frame size in number of samples
-    :param float softness: set thresholding softness"""
+    :param float softness: set thresholding softness
+    """
     graph.append(
         Filter(
             command="afwtdn",
@@ -12606,11 +13356,13 @@ def hsvkey(
     blend: Optional[float] = None,
 ):
     """Turns a certain HSV range into transparency. Operates on YUV colors.
+
     :param float hue: set the hue value
     :param float sat: set the saturation value
     :param float val: set the value value
     :param float similarity: set the hsvkey similarity value
-    :param float blend: set the hsvkey blend value"""
+    :param float blend: set the hsvkey blend value
+    """
     graph.append(
         Filter(
             command="hsvkey",
@@ -12636,11 +13388,13 @@ def hsvhold(
     blend: Optional[float] = None,
 ):
     """Turns a certain HSV range into gray.
+
     :param float hue: set the hue value
     :param float sat: set the saturation value
     :param float val: set the value value
     :param float similarity: set the hsvhold similarity value
-    :param float blend: set the hsvhold blend value"""
+    :param float blend: set the hsvhold blend value
+    """
     graph.append(
         Filter(
             command="hsvhold",
@@ -12667,6 +13421,7 @@ def vaguedenoiser(
     type: Optional[str] = None,
 ):
     """Apply a Wavelet based Denoiser.
+
     :param float threshold: set filtering strength
     :param str method: set filtering method
             possible values: hard, soft, garrote
@@ -12674,7 +13429,8 @@ def vaguedenoiser(
     :param float percent: set percent of full denoising
     :param int planes: set planes to filter
     :param str type: set threshold type
-            possible values: universal, bayes"""
+            possible values: universal, bayes
+    """
     graph.append(
         Filter(
             command="vaguedenoiser",

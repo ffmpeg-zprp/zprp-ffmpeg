@@ -2,6 +2,7 @@ import shlex
 import subprocess
 
 from .BaseConnector import BaseConnector
+from .FilterGraph import FilterParser
 from .FilterGraph import Stream
 
 
@@ -23,9 +24,9 @@ class ProcessConnector(BaseConnector):
         :return: a string to pass as an argument to ffmpeg
         """
 
-        command = [node.get_command() for node in graph._nodes]
+        command = FilterParser().generate_result(graph)
 
-        return " ".join(command)
+        return "".join(command)
 
     @classmethod
     def run(cls, graph: Stream, extra_options: str = "") -> "BaseConnector":

@@ -4,6 +4,20 @@ Changelog
 All notable changes to this project will be documented in this file.
 Dates are displayed in UTC.
 
+`v2.0.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v1.2.0...v2.0.0>`__
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   1 June 2024
+
+-  Complex filter
+   ```#6`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/pull/6>`__
+-  Fix: incorrect showing of params.
+   ```f0e28e5`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/f0e28e570a344a8162939b7ca2e7f269b2099ef4>`__
+-  Interactive example.
+   ```57fed5c`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/57fed5ccb9fe9cc11f1752088277d301f5062610>`__
+-  feat: Add overlay filter
+   ```94aa24c`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/94aa24c2599006bcc16afd9671923bf7cb15c9bd>`__
+
 `v1.2.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v1.1.0...v1.2.0>`__
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
