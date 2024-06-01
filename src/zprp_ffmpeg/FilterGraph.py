@@ -87,7 +87,7 @@ class SinkFilter:
 # in python 3.12 there is 'type' keyword, but we are targetting 3.8
 # https://stackoverflow.com/questions/76712720/typeerror-unsupported-operand-types-for-type-and-nonetype
 # python >3.9 uses , instead of | idk if it works with python 3.12
-AnyNode = Union[Filter, SourceFilter, SinkFilter]
+AnyNode = Union[Filter, SourceFilter, SinkFilter, "Stream"]
 
 
 class Stream:
@@ -119,7 +119,7 @@ class FilterParser:
         self.outputs = []
         self.filters = []
 
-    def generate_command(self, stream: Stream) -> str:
+    def generate_command(self, stream: Stream) -> str | None:
         last = None
         for node in stream._nodes:
             # many inputs one output
@@ -128,8 +128,8 @@ class FilterParser:
                 _, command = command.split("]")
                 for graph in node._in:
                     last_results.append(self.generate_command(graph))
-                last_results = "".join([f"[{result}]" for result in last_results])
-                self.filters.append(f"{last_results}{command}[v{self.result_counter}];")
+                results = "".join([f"[{result}]" for result in last_results])
+                self.filters.append(f"{results}{command}[v{self.result_counter}];")
                 last = f"v{self.result_counter}"
                 self.result_counter += 1
             # input
@@ -154,6 +154,6 @@ class FilterParser:
                 self.result_counter += 1
         return last
 
-    def generate_result(self, stream):
+    def generate_result(self, stream: Stream) -> str:
         self.generate_command(stream)
         return " ".join(self.inputs) + ' -filter_complex "' + " ".join(self.filters)[:-1] + '" ' + " ".join(self.outputs)
