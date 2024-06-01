@@ -22,9 +22,6 @@ mypy = "^1.10.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[mypy-networkx]
-ignore_missing_imports = true
-
 [tool.ruff]
 extend-exclude = ["static", "ci/templates"]
 line-length = 140

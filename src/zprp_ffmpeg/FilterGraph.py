@@ -25,7 +25,7 @@ class Filter:
 
     def __init__(self, command: str, params: Optional[List[FilterOption]] = None, filter_type: str = FilterType.VIDEO.value):
         self._out: List[AnyNode] = []
-        self._in: List[AnyNode] = []
+        self._in: List[AnyNode | "Stream"] = []
         self.command = command
         self.params = params if params else []
         self.filter_type = filter_type
@@ -126,8 +126,8 @@ class FilterParser:
             if (command := node.get_command()) and any(filter_ in command for filter_ in self.multi_input):
                 last_results = []
                 _, command = command.split("]")
-                for graph in node._in:
-                    last_results.append(self.generate_command(graph))
+                for graph in node._in:  # type: ignore
+                    last_results.append(self.generate_command(graph))  # type: ignore
                 results = "".join([f"[{result}]" for result in last_results])
                 self.filters.append(f"{results}{command}[v{self.result_counter}];")
                 last = f"v{self.result_counter}"
