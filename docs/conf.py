@@ -17,7 +17,7 @@ project = "zprp-ffmpeg"
 year = "2024"
 author = ""
 copyright = f"{year}, {author}"
-version = release = "2.1.0"
+version = release = "2.1.1"
 
 pygments_style = "trac"
 templates_path = ["."]
