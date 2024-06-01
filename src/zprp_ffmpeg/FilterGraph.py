@@ -152,6 +152,8 @@ class FilterParser:
                     self.filters.append(f"[{last}{command[2:]}[v{self.result_counter}];")
                 last = f"v{self.result_counter}"
                 self.result_counter += 1
+        if len(self.filters) == 0:
+            raise ValueError("No filters selected")
         return last
 
     def generate_result(self, stream):
