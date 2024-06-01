@@ -96,6 +96,7 @@ class Stream:
 
     def __init__(self) -> None:
         self._nodes: List[AnyNode] = []
+        self.global_options: List = []
 
     def append(self, node: AnyNode) -> "Stream":
         if len(self._nodes) > 0:
@@ -158,4 +159,4 @@ class FilterParser:
 
     def generate_result(self, stream):
         self.generate_command(stream)
-        return " ".join(self.inputs) + ' -filter_complex "' + " ".join(self.filters)[:-1] + '" ' + " ".join(self.outputs)
+        return " ".join(self.inputs) + ' -filter_complex "' + " ".join(self.filters)[:-1] + '" ' + " ".join(self.outputs) + ' ' + " ".join(stream.global_options)

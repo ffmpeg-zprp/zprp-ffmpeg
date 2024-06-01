@@ -6,6 +6,7 @@ from inspect import isfunction
 from ._api_compat import input
 from ._api_compat import filter
 from ._api_compat import output
+from ._api_compat import global_args
 from ._api_compat import get_args
 from ._api_compat import compile
 from ._api_compat import run
@@ -18,7 +19,7 @@ from .view import view
 
 # This is for `from xyz import *`, but also to make linter shut up
 
-__all__ = ["input", "filter", "output", "get_args", "compile", "run", "run_async", "probe", "view", "generated_filters", "filters"]  # noqa: F405
+__all__ = ["input", "filter", "output", "global_args", "get_args", "compile", "run", "run_async", "probe", "view", "generated_filters", "filters"]  # noqa: F405
 
 stream_modules = [generated_filters, _api_compat]  # noqa: F405
 

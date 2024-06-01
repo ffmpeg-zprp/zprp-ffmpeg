@@ -33,6 +33,15 @@ def output(stream: Stream, filename: str):
     return stream
 
 
+def global_args(stream: Stream, *args):
+    new_args: List[str] = []
+    for arg in args:
+        new_args.append(str(arg))
+    stream.global_options = new_args
+    return stream
+
+
+
 def get_args(stream: Stream, overwrite_output: bool = False) -> List[str]:
     """Build command-line arguments to be passed to ffmpeg."""
     args = ProcessConnector.compile(stream).split()
