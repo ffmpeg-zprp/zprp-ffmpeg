@@ -35,7 +35,7 @@ def view(graph: Stream, filename=None) -> None:
     # Set nodes to be horizontal
     pos = {}
     for i, nodeG in enumerate(graph_connection):
-        pos[nodeG[0]] = (i, 0)
+        pos[nodeG[0]] = (i, 0)  # type: ignore
 
     nx.draw(
         G, pos, with_labels=True, node_shape="s", node_size=3000, node_color=[color for _, color in graph_connection], font_weight="bold"
