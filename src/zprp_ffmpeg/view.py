@@ -1,5 +1,5 @@
 import networkx as nx  # type: ignore
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt  # type: ignore
 
 from .FilterGraph import Filter
 from .FilterGraph import SinkFilter

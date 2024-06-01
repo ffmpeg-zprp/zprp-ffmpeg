@@ -159,4 +159,12 @@ class FilterParser:
 
     def generate_result(self, stream: Stream) -> str:
         self.generate_command(stream)
-        return " ".join(self.inputs) + ' -filter_complex "' + " ".join(self.filters)[:-1] + '" ' + " ".join(self.outputs) + ' ' + " ".join(stream.global_options)
+        return (
+            " ".join(self.inputs)
+            + ' -filter_complex "'
+            + " ".join(self.filters)[:-1]
+            + '" '
+            + " ".join(self.outputs)
+            + " "
+            + " ".join(stream.global_options)
+        )

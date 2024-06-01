@@ -1,14 +1,16 @@
 import pytest
 
-from zprp_ffmpeg.FilterGraph import Stream, Filter, FilterType
+from zprp_ffmpeg.FilterGraph import Filter
+from zprp_ffmpeg.FilterGraph import FilterType
+from zprp_ffmpeg.FilterGraph import Stream
 from zprp_ffmpeg.ProcessConnector import ProcessConnector
 
 
 @pytest.mark.starts_process
 def test_ProcessConnector_empty_graph():
     fg = Stream()
-    with pytest.raises(ValueError):
-        proc = ProcessConnector.run(fg)
+    with pytest.raises(ValueError, match="No filters selected"):
+        _ = ProcessConnector.run(fg)
 
 
 @pytest.mark.starts_process
