@@ -37,7 +37,7 @@ class Filter:
         self._in.append(child)
 
     def get_command(self):
-        joined_params = ":".join(p.name + "=" + str(p.value) for p in self.params if p.value)
+        joined_params = ":".join(p.name + "=" + str(p.value) if p.value else p.name for p in self.params)
         if joined_params:  # if there was no option, leave empty string
             joined_params = "=" + joined_params
         if self.filter_type == "AVMEDIA_TYPE_VIDEO":
@@ -96,6 +96,7 @@ class Stream:
 
     def __init__(self) -> None:
         self._nodes: List[AnyNode] = []
+        self.global_options: List = []
 
     def append(self, node: AnyNode) -> "Stream":
         if len(self._nodes) > 0:
@@ -152,8 +153,10 @@ class FilterParser:
                     self.filters.append(f"[{last}{command[2:]}[v{self.result_counter}];")
                 last = f"v{self.result_counter}"
                 self.result_counter += 1
+        if len(self.filters) == 0:
+            raise ValueError("No filters selected")
         return last
 
     def generate_result(self, stream: Stream) -> str:
         self.generate_command(stream)
-        return " ".join(self.inputs) + ' -filter_complex "' + " ".join(self.filters)[:-1] + '" ' + " ".join(self.outputs)
+        return " ".join(self.inputs) + ' -filter_complex "' + " ".join(self.filters)[:-1] + '" ' + " ".join(self.outputs) + ' ' + " ".join(stream.global_options)
