@@ -37,7 +37,7 @@ class Filter:
         self._in.append(child)
 
     def get_command(self):
-        joined_params = ":".join(p.name + "=" + str(p.value) if p.value else p.name for p in self.params)
+        joined_params = ":".join(p.name + "=" + str(p.value) for p in self.params if p.value)
         if joined_params:  # if there was no option, leave empty string
             joined_params = "=" + joined_params
         if self.filter_type == "AVMEDIA_TYPE_VIDEO":
