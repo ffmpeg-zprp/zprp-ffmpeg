@@ -4,6 +4,18 @@ Changelog
 All notable changes to this project will be documented in this file.
 Dates are displayed in UTC.
 
+`v2.1.1 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v2.1.0...v2.1.1>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   2 June 2024
+
+-  fix: linting and mypy issues
+   ```9589ec9`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/9589ec97c1f7e519bbcd956d9119910d54fb2a49>`__
+-  Update interactive.
+   ```e4912b8`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/e4912b8c621488eee02037f1afb2a445100f583a>`__
+-  Bump version: 2.1.0 → 2.1.1
+   ```4c40e82`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/4c40e82324a97a4115d6c31e04203834e38fc5a0>`__
+
 `v2.1.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v2.0.0...v2.1.0>`__
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
