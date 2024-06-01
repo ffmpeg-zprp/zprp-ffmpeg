@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zprp-ffmpeg"
-version = "2.0.0"
+version = "2.1.0"
 description = "ffmpeg filter graph bindings for python"
 authors = ["Your Name <you@example.com>"]
 license = "MIT"
