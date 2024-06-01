@@ -1,4 +1,4 @@
-__version__ = "1.2.0"
+__version__ = "2.0.0"
 # from . import longest
 from inspect import getmembers
 from inspect import isfunction
