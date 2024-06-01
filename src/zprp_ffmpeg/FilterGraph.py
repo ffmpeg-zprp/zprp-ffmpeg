@@ -119,8 +119,8 @@ class FilterParser:
         self.outputs = []
         self.filters = []
 
-    def generate_command(self, stream: Stream) -> str:
-        last = None
+    def generate_command(self, stream: Stream) -> str:  # type: ignore
+        last = "None"
         for node in stream._nodes:
             # many inputs one output
             if (command := node.get_command()) and any(filter_ in command for filter_ in self.multi_input):
