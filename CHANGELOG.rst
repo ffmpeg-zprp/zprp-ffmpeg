@@ -4,6 +4,20 @@ Changelog
 All notable changes to this project will be documented in this file.
 Dates are displayed in UTC.
 
+`v2.1.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v2.0.0...v2.1.0>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   1 June 2024
+
+-  Improving compatibility
+   ```#7`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/pull/7>`__
+-  update lock.
+   ```d4dce79`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/d4dce798ad3a18255c6f1f9dafd82a49f7d8f094>`__
+-  Update lock.
+   ```7178391`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/71783915fdb6287efeff03a9b790df7df7ae51b2>`__
+-  Added more old api tests
+   ```be2f8f1`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/be2f8f13d56a2fed25aeb6d681a2cffbf34e92c4>`__
+
 `v2.0.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v1.2.0...v2.0.0>`__
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

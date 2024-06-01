@@ -7467,7 +7467,6 @@ def showspatial(
 #     return graph
 
 
-
 def null(
     graph: Stream,
 ):

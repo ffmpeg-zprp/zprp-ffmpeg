@@ -1,10 +1,14 @@
 """compatibility layer to match the kkroening library.
 @TODO: better docstrings"""
 
-from typing import Tuple, List
+from typing import List
+from typing import Tuple
 
 from zprp_ffmpeg.BaseConnector import BaseConnector
-from .FilterGraph import SinkFilter, FilterOption, Filter
+
+from .FilterGraph import Filter
+from .FilterGraph import FilterOption
+from .FilterGraph import SinkFilter
 from .FilterGraph import SourceFilter
 from .FilterGraph import Stream
 from .ProcessConnector import ProcessConnector
@@ -41,7 +45,6 @@ def global_args(stream: Stream, *args):
     return stream
 
 
-
 def get_args(stream: Stream, overwrite_output: bool = False) -> List[str]:
     """Build command-line arguments to be passed to ffmpeg."""
     args = ProcessConnector.compile(stream).split()
@@ -52,7 +55,7 @@ def get_args(stream: Stream, overwrite_output: bool = False) -> List[str]:
 
 def compile(stream: Stream, cmd: str = "ffmpeg", overwrite_output: bool = False) -> List[str]:
     """Returns command-line for invoking ffmpeg split by space"""
-    return [cmd] + get_args(stream, overwrite_output)
+    return [cmd, *get_args(stream, overwrite_output)]
 
 
 # this api always uses process
