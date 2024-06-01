@@ -4,6 +4,18 @@ Changelog
 All notable changes to this project will be documented in this file.
 Dates are displayed in UTC.
 
+`v2.1.2 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v2.1.1...v2.1.2>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   2 June 2024
+
+-  Bump version: 2.1.1 → 2.1.2
+   ```94ce1c6`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/94ce1c6af7285a4ff9e8fd357979b4eb16ac7ea0>`__
+-  Apply automatic changes
+   ```ee0f3c1`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/ee0f3c1e1eeca54f46846fe44fa19ec97289fddc>`__
+-  fix: overlay filter had invalid arguments to ffmpeg
+   ```8291888`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/8291888fc247e4c3862ad70c454684b02c6cb4c5>`__
+
 `v2.1.1 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v2.1.0...v2.1.1>`__
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
