@@ -108,3 +108,9 @@ def test_global_args():
         "-progress",
         "someurl",
     ]
+
+def test_overwrite():
+    stream = ffmpeg.input("something.avi")
+    stream = ffmpeg.overwrite_output(stream)
+    args = ffmpeg.get_args(stream)
+    assert "-y" in args # technically this test can pass when it shouldn't, but that's too nitpicky

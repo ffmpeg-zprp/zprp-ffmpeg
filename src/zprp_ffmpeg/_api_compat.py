@@ -15,12 +15,12 @@ from .process_connector import ProcessConnector
 
 
 # this one is unique, creates the Stream object
-def input(filename: str):
+def input(filename: str) -> Stream:
     source = SourceFilter(filename)
     return Stream().append(source)
 
 
-def filter(stream_spec: Stream, filter_name: str, *args, **kwargs):
+def filter(stream_spec: Stream, filter_name: str, *args, **kwargs) -> Stream:
     """Applies a custom filter"""
     options = []
     for arg in args:
@@ -31,13 +31,13 @@ def filter(stream_spec: Stream, filter_name: str, *args, **kwargs):
     return stream_spec
 
 
-def output(stream: Stream, filename: str):
+def output(stream: Stream, filename: str) -> Stream:
     sink = SinkFilter(filename)
     stream.append(sink)
     return stream
 
 
-def global_args(stream: Stream, *args):
+def global_args(stream: Stream, *args) -> Stream:
     new_args: List[str] = []
     for arg in args:
         new_args.append(str(arg))
@@ -68,3 +68,8 @@ def run(stream: Stream, extra_options: str = "") -> Tuple[str, str]:
 def run_async(stream: Stream) -> BaseConnector:
     """Returns handle to a process. Can raise an exception if script tries to terminate before ffmpeg is done."""
     return ProcessConnector.run(stream)
+
+
+def overwrite_output(stream: Stream) -> Stream:
+    stream.global_options.append("-y")
+    return stream

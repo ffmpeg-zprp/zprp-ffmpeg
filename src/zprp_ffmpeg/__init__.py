@@ -10,6 +10,7 @@ from ._api_compat import get_args
 from ._api_compat import global_args
 from ._api_compat import input
 from ._api_compat import output
+from ._api_compat import overwrite_output
 from ._api_compat import run
 from ._api_compat import run_async
 from .filter_graph import Stream
@@ -35,6 +36,7 @@ __all__ = [
     "probe",
     "view",
     "generated_filters",
+    "overwrite_output",
 ]
 
 stream_modules = [generated_filters, _api_compat]  # noqa: F821
