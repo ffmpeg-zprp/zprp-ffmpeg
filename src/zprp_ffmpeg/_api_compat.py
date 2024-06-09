@@ -4,14 +4,14 @@
 from typing import List
 from typing import Tuple
 
-from zprp_ffmpeg.BaseConnector import BaseConnector
+from zprp_ffmpeg.base_connector import BaseConnector
 
-from .FilterGraph import Filter
-from .FilterGraph import FilterOption
-from .FilterGraph import SinkFilter
-from .FilterGraph import SourceFilter
-from .FilterGraph import Stream
-from .ProcessConnector import ProcessConnector
+from .filter_graph import Filter
+from .filter_graph import FilterOption
+from .filter_graph import SinkFilter
+from .filter_graph import SourceFilter
+from .filter_graph import Stream
+from .process_connector import ProcessConnector
 
 
 # this one is unique, creates the Stream object

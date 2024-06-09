@@ -1,10 +1,10 @@
 import networkx as nx  # type: ignore
 from matplotlib import pyplot as plt  # type: ignore
 
-from .FilterGraph import Filter
-from .FilterGraph import SinkFilter
-from .FilterGraph import SourceFilter
-from .FilterGraph import Stream
+from .filter_graph import Filter
+from .filter_graph import SinkFilter
+from .filter_graph import SourceFilter
+from .filter_graph import Stream
 
 
 def view(graph: Stream, filename=None) -> None:

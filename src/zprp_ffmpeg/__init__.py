@@ -12,7 +12,7 @@ from ._api_compat import input
 from ._api_compat import output
 from ._api_compat import run
 from ._api_compat import run_async
-from .FilterGraph import Stream
+from .filter_graph import Stream
 from .filters import *  # noqa: F403 this is impossible to avoid
 from .generated_filters import *  # noqa: F403 this is impossible to avoid
 from .probe import probe

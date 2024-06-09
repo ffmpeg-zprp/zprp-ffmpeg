@@ -1,8 +1,8 @@
 from typing import Optional
 
-from zprp_ffmpeg.FilterGraph import Filter
-from zprp_ffmpeg.FilterGraph import FilterOption
-from zprp_ffmpeg.FilterGraph import Stream
+from zprp_ffmpeg.filter_graph import Filter
+from zprp_ffmpeg.filter_graph import FilterOption
+from zprp_ffmpeg.filter_graph import Stream
 
 
 def hwmap(graph: Stream, mode: Optional[str] = None, derive_device: Optional[str] = None, reverse: Optional[int] = None):

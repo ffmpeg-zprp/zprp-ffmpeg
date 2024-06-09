@@ -1,9 +1,9 @@
 import pytest
 
-from zprp_ffmpeg.FilterGraph import Filter
-from zprp_ffmpeg.FilterGraph import FilterType
-from zprp_ffmpeg.FilterGraph import Stream
-from zprp_ffmpeg.ProcessConnector import ProcessConnector
+from zprp_ffmpeg.filter_graph import Filter
+from zprp_ffmpeg.filter_graph import FilterType
+from zprp_ffmpeg.filter_graph import Stream
+from zprp_ffmpeg.process_connector import ProcessConnector
 
 
 @pytest.mark.starts_process

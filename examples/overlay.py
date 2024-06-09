@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import zprp_ffmpeg
-import zprp_ffmpeg.FilterGraph
+import zprp_ffmpeg.filter_graph
 
 work_dir = Path(__file__).parent
 

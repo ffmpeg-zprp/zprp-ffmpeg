@@ -1,9 +1,9 @@
 from typing import Iterable
 from typing import Optional
 
-from .FilterGraph import Filter
-from .FilterGraph import FilterOption
-from .FilterGraph import Stream
+from .filter_graph import Filter
+from .filter_graph import FilterOption
+from .filter_graph import Stream
 
 
 def concat(graphs: Iterable[Stream], n: Optional[int] = None, v: Optional[int] = None, a: Optional[int] = None) -> Stream:

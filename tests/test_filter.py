@@ -1,6 +1,6 @@
-from zprp_ffmpeg.FilterGraph import Filter
-from zprp_ffmpeg.FilterGraph import FilterOption
-from zprp_ffmpeg.FilterGraph import FilterType
+from zprp_ffmpeg.filter_graph import Filter
+from zprp_ffmpeg.filter_graph import FilterOption
+from zprp_ffmpeg.filter_graph import FilterType
 
 
 def test_filter_build_command_no_opts():

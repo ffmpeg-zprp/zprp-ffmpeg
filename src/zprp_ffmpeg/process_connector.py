@@ -1,9 +1,9 @@
 import shlex
 import subprocess
 
-from .BaseConnector import BaseConnector
-from .FilterGraph import FilterParser
-from .FilterGraph import Stream
+from .base_connector import BaseConnector
+from .filter_graph import FilterParser
+from .filter_graph import Stream
 
 
 class ProcessConnector(BaseConnector):
