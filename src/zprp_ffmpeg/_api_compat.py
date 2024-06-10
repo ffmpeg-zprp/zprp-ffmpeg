@@ -59,7 +59,7 @@ def compile(stream: Stream, cmd: str = "ffmpeg", overwrite_output: bool = False)
 
 
 # this api always uses process
-def run(stream: Stream, extra_options: str = "") -> Tuple[str, str]:
+def run(stream: Stream, extra_options: str = "") -> Tuple[bytes, bytes]:
     """Returns (stdout,stderr) tuple"""
     return ProcessConnector.run(stream, extra_options).communicate()
 

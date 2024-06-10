@@ -1,5 +1,6 @@
-import shlex
 import subprocess
+
+import oslex
 
 from .base_connector import BaseConnector
 from .filter_graph import FilterParser
@@ -37,9 +38,9 @@ class ProcessConnector(BaseConnector):
         """
 
         command = ProcessConnector.compile(graph) + extra_options
-        print("Command:", shlex.split(command))
+        print("Command:", oslex.split(command))
         ffmpeg_process = subprocess.Popen(
-            [ProcessConnector.ffmpeg_executable_path, *shlex.split(command)], stdout=subprocess.PIPE, stderr=subprocess.PIPE  # noqa: S603
+            [ProcessConnector.ffmpeg_executable_path, *oslex.split(command)], stdout=subprocess.PIPE, stderr=subprocess.PIPE  # noqa: S603
         )
         return cls(ffmpeg_process)
 

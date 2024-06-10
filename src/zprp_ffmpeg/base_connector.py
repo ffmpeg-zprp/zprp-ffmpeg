@@ -22,5 +22,5 @@ class BaseConnector(ABC):
         :return: a handle to read output from ffmpeg, for example stdout from process."""
 
     @abstractmethod
-    def communicate(self) -> Tuple[str, str]:
+    def communicate(self) -> Tuple[bytes, bytes]:
         """Reads stdout and stderr from process"""
