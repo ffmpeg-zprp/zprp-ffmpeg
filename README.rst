@@ -9,11 +9,13 @@ Minimalną funkcjonalność, którą chcemy zaimplementować, to ta oferowana pr
 Stack technologiczny
 ====================
 * szablon cookiecutter: https://github.com/ionelmc/cookiecutter-pylibrary
-* dokumentacja mkdocs
+* dokumentacja sphinx
 * linter ruff
+* mypy do sprawdzanie statycznego typowania
 * Poetry do budowania paczki
 * tox do automatycznych testów
-* CI/CD przy użyciu github actions (uruchomienie testów, budowanie paczki, automatyczny release do PyPI)
+* CI/CD przy użyciu github actions (uruchomienie testów, budowanie paczki, aktualizacja Changelog)
+* codecov do badania pokrycia testami kodu
 
 =======================
 Planowany rozkład jazdy
@@ -42,6 +44,14 @@ Tygodnie 8-13 przewidziane na potencjalne przesunięcia w planie.
 
 Dokumentacja będzie pisana regularnie wraz z kodem jako docstringi
 
+========================
+Możliwe ścieżki rozwouju
+========================
+* implementacja filtrów złożonych z wieloma wyjściami
+* wygenerowanie pozostałych filtrów złożonych
+* dodać podpowiedzi przy fluent interface
+* dodać obsługę filtrów złożonych do view
+* przyjmować wejście i wyjście nie tylko przez plik np. kamera na żywo
 
 ========
 Overview
