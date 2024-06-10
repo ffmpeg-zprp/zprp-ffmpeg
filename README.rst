@@ -138,7 +138,7 @@ Development
 ===========
 
 Project uses poetry for package management. Check out their `docs <https://python-poetry.org/docs/>`_ for installation steps.
-Tests are managed by tox, which uses pytest under the hood. 
+Tests are managed by tox, which uses pytest under the hood.
 
 
 To install package in development mode, enter the virtual environment managed by poetry, then use `install` command:
@@ -160,7 +160,7 @@ However, this might be cumbersome, since it requires having all supported python
 
     tox -e py312-lin
 
-You can view all defined interpreters with :code:`tox -l` 
+You can view all defined interpreters with :code:`tox -l`
 
 To check for typing and linting issues manually, run:
 
