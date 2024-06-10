@@ -2,6 +2,6 @@
 Installation
 ============
 
-At the command line::
+The package is available on pip::
 
-    pip install zprp-ffmpeg
+    pip install zprp_ffmpeg
