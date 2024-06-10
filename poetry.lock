@@ -449,6 +449,17 @@ pyparsing = ">=2.3.1"
 python-dateutil = ">=2.7"
 
 [[package]]
+name = "mslex"
+version = "1.2.0"
+description = "shlex for windows"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "mslex-1.2.0-py3-none-any.whl", hash = "sha256:c68ec637485ee3544c5847c1b4e78b02940b32708568fb1d8715491815aa2341"},
+    {file = "mslex-1.2.0.tar.gz", hash = "sha256:79e2abc5a129dd71cdde58a22a2039abb7fa8afcbac498b723ba6e9b9fbacc14"},
+]
+
+[[package]]
 name = "mypy"
 version = "1.10.0"
 description = "Optional static typing for Python"
@@ -560,6 +571,20 @@ files = [
     {file = "numpy-1.24.4-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:e98f220aa76ca2a977fe435f5b04d7b3470c0a2e6312907b37ba6068f26787f2"},
     {file = "numpy-1.24.4.tar.gz", hash = "sha256:80f5e3a4e498641401868df4208b74581206afbee7cf7b8329daae82676d9463"},
 ]
+
+[[package]]
+name = "oslex"
+version = "0.1.3"
+description = "OS-independent wrapper for shlex and mslex"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "oslex-0.1.3-py3-none-any.whl", hash = "sha256:71acb8a1d42ed78ddd213a1d3a628bbf837f758bd2999c91df7ce57972466bdf"},
+    {file = "oslex-0.1.3.tar.gz", hash = "sha256:1ed4cd82c75df2a8bcb0da34400984183753933155d0c7d999fa533137685f2d"},
+]
+
+[package.dependencies]
+mslex = "*"
 
 [[package]]
 name = "packaging"
@@ -816,4 +841,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "d1041ce294be81e9604e5e9bbb9ae525a6968483a2fb0663d5bbc30c56d6e36f"
+content-hash = "4db8c089d810ea587beabe3332015259cfd537d603912a98e6375ea52e0e9ae3"
