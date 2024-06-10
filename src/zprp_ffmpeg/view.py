@@ -1,6 +1,3 @@
-import networkx as nx  # type: ignore
-from matplotlib import pyplot as plt  # type: ignore
-
 from .filter_graph import Filter
 from .filter_graph import SinkFilter
 from .filter_graph import SourceFilter
@@ -9,6 +6,9 @@ from .filter_graph import Stream
 
 def view(graph: Stream, filename=None) -> None:
     "Creates graph of filters"
+
+    import networkx as nx  # type: ignore
+    from matplotlib import pyplot as plt  # type: ignore
 
     colors = {"input": "#99cc00", "output": "#99ccff", "filter": "#ffcc00"}
 
