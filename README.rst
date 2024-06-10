@@ -154,11 +154,11 @@ To run tests on multiple python interpreters, build documentation, check for lin
 
     tox
 
-However, this might be cumbersome, since it requires having all supported python interpreters available. To run only selected interpreter, use :code:`-e` option, for example:
+However, this might be cumbersome, since it requires having all supported python interpreters available. To run only selected interpreters, use :code:`-e` option, for example:
 
 .. code-block:: bash
 
-    tox -e py312-lin
+    tox -e py312-lin,check #python 3.12 on linux, and linter checks
 
 You can view all defined interpreters with :code:`tox -l`
 
