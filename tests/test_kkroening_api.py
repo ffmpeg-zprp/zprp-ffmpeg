@@ -1,4 +1,7 @@
 # test if the package structure matches
+import json
+from pathlib import Path
+
 import pytest
 
 import zprp_ffmpeg as ffmpeg
@@ -114,3 +117,14 @@ def test_overwrite():
     stream = ffmpeg.overwrite_output(stream)
     args = ffmpeg.get_args(stream)
     assert "-y" in args # technically this test can pass when it shouldn't, but that's too nitpicky
+
+def test_probe():
+    with pytest.raises(Exception, match="ffprobe"):
+        _ = ffmpeg.probe("doesntexist.mp4")
+
+    out = ffmpeg.probe(str(Path(__file__).parent / "assets/in.mp4"), pretty=None, v=1) # can pass any kwargs with value, or with "None" as a plain option
+    assert isinstance(out, str)
+
+    # try to decode, by default it's json
+    obj = json.loads(out)
+    assert "streams" in obj
