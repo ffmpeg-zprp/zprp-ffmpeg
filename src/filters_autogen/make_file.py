@@ -61,9 +61,9 @@ def fill_template(filter_template, filter: Filter):
         options.append(f"{sanitized}: Optional[{python_type}] = None")
         filter_params.append(f'FilterOption(name="{option.name}",value={sanitized})')
         if option.description:
-            filter.description += f"\n\t:param {python_type} {option.name}: {option.description}"
+            filter.description += f"\n    :param {python_type} {option.name}: {option.description}"
         if len(option.available_values) > 0:
-            filter.description += "\n\t\tpossible values: "
+            filter.description += "\n        possible values: "
             filter.description += ", ".join(option.available_values.keys())
     options_str = ", ".join(options)
     filter_params_str = ", ".join(filter_params)
