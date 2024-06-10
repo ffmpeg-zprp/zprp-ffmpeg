@@ -11,6 +11,8 @@ python = "^3.8"
 pytest = "^8.1.1"
 pycparser = "^2.22"
 tqdm = "^4.66.4"
+
+[tool.poetry.group.view.dependencies]
 networkx = "^2.6.3"
 matplotlib = "^3.4.3"
 
