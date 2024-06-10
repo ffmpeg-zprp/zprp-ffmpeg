@@ -37,8 +37,10 @@ class ProcessConnector(BaseConnector):
         """
 
         command = ProcessConnector.compile(graph) + extra_options
-        print("Command:", command)
-        ffmpeg_process = subprocess.Popen([ProcessConnector.ffmpeg_executable_path, *shlex.split(command)])  # noqa: S603
+        print("Command:", shlex.split(command))
+        ffmpeg_process = subprocess.Popen(
+            [ProcessConnector.ffmpeg_executable_path, *shlex.split(command)], stdout=subprocess.PIPE, stderr=subprocess.PIPE  # noqa: S603
+        )
         return cls(ffmpeg_process)
 
     def communicate(self):

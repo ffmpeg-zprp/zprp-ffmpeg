@@ -19,3 +19,12 @@ def test_ProcessConnector_any_graph():
     proc = ProcessConnector.run(fg)
     out, err = proc.communicate()
     print(out)
+
+
+@pytest.mark.starts_process
+def test_communicate():
+    fg = Stream().append(Filter("hflip", filter_type=FilterType.VIDEO.value))
+    stdout,stderr = ProcessConnector.run(fg,extra_options="-h").communicate()
+
+    assert stdout is not None # exact output is not important, but communication should be possible
+    assert stderr is not None

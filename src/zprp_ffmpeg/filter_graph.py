@@ -91,8 +91,8 @@ AnyNode = Union[Filter, SourceFilter, SinkFilter]
 
 
 class Stream:
-    """One directional sequence of nodes, in future will be able to visualize them.
-    Streams can be concatenated and split with certain filters."""
+    """One directional sequence of nodes representing filters and data flow.
+    Multiple streams can interact through concat or overlay filters, the resulting graph can be viewed with `ffmpeg.view`."""
 
     def __init__(self) -> None:
         self._nodes: List[AnyNode] = []
