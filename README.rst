@@ -54,7 +54,7 @@ Możliwe ścieżki rozwouju
 * przyjmować wejście i wyjście nie tylko przez plik np. kamera na żywo
 
 ========
-Overview
+ZPRP FFmpeg
 ========
 
 .. start-badges
@@ -111,42 +111,60 @@ Implementation of the successor to the ffmpeg-python library
 Installation
 ============
 
-::
+The package is available on pip::
 
-    pip install zprp-ffmpeg
-
-You can also install the in-development version with::
-
-    pip install https://github.com/ffpmeg-zprp/zprp-ffmpeg/archive/main.zip
+    pip install zprp_ffmpeg
 
 
-Documentation
+Getting started
 =============
 
+A minimal example showing basic usage of the library:
 
-https://zprp-ffmpeg.readthedocs.io/
+.. code-block:: python
+
+    import zprp_ffmpeg
+    stream = zprp_ffmpeg.input("input.mp4")
+    stream = zprp_ffmpeg.hflip(stream)
+    stream = zprp_ffmpeg.output(stream, "output.mp4")
+    zprp_ffmpeg.run(stream)
+
+Check out more `examples <https://github.com/ffmpeg-zprp/zprp-ffmpeg/tree/main/examples>`_
+
+Further documentation is available at https://zprp-ffmpeg.readthedocs.io/en/latest/
 
 
 Development
 ===========
 
-To run all the tests run::
+Project uses poetry for package management. Check out their `docs <https://python-poetry.org/docs/>`_ for installation steps.
+Tests are managed by tox, which uses pytest under the hood. 
+
+
+To install package in development mode, enter the virtual environment managed by poetry, then use `install` command:
+
+.. code-block:: bash
+
+    poetry shell
+    poetry install --with="typecheck"
+
+To run tests on multiple python interpreters, build documentation, check for linting issues, run:
+
+.. code-block:: bash
 
     tox
 
-Note, to combine the coverage data from all the tox environments run:
+However, this might be cumbersome, since it requires having all supported python interpreters available. To run only selected interpreter, use :code:`-e` option, for example:
 
-.. list-table::
-    :widths: 10 90
-    :stub-columns: 1
+.. code-block:: bash
 
-    - - Windows
-      - ::
+    tox -e py312-lin
 
-            set PYTEST_ADDOPTS=--cov-append
-            tox
+You can view all defined interpreters with :code:`tox -l` 
 
-    - - Other
-      - ::
+To check for typing and linting issues manually, run:
 
-            PYTEST_ADDOPTS=--cov-append tox
+.. code-block:: bash
+
+    mypy src
+    pre-commit run --all-files
