@@ -53,9 +53,9 @@ Możliwe ścieżki rozwouju
 * dodać obsługę filtrów złożonych do view
 * przyjmować wejście i wyjście nie tylko przez plik np. kamera na żywo
 
-========
+===========
 ZPRP FFmpeg
-========
+===========
 
 .. start-badges
 
@@ -108,6 +108,7 @@ Implementation of the successor to the ffmpeg-python library
 
 * Free software: MIT license
 
+============
 Installation
 ============
 
@@ -115,9 +116,9 @@ The package is available on pip::
 
     pip install zprp_ffmpeg
 
-
+===============
 Getting started
-=============
+===============
 
 A minimal example showing basic usage of the library:
 
@@ -133,7 +134,7 @@ Check out more `examples <https://github.com/ffmpeg-zprp/zprp-ffmpeg/tree/main/e
 
 Further documentation is available at https://zprp-ffmpeg.readthedocs.io/en/latest/
 
-
+===========
 Development
 ===========
 
