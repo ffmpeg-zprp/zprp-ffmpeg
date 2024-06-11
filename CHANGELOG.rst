@@ -4,6 +4,20 @@ Changelog
 All notable changes to this project will be documented in this file.
 Dates are displayed in UTC.
 
+`v2.2.0 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v2.1.2...v2.2.0>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+   11 June 2024
+
+-  Use oslex library for command splitting
+   ```#11`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/pull/11>`__
+-  fix: add tox to poetry dependencies, change pytest version
+   ```6b22bc1`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/6b22bc1167c71991e5105b5254d3cd76aeb49276>`__
+-  fix: pipe stderr and stdout out of ffmpeg
+   ```ce84a5e`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/ce84a5e76062dc70575ca43073f702c138c01996>`__
+-  style: make filenames consistent
+   ```7e38977`` <https://github.com/ffmpeg-zprp/zprp-ffmpeg/commit/7e389776bca5886fa8fa5456b3ae29d1540e5b36>`__
+
 `v2.1.2 <https://github.com/ffmpeg-zprp/zprp-ffmpeg/compare/v2.1.1...v2.1.2>`__
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
