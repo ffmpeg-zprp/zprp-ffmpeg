@@ -6,10 +6,12 @@ import zprp_ffmpeg as ffmpeg
 
 def test_input():
     # example from readme
-    stream = ffmpeg.input("input.mp4")
-    stream = ffmpeg.hflip(stream)
-    stream = ffmpeg.output(stream, "out.mp4")
-    ffmpeg.run(stream)
+    stream1 = ffmpeg.input("input.mp4")
+    stream2 = ffmpeg.hflip(stream1)
+    stream3 = ffmpeg.output(ffmpeg.concat((stream1, stream2)), stream2, "out.mp4")
+    ffmpeg.run(stream3)
+
+    assert stream1 != stream2 != stream3
 
 
 def test_filter_custom():

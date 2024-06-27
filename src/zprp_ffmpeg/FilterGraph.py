@@ -1,6 +1,8 @@
 """There is no general 'Node' class, because it doesn't work well with object relations, source and sink filters are kind of orthogonal.
 It slightly violates DRY, but the parameter types are different. It is what it is"""
+from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
@@ -23,17 +25,18 @@ class FilterOption:
 class Filter:
     """Filters can have many inputs and many outputs, holds the filter name and potential params"""
 
-    def __init__(self, command: str, params: Optional[List[FilterOption]] = None, filter_type: str = FilterType.VIDEO.value):
+    def __init__(self, command: str, params: Optional[List[FilterOption]] = None,
+                 filter_type: str = FilterType.VIDEO.value):
         self._out: List[AnyNode] = []
-        self._in: List[AnyNode | "Stream"] = []
+        self._in: List[AnyNode | Stream] = []
         self.command = command
         self.params = params if params else []
         self.filter_type = filter_type
 
-    def add_output(self, parent: "Filter | SinkFilter"):
+    def add_output(self, parent: Filter | SinkFilter):
         self._out.append(parent)
 
-    def add_input(self, child: "Filter | SourceFilter | Stream"):
+    def add_input(self, child: Filter | SourceFilter | Stream):
         self._in.append(child)
 
     def get_command(self):
@@ -57,10 +60,10 @@ class SourceFilter:
         self.in_path: str = in_path
         self._out: List[AnyNode] = []
 
-    def add_output(self, parent: "Filter | SinkFilter"):
+    def add_output(self, parent: Filter | SinkFilter):
         self._out.append(parent)
 
-    def add_input(self, child: "Filter"):
+    def add_input(self, child: Filter):
         raise NotImplementedError("This node can't have inputs")
 
     def get_command(self):
@@ -74,10 +77,10 @@ class SinkFilter:
         self.out_path: str = out_path
         self._in: List[AnyNode] = []
 
-    def add_input(self, parent: "Filter | SourceFilter"):
+    def add_input(self, parent: Filter | SourceFilter):
         self._in.append(parent)
 
-    def add_output(self, parent: "Filter"):
+    def add_output(self, parent: Filter):
         raise NotImplementedError("This node can't have outputs")
 
     def get_command(self):
@@ -98,14 +101,15 @@ class Stream:
         self._nodes: List[AnyNode] = []
         self.global_options: List = []
 
-    def append(self, node: AnyNode) -> "Stream":
-        if len(self._nodes) > 0:
+    def append(self, node: AnyNode) -> Stream:
+        instance = deepcopy(self)
+        if len(instance._nodes) > 0:
             # connect head with new node
-            if not isinstance(self._nodes[-1], SinkFilter) and not isinstance(node, SourceFilter):
-                self._nodes[-1].add_output(node)
-                node.add_input(self._nodes[-1])
-        self._nodes.append(node)
-        return self  # fluent
+            if not isinstance(instance._nodes[-1], SinkFilter) and not isinstance(node, SourceFilter):
+                instance._nodes[-1].add_output(node)
+                node.add_input(instance._nodes[-1])
+        instance._nodes.append(node)
+        return instance  # fluent
 
 
 class FilterParser:
@@ -142,7 +146,10 @@ class FilterParser:
             # output
             elif isinstance(node, SinkFilter):
                 map_cmd, file = command.split(" ")
-                self.outputs.append(f"{map_cmd} [{last}] {file}")
+                last_results = []
+                for graph in node._in:  # type: ignore
+                    last_results.append(f"{map_cmd} [{self.generate_command(graph)}]")  # type: ignore
+                self.outputs.append(f"{' '.join(last_results)} {file}")
                 self.outputs_counter += 1
                 continue
             # single input single output
@@ -153,7 +160,7 @@ class FilterParser:
                     self.filters.append(f"[{last}{command[2:]}[v{self.result_counter}];")
                 last = f"v{self.result_counter}"
                 self.result_counter += 1
-        if len(self.filters) == 0 and len(stream._nodes)!=1: # case of single input is allowed for overlay
+        if len(self.filters) == 0 and len(stream._nodes) != 1:  # case of single input is allowed for overlay
             raise ValueError("No filters selected")
         return last
 

@@ -1,7 +1,7 @@
 """compatibility layer to match the kkroening library.
 @TODO: better docstrings"""
 
-from typing import List
+from typing import List, Union, Unpack
 from typing import Tuple
 
 from zprp_ffmpeg.BaseConnector import BaseConnector
@@ -27,14 +27,22 @@ def filter(stream_spec: Stream, filter_name: str, *args, **kwargs):
         options.append(FilterOption(arg, None))
     for name, value in kwargs.items():
         options.append(FilterOption(name, value))
-    stream_spec.append(Filter(filter_name, params=options))
-    return stream_spec
+    return stream_spec.append(Filter(filter_name, params=options))
 
 
-def output(stream: Stream, filename: str):
+T = tuple[Unpack[tuple[Stream, ...]], str]
+
+
+def output(*streams_and_filename: Unpack[T]) -> Stream:
+    *streams, filename = streams_and_filename
     sink = SinkFilter(filename)
-    stream.append(sink)
-    return stream
+    nodes = []
+    for stream in streams:
+        sink.add_input(stream)
+    nodes.append(sink)
+    s = Stream()
+    s._nodes = nodes
+    return s
 
 
 def global_args(stream: Stream, *args):
